@@ -74,4 +74,23 @@ class DatabaseManager: NSObject {
         }
         completion(nil)
     }
+    
+    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+        ref = Database.database().reference()
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
+            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name] as [String : Any]
+            self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
+            
+            if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                dict[groupId] = true
+                self.ref.child("users").child(userId).child("groups").setValue(dict)
+                UserDefaults.standard.setValue(dict, forKey: "groups")
+            } else {
+                let dict = [groupId: true]
+                self.ref.child("users").child(userId).child("groups").setValue(dict)
+                UserDefaults.standard.setValue(dict, forKey: "groups")
+            }
+            completion()
+        }
+    }
 }

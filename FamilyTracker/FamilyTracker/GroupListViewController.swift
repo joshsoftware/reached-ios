@@ -59,7 +59,12 @@ class GroupListViewController: UIViewController {
         floatyBtn.addItem(icon: UIImage(named: "sos")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
-                self.qrScanningSucceededWithCode(qrString: qrString)
+                DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
+                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+                        vc.currentUserProfileUrl = self.currentUserProfileUrl
+                        self.navigationController?.pushViewController(vc, animated: false)
+                    }
+                }
             }
         }
 
@@ -122,48 +127,6 @@ class GroupListViewController: UIViewController {
             self.navigationController?.setViewControllers([loginVC], animated: true)
         }
     }
-    
-    private func qrScanningSucceededWithCode(qrString: String?) {
-        var memberArray : Array = Array<Any>()
-        var createdBy: String?
-        
-        self.ref.child("groups/\(qrString ?? "")").getData { (error, snapshot) in
-            if let error = error {
-                print("Error getting data \(error)")
-            }
-            else if snapshot.exists() {
-                print("Got data \(snapshot.value!)")
-                let dict = snapshot.value as? NSDictionary
-                guard let members = dict?.value(forKey: "members") as? NSArray else {
-                    return
-                }
-                
-                guard let createdByStr = dict?.value(forKey: "created_by") as? String else {
-                    return
-                }
-                createdBy = createdByStr
-                
-                for member in members {
-                    let data = member as! NSDictionary
-                    let memberData = ["id":data.value(forKey: "id") ?? "", "lat": data.value(forKey: "lat") ?? 0, "long": data.value(forKey: "long") ?? 0, "name": data.value(forKey: "name") ?? "", "profileUrl": data.value(forKey: "profileUrl") ?? ""] as [String : Any]
-                    memberArray.append(memberData)
-                }
-                if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-                    let currentUserData = ["id":userId, "lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "profileUrl": self.currentUserProfileUrl ?? ""] as [String : Any]
-                    memberArray.append(currentUserData)
-                }
-                
-                self.ref = Database.database().reference(withPath: "groups/\(qrString ?? "")")
-                self.ref.setValue(["created_by": createdBy ?? "", "members": memberArray])
-                
-                self.fetchGroups()
-            }
-            else {
-                print("No data available")
-            }
-        }
-    }
-
 }
 
 extension GroupListViewController: UITableViewDataSource, UITableViewDelegate {
