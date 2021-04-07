@@ -23,6 +23,10 @@
 		B41C99CC26010A8900B64BDD /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41C99CB26010A8900B64BDD /* ShowQRCodeViewController.swift */; };
 		B41C9A3D2602058D00B64BDD /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41C9A3C2602058C00B64BDD /* QRScannerView.swift */; };
 		B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */; };
+		B492BAA0261DBB11000AD3F9 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BA9F261DBB11000AD3F9 /* ScanQRCodeViewController.swift */; };
+		B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */; };
+		B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */; };
+		B492BAAF261DC1AD000AD3F9 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */; };
 		B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */; };
 		B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */; };
 		B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14925EE46AA00B5F992 /* MapViewController.swift */; };
@@ -122,6 +126,12 @@
 		B41C99CB26010A8900B64BDD /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
 		B41C9A3C2602058C00B64BDD /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashInterfaceController.swift; sourceTree = "<group>"; };
+		B492BA58261C83F4000AD3F9 /* Reached.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Reached.entitlements; sourceTree = "<group>"; };
+		B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FamilyTracker WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		B492BA9F261DBB11000AD3F9 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
+		B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		B4DDA14225EE46AA00B5F992 /* Reached.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reached.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -214,6 +224,24 @@
 			path = LocationManager;
 			sourceTree = "<group>";
 		};
+		B492BA9A261DBAAC000AD3F9 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B492BA9B261DBAB6000AD3F9 /* QRCodeVCs */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B492BA9B261DBAB6000AD3F9 /* QRCodeVCs */ = {
+			isa = PBXGroup;
+			children = (
+				B41C9A3C2602058C00B64BDD /* QRScannerView.swift */,
+				B41C99CB26010A8900B64BDD /* ShowQRCodeViewController.swift */,
+				B492BA9F261DBB11000AD3F9 /* ScanQRCodeViewController.swift */,
+			);
+			path = QRCodeVCs;
+			sourceTree = "<group>";
+		};
 		B4DDA13925EE46AA00B5F992 = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +269,8 @@
 		B4DDA14425EE46AA00B5F992 /* FamilyTracker */ = {
 			isa = PBXGroup;
 			children = (
+				B492BA9A261DBAAC000AD3F9 /* ViewControllers */,
+				B492BA58261C83F4000AD3F9 /* Reached.entitlements */,
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
 				3DA17223260092BB00A7E9F6 /* LoginViewController.swift */,
@@ -249,8 +279,6 @@
 				B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */,
 				B4DDA28625EFA94F00B5F992 /* MemberListViewController.swift */,
 				B4DDA14925EE46AA00B5F992 /* MapViewController.swift */,
-				B41C99CB26010A8900B64BDD /* ShowQRCodeViewController.swift */,
-				B41C9A3C2602058C00B64BDD /* QRScannerView.swift */,
 				B4DDA14B25EE46AA00B5F992 /* Main.storyboard */,
 				B4DDA14E25EE46AE00B5F992 /* Assets.xcassets */,
 				B4DDA15025EE46AE00B5F992 /* LaunchScreen.storyboard */,
@@ -272,6 +300,7 @@
 		B4DDA16925EE46AF00B5F992 /* FamilyTracker WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */,
 				B4DDA20D25EF655B00B5F992 /* Cells */,
 				B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */,
 				B4DDA16A25EE46AF00B5F992 /* InterfaceController.swift */,
@@ -315,6 +344,9 @@
 				3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */,
 				B4DDA21725EF66D000B5F992 /* WKInterfaceController+Extension.swift */,
 				B4DDA29F25EFAD3800B5F992 /* Storyboard+Extension.swift */,
+				B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */,
+				B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */,
+				B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -630,6 +662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
+				B492BAA0261DBB11000AD3F9 /* ScanQRCodeViewController.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
 				B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */,
 				3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */,
@@ -638,8 +671,11 @@
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,
+				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
 				3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */,
 				B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */,
+				B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */,
+				B492BAAF261DC1AD000AD3F9 /* UIView+Extension.swift in Sources */,
 				B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */,
 				B4DDA22825EF687000B5F992 /* ApiClient.swift in Sources */,
 				B41C99CC26010A8900B64BDD /* ShowQRCodeViewController.swift in Sources */,
@@ -834,8 +870,10 @@
 			baseConfigurationReference = ADA4615038C63A7A43E27177 /* Pods-FamilyTracker WatchKit Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "FamilyTracker WatchKit Extension/FamilyTracker WatchKit Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = "FamilyTracker WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -844,7 +882,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitextension_dev;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -858,8 +896,10 @@
 			baseConfigurationReference = 25534CD39BDC54EBCCA40E9B /* Pods-FamilyTracker WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "FamilyTracker WatchKit Extension/FamilyTracker WatchKit Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = "FamilyTracker WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -869,7 +909,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitextension_dev;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -886,13 +926,14 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				IBSC_MODULE = FamilyTracker_WatchKit_Extension;
 				INFOPLIST_FILE = "FamilyTracker WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp;
 				PRODUCT_NAME = Reached;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitApp_dev;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -908,14 +949,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				IBSC_MODULE = FamilyTracker_WatchKit_Extension;
 				INFOPLIST_FILE = "FamilyTracker WatchKit App/Info.plist";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp;
 				PRODUCT_NAME = Reached;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitApp_dev;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -931,9 +973,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -942,7 +985,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached;
 				PRODUCT_NAME = Reached;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_dev_profile;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -955,9 +998,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -967,7 +1011,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached;
 				PRODUCT_NAME = Reached;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_dev_profile;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

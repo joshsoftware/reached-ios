@@ -42,6 +42,7 @@ class LoginViewController: UIViewController {
     private func navigateToGroupListVC() {
         DispatchQueue.main.async {
             if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+                vc.currentUserProfileUrl = self.currentUserProfileUrl
                 self.navigationController?.pushViewController(vc, animated: false)
             }
         }

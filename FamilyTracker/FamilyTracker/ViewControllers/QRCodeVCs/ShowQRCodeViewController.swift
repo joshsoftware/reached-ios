@@ -14,7 +14,8 @@ class ShowQRCodeViewController: UIViewController {
     
     var groupId: String = ""
     var iIsFromCreateGroupFlow = false
-    
+    var currentUserProfileUrl: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -51,6 +52,7 @@ class ShowQRCodeViewController: UIViewController {
     
     @IBAction func viewGroupBtnAction(_ sender: UIButton) {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+            vc.currentUserProfileUrl = self.currentUserProfileUrl
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
