@@ -55,15 +55,12 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @IBAction func createGroupButtonPressed(_ sender: Any) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-            let data = ["id":userId, "lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "profileUrl": self.currentUserProfileUrl ?? ""] as [String : Any]
-            var memberArray : Array = Array<Any>()
-            memberArray.append(data)
-            self.ref.child("groups").child(self.groupId).setValue(["created_by": userId, "members": memberArray])
+    @IBAction func createGroupButtonPressed(_ sender: Any) {            CreateGroupPopUpVC.showPopup(parentVC: self)
+        CreateGroupPopUpVC.groupCreatedHandler = { groupId in
+            print("Group created..\(groupId)")
+            UserDefaults.standard.setValue(groupId, forKey: "groupId")
+            self.navigateToShowQRCodeVC(groupId: groupId)
         }
-        UserDefaults.standard.setValue(self.groupId, forKey: "groupId")
-        navigateToShowQRCodeVC(groupId: self.groupId)
     }
     
     @IBAction func joinbuttonPressed(_ sender: Any) {
@@ -126,11 +123,7 @@ extension HomeViewController: QRScannerViewDelegate {
                     let currentUserData = ["id":userId, "lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "profileUrl": self.currentUserProfileUrl ?? ""] as [String : Any]
                     memberArray.append(currentUserData)
                 }
-                
-//                //TEMP ADDED USER DATA
-//                let testData = ["id":"1234", "lat": self.currentLocation.coordinate.latitude, "long": self.currentLocation.coordinate.longitude, "name": "Test"] as [String : Any]
-//                memberArray.append(testData)
-                
+
                 self.ref = Database.database().reference(withPath: "groups/\(str ?? "")")
                 self.ref.setValue(["created_by": createdBy ?? "", "members": memberArray])
 

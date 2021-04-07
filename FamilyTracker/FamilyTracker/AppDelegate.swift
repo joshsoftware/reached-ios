@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //To get all members
         self.ref.child("/members").observe(.childAdded) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
-                self.newFamilyMemberAdded(value: value)
+                self.newFamilyMemberAdded(key: snapshot.key, value: value)
             }
         }
     }
@@ -77,10 +77,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.delegate = self
     }
     
-    private func newFamilyMemberAdded(value: NSMutableDictionary) {
+    private func newFamilyMemberAdded(key: String, value: NSMutableDictionary) {
         
         var member = Members()
-        member.id = value["id"] as? String
+        member.id = key
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
@@ -101,30 +101,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func updateCurrentUsersLocationOnServer(location: CLLocation) {
-        if memberList.count > 0 {
-            
-            if let userId = UserDefaults.standard.string(forKey: "userId") {
-                
-                var arrayIndex: Int?
-
-                for (index,member) in memberList.enumerated() {
-                    if member.id == userId {
-                        arrayIndex = index
-                        break
-                    }
-                }
-                let myLocation = CLLocationCoordinate2DMake(location.coordinate.latitude,location.coordinate.longitude)
-                if let arrayIndex = arrayIndex {
-                    self.ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-                    self.ref.child("/members").child("\(arrayIndex)/lat").setValue(myLocation.latitude)
-                    self.ref.child("/members").child("\(arrayIndex)/long").setValue(myLocation.longitude)
-//                    self.getMembersList()
-                    
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                if let groups = groups {
+                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
                 }
             }
         }
     }
-    
 }
 
 extension AppDelegate: LocationUpdateDelegate {

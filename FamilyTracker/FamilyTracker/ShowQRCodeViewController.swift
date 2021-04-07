@@ -50,8 +50,7 @@ class ShowQRCodeViewController: UIViewController {
     
     
     @IBAction func viewGroupBtnAction(_ sender: UIButton) {
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
-            vc.groupId = groupId
+        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }

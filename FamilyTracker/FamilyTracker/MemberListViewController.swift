@@ -17,11 +17,12 @@ class MemberListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!    
     @IBOutlet weak var floatyBtn: Floaty!
     
-    private var memberList = [Members]()
+    var memberList = [Members]()
     private var ref: DatabaseReference!
     private var refSOS: DatabaseReference!
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
+    var groupName: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,19 +43,8 @@ class MemberListViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
 
         sendGroupJoinOrCreateStatusToWatch()
-        self.title = "Your Family"
+        self.title = groupName
 
-        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-        self.ref.queryOrdered(byChild: "created_by").observeSingleEvent(of: .value, with: { (snapshot) in
-            if(snapshot.exists()) {
-                let createdBy = (snapshot.value as? NSDictionary)?.value(forKey: "created_by")
-                if let userId = UserDefaults.standard.string(forKey: "userId") {
-//                    self.addBtn.isHidden = (userId != createdBy as? String)
-                }
-            } else {
-                
-            }
-        })
         setUpTableView()
         observeFirebaseRealtimeDBChanges()
         observeSOSChanges()
@@ -62,7 +52,6 @@ class MemberListViewController: UIViewController {
         logoutBarButtonItem.setBackgroundImage(UIImage(named: "logout")?.withRenderingMode(.alwaysTemplate), for: .normal, barMetrics: .default)
         logoutBarButtonItem.tintColor = .white
         self.navigationItem.rightBarButtonItem  = logoutBarButtonItem
-        self.navigationItem.setHidesBackButton(true, animated: true)
     }
     
     private func setUpFloatyButton() {
@@ -91,6 +80,7 @@ class MemberListViewController: UIViewController {
         UserDefaults.standard.setValue("", forKey: "groupId")
         UserDefaults.standard.setValue("", forKey: "userId")
         UserDefaults.standard.setValue("", forKey: "userName")
+        UserDefaults.standard.setValue(nil, forKey: "groupId")
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
@@ -122,14 +112,14 @@ class MemberListViewController: UIViewController {
         //Observe updated value for member
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
-                self.familyMembersLocationUpdated(value: value)
+                self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
         }
         
         //Observe newly added member
         self.ref.child("/members").observe(.childAdded) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
-                self.newFamilyMemberAdded(value: value)
+                self.newFamilyMemberAdded(key: snapshot.key, value: value)
             }
         }
         
@@ -174,15 +164,14 @@ class MemberListViewController: UIViewController {
         }
     }
     
-    private func familyMembersLocationUpdated(value: NSMutableDictionary) {
+    private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
         
         var member = Members()
-        member.id = value["id"] as? String
+        member.id = key
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        member.profileUrl = value["profileUrl"] as? String
-
+        
         if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
             self.memberList[index] = member
             self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
@@ -191,15 +180,14 @@ class MemberListViewController: UIViewController {
         }
     }
     
-    private func newFamilyMemberAdded(value: NSMutableDictionary) {
+    private func newFamilyMemberAdded(key: String, value: NSMutableDictionary) {
         
         var member = Members()
-        member.id = value["id"] as? String
+        member.id = key
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        member.profileUrl = value["profileUrl"] as? String
-
+        
         self.memberList.append(member)
         self.tableView.reloadData()
         

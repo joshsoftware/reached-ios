@@ -10,7 +10,7 @@ import UIKit
 
 struct Constant {
    
-    static let baseUrl = "https://weartrack-f8111-default-rtdb.firebaseio.com"
+    static let baseUrl = "https://reached-ce772-default-rtdb.firebaseio.com/"
 
     struct kAPINameConstants {
         static let kGroupMembers = "/groups/"
