@@ -10,10 +10,7 @@ import Firebase
 import CoreLocation
 
 class HomeViewController: UIViewController {
-    
-    @IBOutlet weak var scannerContainerView: UIView!
-    @IBOutlet weak var scannerView: QRScannerView!
-    
+        
     private var ref: DatabaseReference!
     var currentLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     let groupId = UUID().uuidString
@@ -22,7 +19,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        scannerContainerView.isHidden = true
         ref = Database.database().reference()
         setUpLocationManager()
         self.navigationItem.setHidesBackButton(true, animated: true)
@@ -36,9 +32,6 @@ class HomeViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        if !scannerView.isRunning {
-            scannerView.stopScanning()
-        }
     }
     
     private func setUpLocationManager() {
@@ -65,11 +58,9 @@ class HomeViewController: UIViewController {
     
     @IBAction func joinbuttonPressed(_ sender: Any) {
         
-        scannerContainerView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        scannerContainerView.isHidden = false
-        scannerView.delegate = self
-        if !scannerView.isRunning {
-            scannerView.startScanning()
+        ScanQRCodeViewController.showPopup(parentVC: self)
+        ScanQRCodeViewController.groupJoinedHandler = { qrString in
+            self.qrScanningSucceededWithCode(qrString: qrString)
         }
     }
 
@@ -77,28 +68,16 @@ class HomeViewController: UIViewController {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupId = groupId
             vc.iIsFromCreateGroupFlow = true
+            vc.currentUserProfileUrl = currentUserProfileUrl
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
-}
-
-extension HomeViewController: QRScannerViewDelegate {
-    func qrScanningDidStop() {
-        dismissScannerView()
-    }
     
-    func qrScanningDidFail() {
-        dismissScannerView()
-        presentAlert(withTitle: "Error", message: "Scanning Failed. Please try again", completion: {
-            
-        })
-    }
-    
-    func qrScanningSucceededWithCode(_ str: String?) {
+    func qrScanningSucceededWithCode(qrString: String?) {
         var memberArray : Array = Array<Any>()
         var createdBy: String?
         
-        self.ref.child("groups/\(str ?? "")").getData { (error, snapshot) in
+        self.ref.child("groups/\(qrString ?? "")").getData { (error, snapshot) in
             if let error = error {
                 print("Error getting data \(error)")
             }
@@ -108,7 +87,6 @@ extension HomeViewController: QRScannerViewDelegate {
                 guard let members = dict?.value(forKey: "members") as? NSArray else {
                     return
                 }
-                
                 guard let createdByStr = dict?.value(forKey: "created_by") as? String else {
                     return
                 }
@@ -123,12 +101,13 @@ extension HomeViewController: QRScannerViewDelegate {
                     let currentUserData = ["id":userId, "lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "profileUrl": self.currentUserProfileUrl ?? ""] as [String : Any]
                     memberArray.append(currentUserData)
                 }
-
-                self.ref = Database.database().reference(withPath: "groups/\(str ?? "")")
+                
+                self.ref = Database.database().reference(withPath: "groups/\(qrString ?? "")")
                 self.ref.setValue(["created_by": createdBy ?? "", "members": memberArray])
-
+                
                 DispatchQueue.main.async {
                     if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+                        vc.currentUserProfileUrl = self.currentUserProfileUrl
                         self.navigationController?.pushViewController(vc, animated: false)
                     }
                 }
@@ -136,41 +115,6 @@ extension HomeViewController: QRScannerViewDelegate {
             else {
                 print("No data available")
             }
-        }
-        dismissScannerView()
-    }
-    
-    @IBAction func closeScannerViewButtonPressed(_ sender: Any) {
-        dismissScannerView()
-    }
-    
-    private func dismissScannerView() {
-        scannerContainerView.isHidden = true
-    }
-    
-}
-
-extension UIViewController {
-    
-    func presentAlert(withTitle title: String, message : String, completion: @escaping () -> ()) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: "OK", style: .default) { action in
-            print("You've pressed OK Button")
-            completion()
-        }
-        alertController.addAction(OKAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    func showToast(message : String, seconds: Double = 2.0) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.view.backgroundColor = UIColor.black
-        alert.view.alpha = 0.6
-        alert.view.layer.cornerRadius = 15
-        
-        self.present(alert, animated: true)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds) {
-            alert.dismiss(animated: true)
         }
     }
 }
@@ -180,22 +124,5 @@ extension HomeViewController: CLLocationManagerDelegate {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         self.currentLocation = locValue
-    }
-}
-
-extension UIApplication {
-
-    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-
-        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-
-        } else if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
-        }
-        return base
     }
 }

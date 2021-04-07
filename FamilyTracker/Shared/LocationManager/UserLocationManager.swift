@@ -32,12 +32,15 @@ class UserLocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         #if os(iOS)
         locationManager.distanceFilter = 100
-//        if CLLocationManager.significantLocationChangeMonitoringAvailable() {
-//            locationManager.startMonitoringSignificantLocationChanges()
-//        } else {
-//            locationManager.startUpdatingLocation()
-//        }
+        #if targetEnvironment(simulator)
         locationManager.startUpdatingLocation()
+        #else
+        if CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            locationManager.startMonitoringSignificantLocationChanges()
+        } else {
+            locationManager.startUpdatingLocation()
+        }
+        #endif
         locationManager.pausesLocationUpdatesAutomatically = false
 
         #elseif os(watchOS)
