@@ -45,6 +45,7 @@ class MemberListViewController: UIViewController {
         sendGroupJoinOrCreateStatusToWatch()
         self.title = groupName
 
+        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
         setUpTableView()
         observeFirebaseRealtimeDBChanges()
         observeSOSChanges()

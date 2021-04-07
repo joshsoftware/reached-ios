@@ -128,8 +128,7 @@ extension HomeViewController: QRScannerViewDelegate {
                 self.ref.setValue(["created_by": createdBy ?? "", "members": memberArray])
 
                 DispatchQueue.main.async {
-                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
-                        vc.groupId = str ?? ""
+                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
                         self.navigationController?.pushViewController(vc, animated: false)
                     }
                 }
