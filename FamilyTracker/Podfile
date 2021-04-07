@@ -8,6 +8,8 @@ target 'FamilyTracker' do
   # Pods for FamilyTracker
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/DynamicLinks'
   pod 'Alamofire', '~> 5.2'
   pod 'SDWebImage', '~> 5.0'
   pod 'Firebase/Auth'

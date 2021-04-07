@@ -5,6 +5,8 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - Firebase/Analytics (7.7.0):
+    - Firebase/Core
   - Firebase/Auth (7.7.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 7.7.0)
@@ -16,6 +18,9 @@ PODS:
   - Firebase/Database (7.7.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 7.7.0)
+  - Firebase/DynamicLinks (7.7.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 7.7.0)
   - FirebaseAnalytics (7.7.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
@@ -42,6 +47,8 @@ PODS:
   - FirebaseDatabase (7.7.0):
     - FirebaseCore (~> 7.0)
     - leveldb-library (~> 1.22)
+  - FirebaseDynamicLinks (7.7.0):
+    - FirebaseCore (~> 7.0)
   - FirebaseInstallations (7.7.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
@@ -100,9 +107,11 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.2)
+  - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/DynamicLinks
   - Floaty (~> 4.2.0)
   - GoogleSignIn
   - SDWebImage (~> 5.0)
@@ -117,6 +126,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseDatabase
+    - FirebaseDynamicLinks
     - FirebaseInstallations
     - Floaty
     - GoogleAppMeasurement
@@ -139,6 +149,7 @@ SPEC CHECKSUMS:
   FirebaseCore: ac35d680a0bf32319a59966a1478e0741536b97b
   FirebaseCoreDiagnostics: 179bf3831213451c8addd036aca7fcf5492ec154
   FirebaseDatabase: 4da0e43266f9cb0278464a2a4b1102b3d122c245
+  FirebaseDynamicLinks: 3ddc15a6f7e1813710d265acc662e5dfe034ac36
   FirebaseInstallations: 42c86e7b02ff75b7f27f85833bf5dcb5f38a9774
   Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
   GoogleAppMeasurement: 0c3b134b2c0a90c4c24833873894bfe0e42a0384
@@ -152,6 +163,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
 
-PODFILE CHECKSUM: b170f01819336522cb77a0cae3b07cae15d3acbb
+PODFILE CHECKSUM: c73f818224048aeb9714ed6492c485559e7190d5
 
 COCOAPODS: 1.10.0

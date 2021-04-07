@@ -12,6 +12,7 @@
 		3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */; };
 		3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD17261D87E60016AA95 /* CreateGroupPopUpVC.swift */; };
 		3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD18261D87E60016AA95 /* CreateGroupPopUpVC.xib */; };
+		3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD1C261DBA670016AA95 /* JoinLinkManager.swift */; };
 		3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D546176261C665B0053FA57 /* GroupListViewController.swift */; };
 		3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617A261C8A1E0053FA57 /* GroupListModel.swift */; };
 		3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617C261C9D160053FA57 /* DatabaseManager.swift */; };
@@ -107,6 +108,8 @@
 		3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D51FD17261D87E60016AA95 /* CreateGroupPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupPopUpVC.swift; sourceTree = "<group>"; };
 		3D51FD18261D87E60016AA95 /* CreateGroupPopUpVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupPopUpVC.xib; sourceTree = "<group>"; };
+		3D51FD1B261DB8490016AA95 /* Reached.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Reached.entitlements; sourceTree = "<group>"; };
+		3D51FD1C261DBA670016AA95 /* JoinLinkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinLinkManager.swift; sourceTree = "<group>"; };
 		3D546176261C665B0053FA57 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
 		3D54617A261C8A1E0053FA57 /* GroupListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListModel.swift; sourceTree = "<group>"; };
 		3D54617C261C9D160053FA57 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -209,6 +212,7 @@
 		B416337525F625D9004F9911 /* LocationManager */ = {
 			isa = PBXGroup;
 			children = (
+				3D51FD1C261DBA670016AA95 /* JoinLinkManager.swift */,
 				B416337625F625ED004F9911 /* UserLocationManager.swift */,
 			);
 			path = LocationManager;
@@ -241,6 +245,7 @@
 		B4DDA14425EE46AA00B5F992 /* FamilyTracker */ = {
 			isa = PBXGroup;
 			children = (
+				3D51FD1B261DB8490016AA95 /* Reached.entitlements */,
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
 				3DA17223260092BB00A7E9F6 /* LoginViewController.swift */,
@@ -648,6 +653,7 @@
 				B41C9A3D2602058D00B64BDD /* QRScannerView.swift in Sources */,
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
+				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
@@ -931,9 +937,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -955,9 +962,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

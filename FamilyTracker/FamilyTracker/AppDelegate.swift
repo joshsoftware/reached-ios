@@ -11,6 +11,7 @@ import WatchConnectivity
 import Firebase
 import GoogleSignIn
 import CoreLocation
+import FirebaseDynamicLinks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -108,6 +109,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+         let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
+         if dynamicLink != nil {
+              print("Dynamic link : \(String(describing: dynamicLink?.url))")
+              return true
+         }
+         return false
+    }
+    
+    func application(_ application: UIApplication, continue userActivity:
+    NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+         guard let inCommingURL = userActivity.webpageURL else { return false }
+         print("Incomming Web Page URL: \(inCommingURL)")
+         return true
     }
 }
 
