@@ -62,10 +62,7 @@ class GroupListViewController: UIViewController {
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
                 DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
-                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
-                        vc.currentUserProfileUrl = self.currentUserProfileUrl
-                        self.navigationController?.pushViewController(vc, animated: false)
-                    }
+                    self.fetchGroups()
                 }
             }
         }
