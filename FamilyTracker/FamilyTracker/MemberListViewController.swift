@@ -42,7 +42,6 @@ class MemberListViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = Constant.kColor.KDarkOrangeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
 
-        sendGroupJoinOrCreateStatusToWatch()
         self.title = groupName
 
         ref = Database.database().reference(withPath: "groups/\(self.groupId)")
@@ -93,12 +92,6 @@ class MemberListViewController: UIViewController {
     
     private func sendLoginStatusToWatch() {
         self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    private func sendGroupJoinOrCreateStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["groupId" : self.groupId as AnyObject], errorHandler:  { (error) in
             print("Error sending message: \(error)")
         })
     }
@@ -176,8 +169,6 @@ class MemberListViewController: UIViewController {
         if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
             self.memberList[index] = member
             self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-            
-            sendUpdatedMemberListToWatch()
         }
     }
     
@@ -192,8 +183,6 @@ class MemberListViewController: UIViewController {
         self.memberList.append(member)
         self.tableView.reloadData()
         
-        sendUpdatedMemberListToWatch()
-
     }
     
     private func familyMemberRemoved(value: NSMutableDictionary) {
@@ -204,13 +193,6 @@ class MemberListViewController: UIViewController {
             self.memberList.remove(at: index)
             self.tableView.reloadData()
         }
-        sendUpdatedMemberListToWatch()
-    }
-    
-    private func sendUpdatedMemberListToWatch() {
-        self.connectivityHandler.sendMessage(message: ["msg" : "\(self.memberList)" as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
     }
     
     private func sendUserIdToWatch() {
@@ -226,23 +208,6 @@ class MemberListViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: "MemberTableViewCell")
     }
-    
-//    private func getMembersList() {
-//        self.memberList.removeAll()
-//        ApiClient.getFamilyMembersListWithLocations { (result) in
-//            switch result {
-//                case .success(let result):
-//                    print(result)
-//                    if let members = result.members {
-//                        self.memberList = members
-//                        self.tableView.reloadData()
-//                    }
-//                case .failure(let error):
-//                    print(error.description)
-//            }
-//        }
-//
-//    }
 
     private func navigateToShowQRCodeVC(groupId: String) {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {

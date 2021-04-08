@@ -61,6 +61,12 @@
 		B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4DDA29425EFAA0900B5F992 /* MemberTableViewCell.xib */; };
 		B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA29F25EFAD3800B5F992 /* Storyboard+Extension.swift */; };
 		B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */; };
+		B4F9B7EC261EFD5400EC2983 /* GroupListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617A261C8A1E0053FA57 /* GroupListModel.swift */; };
+		B4F9B8F8261F0AB000EC2983 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617C261C9D160053FA57 /* DatabaseManager.swift */; };
+		B4F9B8FC261F0D4700EC2983 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */; };
+		B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B900261F11A900EC2983 /* GroupRowController.swift */; };
+		B4F9B90D261F11CF00EC2983 /* ImageTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B90C261F11CF00EC2983 /* ImageTools.swift */; };
+		B4F9B915261F12DF00EC2983 /* MemberListInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */; };
 		DE960CA5FE783BEF75263C03 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */; };
 /* End PBXBuildFile section */
 
@@ -167,6 +173,10 @@
 		B4DDA29425EFAA0900B5F992 /* MemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberTableViewCell.xib; sourceTree = "<group>"; };
 		B4DDA29F25EFAD3800B5F992 /* Storyboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Extension.swift"; sourceTree = "<group>"; };
 		B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		B4F9B853261F082E00EC2983 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4F9B900261F11A900EC2983 /* GroupRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRowController.swift; sourceTree = "<group>"; };
+		B4F9B90C261F11CF00EC2983 /* ImageTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTools.swift; sourceTree = "<group>"; };
+		B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListInterfaceController.swift; sourceTree = "<group>"; };
 		CA24368C814F203E4E37770D /* Pods_FamilyTracker_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8893E543A661B82482E575D /* Pods-FamilyTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +239,7 @@
 		A76F5CCFD66C61206DEC2246 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4F9B853261F082E00EC2983 /* FirebaseDatabase.framework */,
 				71BD1743B4644990D03FEAB7 /* Pods_FamilyTracker.framework */,
 				CA24368C814F203E4E37770D /* Pods_FamilyTracker_WatchKit_App.framework */,
 				5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */,
@@ -303,10 +314,12 @@
 		B4DDA16925EE46AF00B5F992 /* FamilyTracker WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B4F9B908261F11BE00EC2983 /* Helper */,
 				B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */,
 				B4DDA20D25EF655B00B5F992 /* Cells */,
 				B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */,
 				B4DDA16A25EE46AF00B5F992 /* InterfaceController.swift */,
+				B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */,
 				B4DDA25225EF8E5F00B5F992 /* MapInterfaceController.swift */,
 				B4DDA16C25EE46AF00B5F992 /* ExtensionDelegate.swift */,
 				B4DDA16E25EE46AF00B5F992 /* NotificationController.swift */,
@@ -336,6 +349,7 @@
 		B4DDA20D25EF655B00B5F992 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				B4F9B900261F11A900EC2983 /* GroupRowController.swift */,
 				B4DDA20E25EF658900B5F992 /* MemberRowController.swift */,
 			);
 			path = Cells;
@@ -388,6 +402,14 @@
 				B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */,
 			);
 			path = CustomControls;
+			sourceTree = "<group>";
+		};
+		B4F9B908261F11BE00EC2983 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B4F9B90C261F11CF00EC2983 /* ImageTools.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		E8A8BC61B53205929B913E5D /* Pods */ = {
@@ -534,6 +556,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4DDA17325EE46B100B5F992 /* Assets.xcassets in Resources */,
+				B4F9B8FC261F0D4700EC2983 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,15 +721,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4F9B8F8261F0AB000EC2983 /* DatabaseManager.swift in Sources */,
+				B4F9B90D261F11CF00EC2983 /* ImageTools.swift in Sources */,
 				B4DDA21825EF66D000B5F992 /* WKInterfaceController+Extension.swift in Sources */,
 				B4DDA16F25EE46AF00B5F992 /* NotificationController.swift in Sources */,
 				B4DDA22925EF687000B5F992 /* ApiClient.swift in Sources */,
 				B4DDA20225EE738700B5F992 /* WatchSessionManager.swift in Sources */,
+				B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */,
 				B4DDA17125EE46AF00B5F992 /* ComplicationController.swift in Sources */,
 				B4DDA16D25EE46AF00B5F992 /* ExtensionDelegate.swift in Sources */,
+				B4F9B915261F12DF00EC2983 /* MemberListInterfaceController.swift in Sources */,
 				B4DDA25425EF8E5F00B5F992 /* MapInterfaceController.swift in Sources */,
 				B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */,
 				B4DDA20F25EF658A00B5F992 /* MemberRowController.swift in Sources */,
+				B4F9B7EC261EFD5400EC2983 /* GroupListModel.swift in Sources */,
 				B4DDA22F25EF722700B5F992 /* Constant.swift in Sources */,
 				B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */,
 				B4DDA24B25EF73F900B5F992 /* Service.swift in Sources */,
@@ -884,6 +912,13 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/FIRCLSMachO/data",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/Data",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/Data",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitextension_dev;
@@ -891,7 +926,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -910,6 +945,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/FIRCLSMachO/data",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/Data",
+					"$(PROJECT_DIR)/FamilyTracker\\ WatchKit\\ Extension/firebase-ios-sdk-master/Crashlytics/UnitTests/Data",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -919,7 +960,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -942,7 +983,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -967,7 +1008,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -978,8 +1019,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1003,8 +1044,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

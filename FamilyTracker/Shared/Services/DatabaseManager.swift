@@ -6,7 +6,11 @@
 //
 
 import UIKit
+#if os(iOS)
 import Firebase
+#elseif os(watchOS)
+import FirebaseDatabase
+#endif
 import CoreLocation
 
 class DatabaseManager: NSObject {
@@ -94,3 +98,4 @@ class DatabaseManager: NSObject {
         }
     }
 }
+

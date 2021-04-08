@@ -12,6 +12,7 @@ import Firebase
 import GoogleSignIn
 import CoreLocation
 import FirebaseDynamicLinks
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var ref: DatabaseReference!
     private var memberList = [Members]()
     private var groupId: String = ""
+    var globalNotificationDictionary: [AnyHashable: Any]?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -32,9 +34,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpLocationManager()
         NotificationCenter.default.addObserver(self, selector: #selector(groupFoundForCurrentUser), name: NSNotification.Name(rawValue: kGroupFoundForCurrentUserNotification), object: nil)
 
+        //Remote Notification
+        let remoteNotification = launchOptions?[.remoteNotification]
+        if let notificationData = remoteNotification as? NSDictionary {
+            globalNotificationDictionary = notificationData as? [AnyHashable: Any]
+        }
+        registerForPushNotifications()
+
         return true
     }
-    
+        
     @objc private func groupFoundForCurrentUser() {
         self.groupId = UserDefaults.standard.string(forKey: "groupId") ?? ""
         ref = Database.database().reference(withPath: "groups/\(self.groupId)")
@@ -134,5 +143,57 @@ extension AppDelegate: LocationUpdateDelegate {
         print("Latitude : \(location.coordinate.latitude)")
         print("Longitude : \(location.coordinate.longitude)")
         updateCurrentUsersLocationOnServer(location: location)
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    //MARK: Remote notification
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+            granted, _ in
+            print("Permission granted: \(granted)")
+            // 1. Check if permission granted
+            guard granted else { return }
+            // 2. Attempt registration for remote notifications on the main thread
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // 1. Convert device token to string
+        let tokenParts = deviceToken.map { data -> String in
+            String(format: "%02.2hhx", data)
+        }
+        let token = tokenParts.joined()
+        // 2. Print device token to use for PNs payloads
+        print("Device Token: \(token)")
+        UserDefaults.standard.set(token, forKey: "DeviceToken")
+    }
+    
+    func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications with error: \(error)")
+    }
+    
+    // This method will be called when app received push notifications in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let notificationData = notification.request.content.userInfo
+        globalNotificationDictionary = notificationData
+        if let dictionary = globalNotificationDictionary {
+            print(dictionary)
+        }
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        if globalNotificationDictionary != nil {
+        } else {
+            globalNotificationDictionary = response.notification.request.content.userInfo
+            let dictionary = response.notification.request.content.userInfo
+            print(dictionary)
+        }
     }
 }
