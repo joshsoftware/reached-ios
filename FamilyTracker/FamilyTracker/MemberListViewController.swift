@@ -28,13 +28,7 @@ class MemberListViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        notifyGroupFound()
         setUp()
-    }
-    
-    private func notifyGroupFound() {
-        UserDefaults.standard.setValue(self.groupId, forKey: "groupId")
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kGroupFoundForCurrentUserNotification), object: nil)
     }
 
     private func setUp() {
@@ -77,10 +71,10 @@ class MemberListViewController: UIViewController {
     @objc private func logoutUser() {
         LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
         UserDefaults.standard.setValue(false, forKey: "loginStatus")
-        UserDefaults.standard.setValue("", forKey: "groupId")
         UserDefaults.standard.setValue("", forKey: "userId")
         UserDefaults.standard.setValue("", forKey: "userName")
-        UserDefaults.standard.setValue(nil, forKey: "groupId")
+        UserDefaults.standard.setValue(nil, forKey: "groups")
+
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {

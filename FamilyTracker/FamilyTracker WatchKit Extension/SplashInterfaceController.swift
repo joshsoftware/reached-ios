@@ -20,8 +20,11 @@ class SplashInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        sleep(1)
+    }
+    
+    override func didAppear() {
         self.presentController(withName: InterfaceController.name, context: nil)
+
     }
     
     override func didDeactivate() {

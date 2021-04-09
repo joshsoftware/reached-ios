@@ -140,7 +140,7 @@ extension MapInterfaceController: WatchOSDelegate {
                 UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
                 if !loginStatus {
                     //TODO
-                    self.pop()
+                    self.popToRootController()
                 }
             }
             

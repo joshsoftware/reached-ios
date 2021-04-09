@@ -18,9 +18,6 @@ import FirebaseMessaging
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    private var ref: DatabaseReference!
-    private var memberList = [Members]()
-    private var groupId: String = ""
     var globalNotificationDictionary: [AnyHashable: Any]?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -34,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //To update current user's location
         setUpLocationManager()
-        NotificationCenter.default.addObserver(self, selector: #selector(groupFoundForCurrentUser), name: NSNotification.Name(rawValue: kGroupFoundForCurrentUserNotification), object: nil)
 
         //Remote Notification
         let remoteNotification = launchOptions?[.remoteNotification]
@@ -44,18 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPushNotifications()
         return true
     }
-        
-    @objc private func groupFoundForCurrentUser() {
-        self.groupId = UserDefaults.standard.string(forKey: "groupId") ?? ""
-        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-        //To get all members
-        self.ref.child("/members").observe(.childAdded) { (snapshot) in
-            if let value = snapshot.value as? NSMutableDictionary {
-                self.newFamilyMemberAdded(key: snapshot.key, value: value)
-            }
-        }
-    }
-    
+   
     @available(iOS 9.0, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     let handled = GIDSignIn.sharedInstance().handle(url)
@@ -86,17 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         let locationManager = UserLocationManager.shared
         locationManager.delegate = self
-    }
-    
-    private func newFamilyMemberAdded(key: String, value: NSMutableDictionary) {
-        
-        var member = Members()
-        member.id = key
-        member.lat = value["lat"] as? Double
-        member.long = value["long"] as? Double
-        member.name = value["name"] as? String
-        member.profileUrl = value["profileUrl"] as? String
-        self.memberList.append(member)
     }
     
     // MARK: - Notifications

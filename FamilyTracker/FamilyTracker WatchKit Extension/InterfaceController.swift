@@ -21,8 +21,9 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     @IBOutlet weak var signInBtn: WKInterfaceButton!
     
     var connectivityHandler = WatchSessionManager.shared
-    private var ref: DatabaseReference!
+    private var userRef: DatabaseReference!
     var groups : NSDictionary = NSDictionary()
+    var isAlertDismissed = false
     
     private var groupList = [Group]() {
         didSet {
@@ -42,6 +43,10 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         FirebaseApp.configure()
         signInGroup.setHidden(true)
         signInBtn.setBackgroundImageNamed("google")
+        
+        fetchGroups()
+        observeFirebaseRealtimeDBChanges()
+        
     }
     
     override func willActivate() {
@@ -57,13 +62,20 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     private func setUp() {
                  
-        if UserDefaults.standard.bool(forKey: "loginStatus") == true {
+        if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
+         
+            if !isAlertDismissed {
+                isAlertDismissed = true
+                DispatchQueue.main.async {
+                    self.dismiss()
+                }
+            }
+            
             self.tableView.setHidden(false)
             self.refreshBtn.setHidden(true)
             self.signInGroup.setHidden(true)
 
             self.setTitle("My Groups")
-            fetchGroups()
             
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
@@ -71,6 +83,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
             locationManager.delegate = self
         } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
             self.setTitle("")
+            self.isAlertDismissed = false
             self.tableView.setHidden(true)
             self.refreshBtn.setHidden(false)
             self.signInGroup.setHidden(true)
@@ -100,6 +113,33 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         }
     }
     
+    private func observeFirebaseRealtimeDBChanges() {
+        guard let userId = UserDefaults.standard.value(forKey: "userId") as? String, !userId.isEmpty else {
+            return
+        }
+        userRef = Database.database().reference(withPath: "users/\(userId)")
+
+        //Observe new value added for user
+        self.userRef.observe(.childAdded) { (snapshot) in
+            self.fetchGroups()
+        }
+
+        //Observe new value removed for user
+        self.userRef.observe(.childRemoved) { (snapshot) in
+            self.fetchGroups()
+        }
+        
+        //Observe new group added
+        self.userRef.child("/groups").observe(.childAdded) { (snapshot) in
+            self.fetchGroups()
+        }
+
+        //Observe group removed
+        self.userRef.child("/groups").observe(.childRemoved) { (snapshot) in
+            self.fetchGroups()
+        }
+    }
+
     func fetchGroups() {
         self.groupList.removeAll()
         if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
@@ -107,7 +147,13 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
                 if let groups = groups {
                     DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
                         if let data = data {
-                            self.groupList.append(data)
+                            let filtered = self.groupList.filter { ($0.id ?? "").contains(data.id ?? "") }
+
+                            if filtered.count <= 0 {
+                                self.groupList.append(data)
+                                self.setUp()
+                            }
+                            
                         }
                     }
                 }
@@ -185,6 +231,9 @@ extension InterfaceController: WatchOSDelegate {
             if let userId = tuple.message["userId"] as? String {
                 UserDefaults.standard.setValue(userId, forKey: "userId")
                 self.setUp()
+                if !userId.isEmpty {
+                    self.observeFirebaseRealtimeDBChanges()
+                }
             }
                         
 //            if let sosUserId = tuple.message["sosUserId"] as? String {

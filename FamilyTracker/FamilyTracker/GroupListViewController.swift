@@ -114,10 +114,10 @@ class GroupListViewController: UIViewController {
     @objc private func logoutUser() {
         LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
         UserDefaults.standard.setValue(false, forKey: "loginStatus")
-        UserDefaults.standard.setValue("", forKey: "groupId")
         UserDefaults.standard.setValue("", forKey: "userId")
         UserDefaults.standard.setValue("", forKey: "userName")
-        UserDefaults.standard.setValue(nil, forKey: "groupId")
+        UserDefaults.standard.setValue(nil, forKey: "groups")
+
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {

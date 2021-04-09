@@ -53,7 +53,6 @@ class HomeViewController: UIViewController {
         CreateGroupPopUpVC.showPopup(parentVC: self)
         CreateGroupPopUpVC.groupCreatedHandler = { groupId in
             print("Group created..\(groupId)")
-            UserDefaults.standard.setValue(groupId, forKey: "groupId")
             self.navigateToShowQRCodeVC(groupId: groupId)
         }
     }
