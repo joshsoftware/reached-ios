@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="KGk-i7-Jjw" customClass="MemberTableViewCell" customModule="FamilyTracker" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="KGk-i7-Jjw" customClass="MemberTableViewCell" customModule="Reached" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -34,10 +34,22 @@
                                     <constraint firstAttribute="height" constant="40" id="RtV-f8-U4t"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UMw-jO-IxW">
+                                <rect key="frame" x="175" y="39" width="100" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="Smf-U7-5gp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.98039215686274506" green="0.8784313725490196" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="1N6-vB-Apf" firstAttribute="leading" secondItem="HQn-eZ-qrc" secondAttribute="trailing" constant="15" id="40U-Pe-zEN"/>
+                            <constraint firstAttribute="trailing" secondItem="UMw-jO-IxW" secondAttribute="trailing" constant="15" id="4Oj-Gw-VOC"/>
+                            <constraint firstAttribute="bottom" secondItem="UMw-jO-IxW" secondAttribute="bottom" id="Bac-il-KDA"/>
+                            <constraint firstItem="UMw-jO-IxW" firstAttribute="top" secondItem="1N6-vB-Apf" secondAttribute="bottom" id="IgX-Zx-I1f"/>
                             <constraint firstItem="HQn-eZ-qrc" firstAttribute="leading" secondItem="vPC-9k-k2X" secondAttribute="leading" constant="15" id="pRs-iI-4Oh"/>
                             <constraint firstAttribute="trailing" secondItem="1N6-vB-Apf" secondAttribute="trailing" constant="15" id="qHh-1h-TEU"/>
                             <constraint firstItem="1N6-vB-Apf" firstAttribute="centerY" secondItem="vPC-9k-k2X" secondAttribute="centerY" id="rwY-e3-OqK"/>
@@ -55,6 +67,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="containerView" destination="vPC-9k-k2X" id="xJr-z7-IZY"/>
+                <outlet property="lastUpdatedLbl" destination="UMw-jO-IxW" id="rrR-jg-C2L"/>
                 <outlet property="nameLbl" destination="1N6-vB-Apf" id="u4b-ko-OUa"/>
                 <outlet property="userProfileImgView" destination="HQn-eZ-qrc" id="EFO-Me-Umb"/>
             </connections>

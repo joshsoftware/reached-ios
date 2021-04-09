@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //To update current user's location
         setUpLocationManager()
         NotificationCenter.default.addObserver(self, selector: #selector(groupFoundForCurrentUser), name: NSNotification.Name(rawValue: kGroupFoundForCurrentUserNotification), object: nil)
-
+        JoinLinkManager.shared.createLink()
         return true
     }
     

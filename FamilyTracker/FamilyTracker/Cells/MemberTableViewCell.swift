@@ -12,7 +12,8 @@ class MemberTableViewCell: UITableViewCell {
     @IBOutlet weak var userProfileImgView: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
-    
+    @IBOutlet weak var lastUpdatedLbl: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

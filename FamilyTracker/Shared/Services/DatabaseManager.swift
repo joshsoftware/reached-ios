@@ -35,6 +35,7 @@ class DatabaseManager: NSObject {
             self.ref = Database.database().reference(withPath: "groups/\(groupId)")
             self.ref.child("/members").child("\(id)/lat").setValue(location.coordinate.latitude)
             self.ref.child("/members").child("\(id)/long").setValue(location.coordinate.longitude)
+            self.ref.child("/members").child("\(id)/lastUpdated").setValue(Date().currentUTCDate())
         }
         print("Location updated...")
     }
@@ -59,6 +60,7 @@ class DatabaseManager: NSObject {
                                     member.lat = data["lat"] as? Double
                                     member.long = data["long"] as? Double
                                     member.name = data["name"] as? String
+                                    member.lastUpdated = data["lastUpdated"] as? String
                                     memberList.append(member)
                                 }
                             }

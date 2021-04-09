@@ -64,7 +64,7 @@ class CreateGroupPopUpVC: UIViewController {
     
     func createGroup(groupName: String) {
         if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name] as [String : Any]
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "lastUpdated": Date().currentUTCDate()] as [String : Any]
             var memberArray : Array = Array<Any>()
             memberArray.append(data)
 
@@ -122,5 +122,14 @@ extension CreateGroupPopUpVC: CLLocationManagerDelegate {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         self.currentLocation = locValue
+    }
+}
+
+extension Date {
+    func currentUTCDate() -> String {
+        let dtf = DateFormatter()
+        dtf.timeZone = TimeZone.current
+        dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dtf.string(from: self)
     }
 }
