@@ -13,6 +13,7 @@ import GoogleSignIn
 import CoreLocation
 import FirebaseDynamicLinks
 import UserNotifications
+import FirebaseMessaging
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,8 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         WatchSessionManager.shared.startSession()
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        Messaging.messaging().delegate = self
+
         UINavigationBar.appearance().tintColor = UIColor.white
-        
         
         //To update current user's location
         setUpLocationManager()
@@ -40,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             globalNotificationDictionary = notificationData as? [AnyHashable: Any]
         }
         registerForPushNotifications()
-
         return true
     }
         
@@ -171,6 +172,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // 2. Print device token to use for PNs payloads
         print("Device Token: \(token)")
         UserDefaults.standard.set(token, forKey: "DeviceToken")
+        Messaging.messaging().apnsToken = deviceToken;
     }
     
     func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -194,6 +196,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             globalNotificationDictionary = response.notification.request.content.userInfo
             let dictionary = response.notification.request.content.userInfo
             print(dictionary)
+        }
+    }
+}
+
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        Messaging.messaging().token { token, error in
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+          } else if let token = token {
+            print("FCM registration token: \(token)")
+          }
         }
     }
 }

@@ -35,10 +35,16 @@ class DatabaseManager: NSObject {
     }
     
     func updateLocationFor(userWith id: String, groups: NSDictionary, location: CLLocation) {
+        let dtf = DateFormatter()
+        dtf.timeZone = TimeZone.current
+        dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let currentDate = dtf.string(from: Date())
+        
         for groupId in groups.allKeys {
             self.ref = Database.database().reference(withPath: "groups/\(groupId)")
             self.ref.child("/members").child("\(id)/lat").setValue(location.coordinate.latitude)
             self.ref.child("/members").child("\(id)/long").setValue(location.coordinate.longitude)
+            self.ref.child("/members").child("\(id)/lastUpdated").setValue(currentDate)
         }
         print("Location updated...")
     }
@@ -63,6 +69,7 @@ class DatabaseManager: NSObject {
                                     member.lat = data["lat"] as? Double
                                     member.long = data["long"] as? Double
                                     member.name = data["name"] as? String
+                                    member.lastUpdated = data["lastUpdated"] as? String
                                     memberList.append(member)
                                 }
                             }
@@ -79,10 +86,15 @@ class DatabaseManager: NSObject {
         completion(nil)
     }
     
-    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, profileUrl: String, completion: @escaping () -> Void) {
         ref = Database.database().reference()
         if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name] as [String : Any]
+            let dtf = DateFormatter()
+            dtf.timeZone = TimeZone.current
+            dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let currentDate = dtf.string(from: Date())
+            
+            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl] as [String : Any]
             self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
             
             if var dict = UserDefaults.standard.dictionary(forKey: "groups") {

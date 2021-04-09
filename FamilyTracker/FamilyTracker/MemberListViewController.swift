@@ -165,7 +165,9 @@ class MemberListViewController: UIViewController {
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        
+        member.profileUrl = value["profileUrl"] as? String
+        member.lastUpdated = value["lastUpdated"] as? String
+
         if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
             self.memberList[index] = member
             self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
@@ -179,7 +181,9 @@ class MemberListViewController: UIViewController {
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        
+        member.profileUrl = value["profileUrl"] as? String
+        member.lastUpdated = value["lastUpdated"] as? String
+
         self.memberList.append(member)
         self.tableView.reloadData()
         
@@ -216,6 +220,34 @@ class MemberListViewController: UIViewController {
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
+    
+    func formatLastUpdated(dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        dateFormatter.timeZone = TimeZone.current
+        let date = dateFormatter.date(from: dateString)
+        
+        if let date = date {
+            if Calendar.current.isDateInToday(date) {
+                dateFormatter.timeZone = NSTimeZone.local
+                dateFormatter.dateFormat = "h:mm a"
+                let localTime = dateFormatter.string(from: date)
+                return "Last updated at \(localTime)"
+            } else if Calendar.current.component(.month, from: date) < Calendar.current.component(.month, from: Date()) ||  Calendar.current.component(.year, from: date) < Calendar.current.component(.year, from: Date()) {
+                dateFormatter.timeZone = NSTimeZone.local
+                dateFormatter.dateFormat = "d MMM yyyy"
+                let localTime = dateFormatter.string(from: date)
+                return "Last updated at \(localTime)"
+            } else {
+                dateFormatter.timeZone = NSTimeZone.local
+                dateFormatter.dateFormat = "E d, h:mm a"
+                let localTime = dateFormatter.string(from: date)
+                return "Last updated at \(localTime)"
+            }
+        }
+        return nil
+    }
 }
 
 extension MemberListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -242,6 +274,7 @@ extension MemberListViewController: UITableViewDataSource, UITableViewDelegate {
                     cell?.userProfileImgView.image = image
                 }
             }
+            cell?.lastUpdatedLbl.text = self.formatLastUpdated(dateString: memberList[indexPath.row].lastUpdated ?? "")
         } else if indexPath.row == memberList.count {
             cell?.nameLbl.text = "All Members"
         }

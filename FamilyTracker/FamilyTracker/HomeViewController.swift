@@ -48,7 +48,9 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @IBAction func createGroupButtonPressed(_ sender: Any) {            CreateGroupPopUpVC.showPopup(parentVC: self)
+    @IBAction func createGroupButtonPressed(_ sender: Any) {
+        CreateGroupPopUpVC.currentUserProfileUrl = self.currentUserProfileUrl ?? ""
+        CreateGroupPopUpVC.showPopup(parentVC: self)
         CreateGroupPopUpVC.groupCreatedHandler = { groupId in
             print("Group created..\(groupId)")
             UserDefaults.standard.setValue(groupId, forKey: "groupId")
@@ -59,7 +61,7 @@ class HomeViewController: UIViewController {
     @IBAction func joinbuttonPressed(_ sender: Any) {
         ScanQRCodeViewController.showPopup(parentVC: self)
         ScanQRCodeViewController.groupJoinedHandler = { qrString in
-            DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
+            DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
                 if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
                     vc.currentUserProfileUrl = self.currentUserProfileUrl
                     self.navigationController?.pushViewController(vc, animated: false)

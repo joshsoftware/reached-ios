@@ -16,6 +16,7 @@
 		3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD23261DE3E20016AA95 /* ScanQRCodeViewController.swift */; };
 		3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD24261DE3E20016AA95 /* QRScannerView.swift */; };
 		3D51FD28261DE3E20016AA95 /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD25261DE3E20016AA95 /* ShowQRCodeViewController.swift */; };
+		3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD2926201EB80016AA95 /* Date+Extension.swift */; };
 		3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D546176261C665B0053FA57 /* GroupListViewController.swift */; };
 		3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617A261C8A1E0053FA57 /* GroupListModel.swift */; };
 		3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617C261C9D160053FA57 /* DatabaseManager.swift */; };
@@ -123,6 +124,7 @@
 		3D51FD23261DE3E20016AA95 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
 		3D51FD24261DE3E20016AA95 /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		3D51FD25261DE3E20016AA95 /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
+		3D51FD2926201EB80016AA95 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		3D546176261C665B0053FA57 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
 		3D54617A261C8A1E0053FA57 /* GroupListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListModel.swift; sourceTree = "<group>"; };
 		3D54617C261C9D160053FA57 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */,
 				B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */,
 				B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */,
+				3D51FD2926201EB80016AA95 /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
+				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
 			);
