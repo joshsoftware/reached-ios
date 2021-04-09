@@ -61,7 +61,7 @@ class GroupListViewController: UIViewController {
         floatyBtn.addItem(icon: UIImage(named: "sos")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
-                DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
+                DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
                     self.fetchGroups()
                 }
             }

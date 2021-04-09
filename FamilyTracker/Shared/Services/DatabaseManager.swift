@@ -86,10 +86,15 @@ class DatabaseManager: NSObject {
         completion(nil)
     }
     
-    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, profileUrl: String, completion: @escaping () -> Void) {
         ref = Database.database().reference()
         if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name] as [String : Any]
+            let dtf = DateFormatter()
+            dtf.timeZone = TimeZone.current
+            dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let currentDate = dtf.string(from: Date())
+            
+            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl] as [String : Any]
             self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
             
             if var dict = UserDefaults.standard.dictionary(forKey: "groups") {

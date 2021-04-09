@@ -165,6 +165,7 @@ class MemberListViewController: UIViewController {
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
+        member.profileUrl = value["profileUrl"] as? String
         member.lastUpdated = value["lastUpdated"] as? String
 
         if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
@@ -180,6 +181,7 @@ class MemberListViewController: UIViewController {
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
+        member.profileUrl = value["profileUrl"] as? String
         member.lastUpdated = value["lastUpdated"] as? String
 
         self.memberList.append(member)
