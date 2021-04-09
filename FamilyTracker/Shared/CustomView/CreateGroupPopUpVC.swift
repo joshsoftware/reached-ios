@@ -124,12 +124,3 @@ extension CreateGroupPopUpVC: CLLocationManagerDelegate {
         self.currentLocation = locValue
     }
 }
-
-extension Date {
-    func currentUTCDate() -> String {
-        let dtf = DateFormatter()
-        dtf.timeZone = TimeZone.current
-        dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return dtf.string(from: self)
-    }
-}

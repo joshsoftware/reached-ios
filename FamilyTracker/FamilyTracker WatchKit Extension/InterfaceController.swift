@@ -9,6 +9,8 @@ import WatchKit
 import Foundation
 import CoreLocation
 import WatchConnectivity
+import FirebaseDatabase
+import FirebaseCore
 
 class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
@@ -19,28 +21,17 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     @IBOutlet weak var signInBtn: WKInterfaceButton!
     
     var connectivityHandler = WatchSessionManager.shared
-    private var timer = Timer()
-    let session = WCSession.default
-    var groupId: String = ""
+    private var ref: DatabaseReference!
+    var groups : NSDictionary = NSDictionary()
     
-    var itemList: [Members] = [] {
+    private var groupList = [Group]() {
         didSet {
-            if itemList.count > 0 {
-                tableView.setNumberOfRows(itemList.count + 1, withRowType: "MemberRowController")
-                for index in 0..<tableView.numberOfRows - 1 {
-                    guard let controller = tableView.rowController(at: index) as? MemberRowController else { continue }
-                    let memberId = itemList[index].id
-                    let userId = UserDefaults.standard.string(forKey: "userId")
-                    if memberId == userId {
-                        itemList[index].name = "Me"
-                    } 
-                    controller.item = itemList[index]
+            if groupList.count > 0 {
+                tableView.setNumberOfRows(groupList.count, withRowType: "GroupRowController")
+                for index in 0..<tableView.numberOfRows{
+                    guard let controller = tableView.rowController(at: index) as? GroupRowController else { continue }
+                    controller.item = groupList[index]
                 }
-                
-                guard let controller = tableView.rowController(at: tableView.numberOfRows - 1) as? MemberRowController else { return }
-                var item = Members()
-                item.name = "All Members"
-                controller.item = item
             }
         }
     }
@@ -48,7 +39,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         super.awake(withContext: context)
-        watchKitSetup()
+        FirebaseApp.configure()
         signInGroup.setHidden(true)
         signInBtn.setBackgroundImageNamed("google")
     }
@@ -65,22 +56,20 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     }
     
     private func setUp() {
-        
-        groupId = UserDefaults.standard.value(forKey: "groupId") as? String ?? ""
-         
-        if UserDefaults.standard.bool(forKey: "loginStatus") == true && !groupId.isEmpty{
+                 
+        if UserDefaults.standard.bool(forKey: "loginStatus") == true {
             self.tableView.setHidden(false)
             self.refreshBtn.setHidden(true)
             self.signInGroup.setHidden(true)
 
-            self.setTitle("Your Family")
-            getMemberList()
+            self.setTitle("My Groups")
+            fetchGroups()
             
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
             let locationManager = UserLocationManager.shared
             locationManager.delegate = self
-        } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupId.isEmpty {
+        } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
             self.setTitle("")
             self.tableView.setHidden(true)
             self.refreshBtn.setHidden(false)
@@ -111,59 +100,17 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         }
     }
     
-    private func showSOSAlert(sosUserId: String) {
-        
-        var userName = ""
-        let filtered = self.itemList.filter { ($0.id?.contains(sosUserId) ?? false) }
-
-        for member in filtered {
-            if member.id == sosUserId {
-                userName = member.name ?? ""
-                break
-            }
-        }
-        
-        let titleOfAlert = "SOS Alert"
-        let messageOfAlert = "Emergency! This is \(userName). \nI need help. Press ok to track me."
-        DispatchQueue.main.async {
-            self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
-                //something after clicking OK
-                self.pushController(withName: MapInterfaceController.name, context: filtered)
-            }])
-        }
-    }
-    
-    private func watchKitSetup() {
-        if (WCSession.isSupported()) {
-            session.delegate = self
-            session.activate()
-            sleep(5)
-            if session.isReachable {
-                timer.invalidate()
-            } else {
-                setUpTimer()
-            }
-        }
-    }
-    
-    private func setUpTimer() {
-        timer.invalidate()
-        // start the timer
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
-    }
-    
-    // called every time interval from the timer
-    @objc private func timerAction() {
-        getMemberList()
-    }
-
-    private func getMemberList() {
-        ApiClient.getFamilyMembersListWithLocations(groupId: groupId) { (result) in
-            switch result {
-                case .success(let result):
-                    self.itemList = result.members ?? []
-                case .failure(let error):
-                    print(error.description)
+    func fetchGroups() {
+        self.groupList.removeAll()
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                if let groups = groups {
+                    DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
+                        if let data = data {
+                            self.groupList.append(data)
+                        }
+                    }
+                }
             }
         }
     }
@@ -190,52 +137,21 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        var membersArray: [Members] = []
+
+        let isIndexValid = self.groupList.indices.contains(rowIndex)
         
-        if rowIndex == self.itemList.count {
-            membersArray = itemList
-        } else {
-            let member = itemList[rowIndex]
-            membersArray.append(member)
+        if isIndexValid {
+            let group = self.groupList[rowIndex]
+            self.pushController(withName: MemberListInterfaceController.name, context: group)
         }
-        
-        self.pushController(withName: MapInterfaceController.name, context: membersArray)
     }
     
     func updateCurrentUserLocation(location: CLLocation) {
-        //Do not update location if watch is connected with phone
-//        guard !(session.isReachable) else {
-//            return
-//        }
-        
-        if groupId.isEmpty {
-            return
-        }
-        
-        guard let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty else {
-            return
-        }
-        
-        var updatedParams = [[String: AnyObject]]()
-        for item in itemList {
-            if item.id == userId {
-                let data = ["id": item.id!, "lat": location.coordinate.latitude, "long": location.coordinate.longitude, "name": item.name!, "profileUrl": item.profileUrl ?? ""] as [String : AnyObject]
-                updatedParams.append(data)
-            } else {
-                let data = ["id": item.id!, "lat": item.lat!, "long": item.long!, "name": item.name!, "profileUrl": item.profileUrl ?? ""] as [String : AnyObject]
-                updatedParams.append(data)
-            }
-        }
-
-        if updatedParams.count > 0 {
-            ApiClient.updateLocation(params: updatedParams, groupId: groupId) {(result) in
-                switch result {
-                case .success(let result):
-                    print(result)
-                case .failure(let error):
-                    print(error.description)
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                if let groups = groups {
+                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
                 }
-                self.getMemberList()
             }
         }
     }
@@ -263,58 +179,22 @@ extension InterfaceController: WatchOSDelegate {
             
             if let loginStatus = tuple.message["loginStatus"] as? Bool {
                 UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                if loginStatus {
-//                    DispatchQueue.main.async {
-//                        self.dismiss()
-//                    }
-                } else {
-                    UserDefaults.standard.setValue("", forKey: "groupId")
-                }
                 self.setUp()
             }
             
             if let userId = tuple.message["userId"] as? String {
                 UserDefaults.standard.setValue(userId, forKey: "userId")
-            }
-            
-            
-            if let groupId = tuple.message["groupId"] as? String {
-                UserDefaults.standard.setValue(groupId, forKey: "groupId")
-                DispatchQueue.main.async {
-                    self.dismiss()
-                }
                 self.setUp()
             }
-            
-            if let _ = tuple.message["msg"] {
-//                                print(msg as! [Members])
-                //TODO: instead of API call, parse msg object to membersArray and use it
-                self.getMemberList()
-            }
-            
-            if let sosUserId = tuple.message["sosUserId"] as? String {
-                DispatchQueue.main.async {
-                    self.showSOSAlert(sosUserId: sosUserId)
-                }
-            }
+                        
+//            if let sosUserId = tuple.message["sosUserId"] as? String {
+//                DispatchQueue.main.async {
+//                    self.showSOSAlert(sosUserId: sosUserId)
+//                }
+//            }
             
             
         }
     }
     
 }
-
-extension InterfaceController: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
-    }
-    
-    func sessionReachabilityDidChange(_ session: WCSession) {
-        if session.isReachable {
-            timer.invalidate()
-        } else {
-            setUpTimer()
-        }
-    }
-}
-

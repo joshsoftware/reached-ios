@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hyh-5G-7yl">
     <device id="watch38"/>
     <dependencies>
-        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17035"/>
     </dependencies>
@@ -56,7 +55,7 @@
                     <items>
                         <table alignment="left" spacing="6" id="e5h-9y-WuM">
                             <items>
-                                <tableRow identifier="MemberRowController" id="mm4-Hy-2rJ" customClass="MemberRowController" customModule="FamilyTracker_WatchKit_Extension">
+                                <tableRow identifier="GroupRowController" id="mm4-Hy-2rJ" customClass="GroupRowController" customModule="FamilyTracker_WatchKit_Extension">
                                     <group key="rootItem" width="1" height="32" alignment="left" spacing="6" id="5vR-Oo-9UN">
                                         <items>
                                             <group alignment="left" verticalAlignment="center" contentMode="scaleAspectFit" layout="overlap" radius="4" id="UMB-fg-Qph">
@@ -83,8 +82,8 @@
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.87843137250000003" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
                                     </group>
                                     <connections>
-                                        <outlet property="nameLabel" destination="Yn1-Hu-Uev" id="tDa-cp-4Qq"/>
-                                        <outlet property="userImgView" destination="8A1-4B-5jC" id="MzK-LM-6hl"/>
+                                        <outlet property="groupImgView" destination="8A1-4B-5jC" id="CIz-OV-7fP"/>
+                                        <outlet property="groupNameLabel" destination="Yn1-Hu-Uev" id="EBe-ii-Px2"/>
                                     </connections>
                                 </tableRow>
                             </items>
@@ -151,6 +150,54 @@
                 <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="Reached" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="468" y="345"/>
+        </scene>
+        <!--MemberListInterfaceController-->
+        <scene sceneID="FZT-35-znU">
+            <objects>
+                <controller identifier="MemberListInterfaceController" id="iEp-OV-Xye" customClass="MemberListInterfaceController" customModule="FamilyTracker_WatchKit_Extension">
+                    <items>
+                        <table alignment="left" spacing="6" id="0c6-Hv-lL2">
+                            <items>
+                                <tableRow identifier="MemberRowController" id="MJE-KG-dF1" customClass="MemberRowController" customModule="FamilyTracker_WatchKit_Extension">
+                                    <group key="rootItem" width="1" height="32" alignment="left" spacing="6" id="4lP-cu-hoV">
+                                        <items>
+                                            <group alignment="left" verticalAlignment="center" contentMode="scaleAspectFit" layout="overlap" radius="4" id="qEi-So-YKd">
+                                                <items>
+                                                    <imageView width="20" height="20" alignment="left" verticalAlignment="center" image="userPlaceholder" id="MSe-sD-jV7">
+                                                        <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </imageView>
+                                                </items>
+                                                <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                            </group>
+                                            <group alignment="left" verticalAlignment="center" layout="vertical" spacing="0.0" id="c4D-QS-7hm">
+                                                <items>
+                                                    <group width="1" alignment="left" layout="vertical" spacing="0.0" id="TuV-v6-Om7">
+                                                        <items>
+                                                            <label alignment="left" verticalAlignment="center" text="Name" textAlignment="left" id="JGZ-qO-YNO">
+                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <fontDescription key="font" type="system" weight="semibold" pointSize="12"/>
+                                                            </label>
+                                                        </items>
+                                                    </group>
+                                                </items>
+                                            </group>
+                                        </items>
+                                        <color key="backgroundColor" red="0.98039215690000003" green="0.87843137250000003" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="nameLabel" destination="JGZ-qO-YNO" id="hRt-yp-V9y"/>
+                                        <outlet property="userImgView" destination="MSe-sD-jV7" id="82y-VS-kXy"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="tableView" destination="0c6-Hv-lL2" id="m2Z-Ok-dvt"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="91" y="49"/>
         </scene>
     </scenes>
     <resources>

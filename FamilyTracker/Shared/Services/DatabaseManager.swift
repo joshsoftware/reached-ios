@@ -6,7 +6,11 @@
 //
 
 import UIKit
+#if os(iOS)
 import Firebase
+#elseif os(watchOS)
+import FirebaseDatabase
+#endif
 import CoreLocation
 
 class DatabaseManager: NSObject {
@@ -31,11 +35,16 @@ class DatabaseManager: NSObject {
     }
     
     func updateLocationFor(userWith id: String, groups: NSDictionary, location: CLLocation) {
+        let dtf = DateFormatter()
+        dtf.timeZone = TimeZone.current
+        dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let currentDate = dtf.string(from: Date())
+        
         for groupId in groups.allKeys {
             self.ref = Database.database().reference(withPath: "groups/\(groupId)")
             self.ref.child("/members").child("\(id)/lat").setValue(location.coordinate.latitude)
             self.ref.child("/members").child("\(id)/long").setValue(location.coordinate.longitude)
-            self.ref.child("/members").child("\(id)/lastUpdated").setValue(Date().currentUTCDate())
+            self.ref.child("/members").child("\(id)/lastUpdated").setValue(currentDate)
         }
         print("Location updated...")
     }
@@ -96,3 +105,4 @@ class DatabaseManager: NSObject {
         }
     }
 }
+

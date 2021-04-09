@@ -10,6 +10,7 @@ import Foundation
 import MapKit
 import WatchConnectivity
 import Contacts
+import FirebaseDatabase
 
 class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
     
@@ -18,10 +19,9 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
     @IBOutlet weak var addressLabel: WKInterfaceLabel!
     
     private var connectivityHandler = WatchSessionManager.shared
-    private var timer = Timer()
-    private let session = WCSession.default
-    var groupId: String = ""
-
+    private var ref: DatabaseReference!
+    private var selectedGroup: Group?
+    
     var itemList: [Members] = [] {
         didSet {
             for index in 0..<itemList.count {
@@ -40,8 +40,8 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
 
                     var region = MKCoordinateRegion()
                     region.center = coordinate
-                    region.span.latitudeDelta = 0.005
-                    region.span.longitudeDelta = 0.005
+                    region.span.latitudeDelta = 0.04
+                    region.span.longitudeDelta = 0.04
                     self.mapView.setRegion(region)
                     
                     if itemList.count == 1 {
@@ -72,17 +72,18 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         super.awake(withContext: context)
         
         // Configure interface objects here.
-        guard let membersList = context as? [Members] else {
+        guard let (membersList, selectedGroup) = context as? ([Members], Group) else {
             return
         }
-        itemList = membersList
-        watchKitSetup()
+        
+        self.selectedGroup = selectedGroup
+        self.itemList.removeAll()
+        self.itemList = membersList
     }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        groupId = UserDefaults.standard.value(forKey: "groupId") as? String ?? ""
         connectivityHandler.startSession()
         connectivityHandler.watchOSDelegate = self
     }
@@ -92,48 +93,38 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         super.didDeactivate()
     }
     
-    private func watchKitSetup() {
-        if (WCSession.isSupported()) {
-            session.delegate = self
-            session.activate()
-            if session.isReachable {
-                timer.invalidate()
-            } else {
-                setUpTimer()
+    private func setUp() {
+        if let selectedGroup = self.selectedGroup, let groupId = selectedGroup.id {
+            ref = Database.database().reference(withPath: "groups/\(groupId)")
+            observeFirebaseRealtimeDBChanges()
+        }
+
+    }
+    
+    private func observeFirebaseRealtimeDBChanges() {
+        //Observe updated value for member
+        self.ref.child("/members").observe(.childChanged) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
+        }
+        
+    }
+    
+    private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
+        
+        var member = Members()
+        member.id = key
+        member.lat = value["lat"] as? Double
+        member.long = value["long"] as? Double
+        member.name = value["name"] as? String
+        
+        if let index = self.itemList.firstIndex(where: { $0.id == member.id }) {
+            self.itemList[index] = member
         }
     }
     
-    private func setUpTimer() {
-        timer.invalidate()
-        // start the timer
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
-    }
-    
-    // called every time interval from the timer
-    @objc private func timerAction() {
-        getMemberList()
-    }
-    
-    private func getMemberList() {
-        ApiClient.getFamilyMembersListWithLocations(groupId: groupId) { (result) in
-            switch result {
-                case .success(let result):
-                    
-                    if self.itemList.count > 1 {
-                        self.itemList = result.members ?? []
-                    } else {
-                        if let filtered = result.members?.filter({ ($0.id?.contains(self.itemList.first?.id ?? "") ?? false) }) {
-                            self.itemList = filtered
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print(error.description)
-            }
-        }
-    }
-    
+   
 }
 
 extension MapInterfaceController: WatchOSDelegate {
@@ -148,18 +139,9 @@ extension MapInterfaceController: WatchOSDelegate {
             if let loginStatus = tuple.message["loginStatus"] as? Bool {
                 UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
                 if !loginStatus {
+                    //TODO
                     self.pop()
                 }
-            }
-            
-            if let groupId = tuple.message["groupId"] as? String {
-                UserDefaults.standard.setValue(groupId, forKey: "groupId")
-            }
-            
-            if let _ = tuple.message["msg"] {
-//                                print(msg as! [Members])
-                //TODO: instead of API call, parse msg object to membersArray and use it
-                self.getMemberList()
             }
             
         }
@@ -167,16 +149,3 @@ extension MapInterfaceController: WatchOSDelegate {
     
 }
 
-extension MapInterfaceController: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
-    }
-    
-    func sessionReachabilityDidChange(_ session: WCSession) {
-        if session.isReachable {
-            timer.invalidate()
-        } else {
-            setUpTimer()
-        }
-    }
-}
