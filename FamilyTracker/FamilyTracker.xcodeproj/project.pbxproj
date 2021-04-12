@@ -68,6 +68,8 @@
 		B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B900261F11A900EC2983 /* GroupRowController.swift */; };
 		B4F9B90D261F11CF00EC2983 /* ImageTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B90C261F11CF00EC2983 /* ImageTools.swift */; };
 		B4F9B915261F12DF00EC2983 /* MemberListInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */; };
+		B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B9D42620825900EC2983 /* DateUtils.swift */; };
+		B4F9B9D62620825900EC2983 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B9D42620825900EC2983 /* DateUtils.swift */; };
 		DE960CA5FE783BEF75263C03 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */; };
 /* End PBXBuildFile section */
 
@@ -179,6 +181,7 @@
 		B4F9B900261F11A900EC2983 /* GroupRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRowController.swift; sourceTree = "<group>"; };
 		B4F9B90C261F11CF00EC2983 /* ImageTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTools.swift; sourceTree = "<group>"; };
 		B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListInterfaceController.swift; sourceTree = "<group>"; };
+		B4F9B9D42620825900EC2983 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		CA24368C814F203E4E37770D /* Pods_FamilyTracker_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8893E543A661B82482E575D /* Pods-FamilyTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -336,6 +339,7 @@
 		B4DDA1FF25EE737900B5F992 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B4F9B9D32620824500EC2983 /* Utils */,
 				3D51FD16261D87BD0016AA95 /* CustomView */,
 				B4E6F16226089C8B007AE4FC /* CustomControls */,
 				B416337525F625D9004F9911 /* LocationManager */,
@@ -413,6 +417,14 @@
 				B4F9B90C261F11CF00EC2983 /* ImageTools.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		B4F9B9D32620824500EC2983 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B4F9B9D42620825900EC2983 /* DateUtils.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		E8A8BC61B53205929B913E5D /* Pods */ = {
@@ -715,6 +727,7 @@
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
+				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
@@ -742,6 +755,7 @@
 				B4DDA22F25EF722700B5F992 /* Constant.swift in Sources */,
 				B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */,
 				B4DDA24B25EF73F900B5F992 /* Service.swift in Sources */,
+				B4F9B9D62620825900EC2983 /* DateUtils.swift in Sources */,
 				B4DDA21F25EF680500B5F992 /* MemberListModel.swift in Sources */,
 				B4DDA16B25EE46AF00B5F992 /* InterfaceController.swift in Sources */,
 			);

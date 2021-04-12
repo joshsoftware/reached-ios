@@ -11,6 +11,7 @@ import SDWebImage
 class MemberRowController: NSObject {
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var userImgView: WKInterfaceImage!
+    @IBOutlet weak var lastUpdatedLocationLabel: WKInterfaceLabel!
     
     override init() {
     }
@@ -19,6 +20,7 @@ class MemberRowController: NSObject {
         didSet {
             guard let item = item else { return }
             nameLabel.setText(item.name)
+            lastUpdatedLocationLabel.setText(DateUtils.formatLastUpdated(dateString: item.lastUpdated ?? ""))
             if let url = URL(string: item.profileUrl ?? "") {
                 SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
                     

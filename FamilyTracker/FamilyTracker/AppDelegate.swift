@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             globalNotificationDictionary = notificationData as? [AnyHashable: Any]
         }
         registerForPushNotifications()
+        JoinLinkManager.shared.createLink()
         return true
     }
    
@@ -110,13 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          print("Incomming Web Page URL: \(inCommingURL)")
          return true
     }
-    
-    @available(iOS 13.0, *)
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            // Handle URL
-        }
-    }
+
 }
 
 extension AppDelegate: LocationUpdateDelegate {
