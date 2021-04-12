@@ -40,7 +40,6 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         super.awake(withContext: context)
-        FirebaseApp.configure()
         signInGroup.setHidden(true)
         signInBtn.setBackgroundImageNamed("google")
         
