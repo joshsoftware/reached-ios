@@ -76,10 +76,6 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
 
             self.setTitle("My Groups")
             
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
-            let locationManager = UserLocationManager.shared
-            locationManager.delegate = self
         } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
             self.setTitle("")
             self.isAlertDismissed = false
@@ -169,18 +165,6 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         setUp()
     }
     
-    // MARK: - Notifications
-
-    @objc private func locationUpdateNotification(notification: NSNotification) {
-        let userinfo = notification.userInfo
-        if let currentLocation = userinfo?["location"] as? CLLocation {
-            print("Latitude : \(currentLocation.coordinate.latitude)")
-            print("Longitude : \(currentLocation.coordinate.longitude)")
-            self.updateCurrentUserLocation(location: currentLocation)
-        }
-        
-    }
-    
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
 
         let isIndexValid = self.groupList.indices.contains(rowIndex)
@@ -191,25 +175,6 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         }
     }
     
-    func updateCurrentUserLocation(location: CLLocation) {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
-                }
-            }
-        }
-    }
-    
-}
-
-extension InterfaceController: LocationUpdateDelegate {
-    
-    func locationDidUpdateToLocation(location: CLLocation) {
-        print("Latitude : \(location.coordinate.latitude)")
-        print("Longitude : \(location.coordinate.longitude)")
-        self.updateCurrentUserLocation(location: location)
-    }
 }
 
 extension InterfaceController: WatchOSDelegate {

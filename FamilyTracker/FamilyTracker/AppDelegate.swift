@@ -87,12 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func updateCurrentUsersLocationOnServer(location: CLLocation) {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
             DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
                 if let groups = groups {
                     DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
                 }
             }
+        } else {
+            print("User is not logged in")
         }
     }
     

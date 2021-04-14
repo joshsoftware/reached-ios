@@ -24,6 +24,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
         }
         Messaging.messaging().delegate = self
 
+        //Location update set up
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        let locationManager = UserLocationManager.shared
+        locationManager.delegate = self
     }
     
     func applicationDidBecomeActive() {
@@ -84,4 +89,39 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
       Messaging.messaging().apnsToken = deviceToken
     }
 
+}
+
+extension ExtensionDelegate: LocationUpdateDelegate {
+    
+    // MARK: - Notifications
+
+    @objc private func locationUpdateNotification(notification: NSNotification) {
+        let userinfo = notification.userInfo
+        if let currentLocation = userinfo?["location"] as? CLLocation {
+            print("Latitude : \(currentLocation.coordinate.latitude)")
+            print("Longitude : \(currentLocation.coordinate.longitude)")
+            self.updateCurrentUserLocation(location: currentLocation)
+        }
+        
+    }
+    
+    
+    private func updateCurrentUserLocation(location: CLLocation) {
+        
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty{
+            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                if let groups = groups {
+                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
+                }
+            }
+        } else {
+            print("User is not logged in")
+        }
+    }
+    
+    func locationDidUpdateToLocation(location: CLLocation) {
+        print("Latitude : \(location.coordinate.latitude)")
+        print("Longitude : \(location.coordinate.longitude)")
+        self.updateCurrentUserLocation(location: location)
+    }
 }
