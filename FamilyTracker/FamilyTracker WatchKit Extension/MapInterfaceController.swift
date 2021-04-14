@@ -75,8 +75,8 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         guard let (membersList, selectedGroup) = context as? ([Members], Group) else {
             return
         }
-        
         self.selectedGroup = selectedGroup
+        self.setUp()
         self.itemList.removeAll()
         self.itemList = membersList
     }
@@ -105,6 +105,7 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         //Observe updated value for member
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
+                self.mapView.removeAllAnnotations()
                 self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
         }
@@ -118,7 +119,9 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        
+        member.profileUrl = value["profileUrl"] as? String
+        member.lastUpdated = value["lastUpdated"] as? String
+
         if let index = self.itemList.firstIndex(where: { $0.id == member.id }) {
             self.itemList[index] = member
         }

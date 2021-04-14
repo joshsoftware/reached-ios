@@ -49,7 +49,7 @@ class GroupListViewController: UIViewController {
     private func setUpFloatyButton() {
         floatyBtn.openAnimationType = .pop
         floatyBtn.overlayColor = UIColor.black.withAlphaComponent(0.2)
-        floatyBtn.addItem(icon: UIImage(named: "addMember")) { (item) in
+        floatyBtn.addItem(icon: UIImage(named: "addGroup")) { (item) in
             CreateGroupPopUpVC.showPopup(parentVC: self)
             CreateGroupPopUpVC.groupCreatedHandler = { groupId in
                 print("Group created..\(groupId)")
@@ -58,7 +58,7 @@ class GroupListViewController: UIViewController {
         }
         
         //TODO: change SOS to join group
-        floatyBtn.addItem(icon: UIImage(named: "sos")) { (item) in
+        floatyBtn.addItem(icon: UIImage(named: "joinGroup")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
                 DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
