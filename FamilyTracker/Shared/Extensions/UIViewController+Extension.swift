@@ -49,17 +49,17 @@ extension UIViewController {
 
     func showShareActivity(msg:String?, image:UIImage?, url:String?, sourceRect:CGRect?){
         var objectsToShare = [AnyObject]()
+        
+        if let msg = msg {
+            objectsToShare.append(msg as AnyObject)
+        }
 
         if let url = url {
-            objectsToShare = [url as AnyObject]
+            objectsToShare.append(url as AnyObject)
         }
 
         if let image = image {
-            objectsToShare = [image as AnyObject]
-        }
-
-        if let msg = msg {
-            objectsToShare = [msg as AnyObject]
+            objectsToShare.append(image as AnyObject)
         }
 
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
