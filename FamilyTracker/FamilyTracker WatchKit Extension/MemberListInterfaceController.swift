@@ -14,6 +14,8 @@ import FirebaseDatabase
 class MemberListInterfaceController: WKInterfaceController, NibLoadableViewController {
 
     @IBOutlet weak var tableView: WKInterfaceTable!
+    @IBOutlet weak var groupNameLbl: WKInterfaceLabel!
+    @IBOutlet weak var showonMapBtn: WKInterfaceButton!
     
     private var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
@@ -24,8 +26,8 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     var itemList: [Members] = [] {
         didSet {
             if itemList.count > 0 {
-                tableView.setNumberOfRows(itemList.count + 1, withRowType: "MemberRowController")
-                for index in 0..<tableView.numberOfRows - 1 {
+                tableView.setNumberOfRows(itemList.count, withRowType: "MemberRowController")
+                for index in 0..<tableView.numberOfRows {
                     guard let controller = tableView.rowController(at: index) as? MemberRowController else { continue }
                     let memberId = itemList[index].id
                     let userId = UserDefaults.standard.string(forKey: "userId")
@@ -34,11 +36,7 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
                     }
                     controller.item = itemList[index]
                 }
-                
-                guard let controller = tableView.rowController(at: tableView.numberOfRows - 1) as? MemberRowController else { return }
-                var item = Members()
-                item.name = "All Members"
-                controller.item = item
+             
             }
         }
     }
@@ -71,7 +69,7 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     private func setUp() {
         
         if let selectedGroup = self.selectedGroup, let groupId = selectedGroup.id {
-//            self.setTitle(selectedGroup.name ?? "")
+            groupNameLbl.setText(selectedGroup.name ?? "")
             ref = Database.database().reference(withPath: "groups/\(groupId)")
             observeFirebaseRealtimeDBChanges()
         }
@@ -164,16 +162,15 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        var membersArray: [Members] = []
-        
-        if rowIndex == self.itemList.count {
-            membersArray = itemList
-        } else {
-            let member = itemList[rowIndex]
-            membersArray.append(member)
+        let isIndexValid = itemList.indices.contains(rowIndex)
+        if isIndexValid {
+            let membersArray: [Members] = [itemList[rowIndex]]
+            self.pushController(withName: MapInterfaceController.name, context: (membersArray, selectedGroup))
         }
-        
-        self.pushController(withName: MapInterfaceController.name, context: (membersArray, selectedGroup))
+    }
+    
+    @IBAction func showOnMapBtnAction() {
+        self.pushController(withName: MapInterfaceController.name, context: (itemList, selectedGroup))
     }
     
 }

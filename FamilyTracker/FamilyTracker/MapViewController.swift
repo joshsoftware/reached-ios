@@ -70,18 +70,9 @@ class MapViewController: UIViewController {
                 pin.title = item.name ?? ""
                 
                 let location = CLLocation(latitude: latitude, longitude: longitude)
-                CLGeocoder().reverseGeocodeLocation(location, preferredLocale: nil) { (clPlacemark: [CLPlacemark]?, error: Error?) in
-                    guard let place = clPlacemark?.first else {
-                        print("No placemark from Apple: \(String(describing: error))")
-                        return
-                    }
-
-                    let postalAddressFormatter = CNPostalAddressFormatter()
-                    postalAddressFormatter.style = .mailingAddress
-                    var addressString: String?
-                    if let postalAddress = place.postalAddress {
-                        addressString = postalAddressFormatter.string(from: postalAddress)
-                        pin.subtitle = addressString
+                location.fetchCityAndCountry { (name, city, error) in
+                    if error == nil {
+                        pin.subtitle = (name ?? "") + ", " + (city ?? "")
                     }
                 }
                 

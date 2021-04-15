@@ -29,6 +29,10 @@
 		B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */; };
 		B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */; };
 		B492BAAF261DC1AD000AD3F9 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */; };
+		B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AE8262819070024B2C2 /* GroupTableViewCell.swift */; };
+		B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4C76AE9262819070024B2C2 /* GroupTableViewCell.xib */; };
+		B4C76AF0262825960024B2C2 /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */; };
+		B4C76AF1262825960024B2C2 /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */; };
 		B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */; };
 		B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */; };
 		B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14925EE46AA00B5F992 /* MapViewController.swift */; };
@@ -144,6 +148,9 @@
 		B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		B4C76AE8262819070024B2C2 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
+		B4C76AE9262819070024B2C2 /* GroupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupTableViewCell.xib; sourceTree = "<group>"; };
+		B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extension.swift"; sourceTree = "<group>"; };
 		B4DDA14225EE46AA00B5F992 /* Reached.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reached.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -371,6 +378,7 @@
 				B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */,
 				B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */,
 				3D51FD2926201EB80016AA95 /* Date+Extension.swift */,
+				B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -399,6 +407,8 @@
 			children = (
 				B4DDA29325EFAA0900B5F992 /* MemberTableViewCell.swift */,
 				B4DDA29425EFAA0900B5F992 /* MemberTableViewCell.xib */,
+				B4C76AE8262819070024B2C2 /* GroupTableViewCell.swift */,
+				B4C76AE9262819070024B2C2 /* GroupTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -553,6 +563,7 @@
 				3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */,
 				3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */,
 				B4DDA14D25EE46AA00B5F992 /* Main.storyboard in Resources */,
+				B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */,
 				B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -711,6 +722,7 @@
 				3D51FD28261DE3E20016AA95 /* ShowQRCodeViewController.swift in Sources */,
 				3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */,
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
+				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,
 				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
@@ -726,6 +738,7 @@
 				3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
+				B4C76AF0262825960024B2C2 /* CLLocation+Extension.swift in Sources */,
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
@@ -742,6 +755,7 @@
 				B4F9B90D261F11CF00EC2983 /* ImageTools.swift in Sources */,
 				B4DDA21825EF66D000B5F992 /* WKInterfaceController+Extension.swift in Sources */,
 				B4DDA16F25EE46AF00B5F992 /* NotificationController.swift in Sources */,
+				B4C76AF1262825960024B2C2 /* CLLocation+Extension.swift in Sources */,
 				B4DDA22925EF687000B5F992 /* ApiClient.swift in Sources */,
 				B4DDA20225EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */,

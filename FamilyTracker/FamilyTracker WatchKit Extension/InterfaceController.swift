@@ -15,10 +15,12 @@ import FirebaseCore
 class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     @IBOutlet weak var tableView: WKInterfaceTable!
+    @IBOutlet weak var headerLbl: WKInterfaceLabel!
     @IBOutlet weak var refreshBtn: WKInterfaceButton!
     
     @IBOutlet weak var signInGroup: WKInterfaceGroup!
     @IBOutlet weak var signInBtn: WKInterfaceButton!
+    
     
     var connectivityHandler = WatchSessionManager.shared
     private var userRef: DatabaseReference!
@@ -71,15 +73,18 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
             }
             
             self.tableView.setHidden(false)
+            self.headerLbl.setHidden(false)
             self.refreshBtn.setHidden(true)
             self.signInGroup.setHidden(true)
 
-            self.setTitle("My Groups")
+            //TODO - make nav title to center
+            self.setTitle("      Reached")
             
         } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
             self.setTitle("")
             self.isAlertDismissed = false
             self.tableView.setHidden(true)
+            self.headerLbl.setHidden(true)
             self.refreshBtn.setHidden(false)
             self.signInGroup.setHidden(true)
 
@@ -91,6 +96,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         } else {
             self.setTitle("")
             self.tableView.setHidden(true)
+            self.headerLbl.setHidden(true)
             self.refreshBtn.setHidden(true)
             self.signInGroup.setHidden(false)
         }

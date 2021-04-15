@@ -11,10 +11,12 @@ import Firebase
 import WatchConnectivity
 import Floaty
 import SDWebImage
+import Contacts
 
 class MemberListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!    
+    @IBOutlet weak var showOnMapBtn: UIButton!
     @IBOutlet weak var floatyBtn: Floaty!
     
     var memberList = [Members]()
@@ -35,6 +37,7 @@ class MemberListViewController: UIViewController {
         setUpFloatyButton()
         navigationController?.navigationBar.barTintColor = Constant.kColor.KDarkOrangeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         self.title = groupName
 
@@ -215,12 +218,17 @@ class MemberListViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func showOnMapBtnAction(_ sender: Any) {
+        navigateToMap(membersArray: self.memberList)
+    }
+    
 }
 
 extension MemberListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return memberList.count + 1
+        return memberList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -242,33 +250,38 @@ extension MemberListViewController: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             cell?.lastUpdatedLbl.text = DateUtils.formatLastUpdated(dateString: memberList[indexPath.row].lastUpdated ?? "")
-        } else if indexPath.row == memberList.count {
-            cell?.nameLbl.text = "All Members"
+            
+            if let lat = memberList[indexPath.row].lat, let long =  memberList[indexPath.row].long {
+                let location = CLLocation(latitude: lat, longitude: long)
+                location.fetchCityAndCountry { (name, city, error) in
+                    if error == nil {
+                        cell?.currentLocationLbl.text = "at " + (name ?? "") + ", " + (city ?? "")
+                    }
+                }
+            }
         }
+        
         return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var membersArray: [Members] = []
-        
-        if indexPath.row == self.memberList.count {
-            membersArray = memberList
-        } else {
-            let member = memberList[indexPath.row]
-            membersArray.append(member)
-        }
-        
-        
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
-            vc.memberList = membersArray
-            vc.groupId = groupId
+        let isIndexValid = memberList.indices.contains(indexPath.row)
+        if isIndexValid {
+            let membersArray: [Members] = [memberList[indexPath.row]]
+            navigateToMap(membersArray: membersArray)
             tableView.deselectRow(at: indexPath, animated: true)
-            self.navigationController?.pushViewController(vc, animated: false)
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 90
+    }
+    
+    private func navigateToMap(membersArray: [Members]) {
+        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+            vc.memberList = membersArray
+            vc.groupId = groupId
+            self.navigationController?.pushViewController(vc, animated: false)
+        }
     }
 }

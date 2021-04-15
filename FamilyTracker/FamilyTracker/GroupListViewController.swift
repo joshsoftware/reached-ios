@@ -36,7 +36,7 @@ class GroupListViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        self.title = "My Groups"
+        self.title = "Reached"
         navigationController?.navigationBar.barTintColor = Constant.kColor.KDarkOrangeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         self.navigationItem.setHidesBackButton(true, animated: true)
@@ -49,7 +49,8 @@ class GroupListViewController: UIViewController {
     private func setUpFloatyButton() {
         floatyBtn.openAnimationType = .pop
         floatyBtn.overlayColor = UIColor.black.withAlphaComponent(0.2)
-        floatyBtn.addItem(icon: UIImage(named: "addGroup")) { (item) in
+        
+        floatyBtn.addItem("Create Group", icon: UIImage(named: "addGroup")) { (item) in
             CreateGroupPopUpVC.showPopup(parentVC: self)
             CreateGroupPopUpVC.groupCreatedHandler = { groupId in
                 print("Group created..\(groupId)")
@@ -57,8 +58,7 @@ class GroupListViewController: UIViewController {
             }
         }
         
-        //TODO: change SOS to join group
-        floatyBtn.addItem(icon: UIImage(named: "joinGroup")) { (item) in
+        floatyBtn.addItem("Join Group", icon: UIImage(named: "joinGroup")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
                 DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
@@ -69,6 +69,7 @@ class GroupListViewController: UIViewController {
 
         for item in floatyBtn.items {
             item.iconImageView.contentMode = .scaleAspectFit
+            item.titleColor = .black
         }
         
     }
@@ -76,7 +77,7 @@ class GroupListViewController: UIViewController {
     private func setUpTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: "MemberTableViewCell")
+        tableView.register(UINib(nibName: "GroupTableViewCell", bundle: nil), forCellReuseIdentifier: "GroupTableViewCell")
     }
     
     private func setUpLocationManager() {
@@ -149,9 +150,10 @@ extension GroupListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MemberTableViewCell", for: indexPath) as? MemberTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as? GroupTableViewCell
         let data = self.groupList[indexPath.row]
         cell?.nameLbl.text = data.name
+        cell?.memberCountLbl.text = data.members?.count.description ?? ""
         cell?.selectionStyle = .none
         return cell ?? UITableViewCell()
     }

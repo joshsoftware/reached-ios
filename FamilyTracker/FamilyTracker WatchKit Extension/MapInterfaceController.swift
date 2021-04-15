@@ -37,31 +37,25 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
 //                    } else {
 //                        // Fallback on earlier versions
 //                    }
-
+ 
+                    if itemList.count == 1 {
+                        namelabel.setText(item.name)
+                        
+                        let location = CLLocation(latitude: latitude, longitude: longitude)
+                        location.fetchCityAndCountry { (name, city, error) in
+                            if error == nil {
+                                self.addressLabel.setText((name ?? "") + ", " + (city ?? ""))
+                            }
+                        }
+                        
+                    }
+                    
                     var region = MKCoordinateRegion()
                     region.center = coordinate
                     region.span.latitudeDelta = 0.04
                     region.span.longitudeDelta = 0.04
                     self.mapView.setRegion(region)
-                    
-                    if itemList.count == 1 {
-                        namelabel.setText(item.name)
-                        let location = CLLocation(latitude: latitude, longitude: longitude)
-                        CLGeocoder().reverseGeocodeLocation(location, preferredLocale: nil) { (clPlacemark: [CLPlacemark]?, error: Error?) in
-                            guard let place = clPlacemark?.first else {
-                                print("No placemark from Apple: \(String(describing: error))")
-                                return
-                            }
-
-                            let postalAddressFormatter = CNPostalAddressFormatter()
-                            postalAddressFormatter.style = .mailingAddress
-                            var addressString: String?
-                            if let postalAddress = place.postalAddress {
-                                addressString = postalAddressFormatter.string(from: postalAddress)
-                                self.addressLabel.setText(addressString)
-                            }
-                        }
-                    }
+                   
                 }
                 
             }

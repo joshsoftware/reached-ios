@@ -49,9 +49,6 @@ class UserLocationManager: NSObject, CLLocationManagerDelegate {
         #endif
     }
     
-    private func geocode(latitude: Double, longitude: Double, completion: @escaping (CLPlacemark?, Error?) -> ())  {
-        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: latitude, longitude: longitude)) { completion($0?.first, $1) }
-    }
     
     // MARK: - CLLocationManagerDelegate
     // Below Mehtod will print error if not able to update location.

@@ -11,6 +11,7 @@ import SDWebImage
 class GroupRowController: NSObject {
     @IBOutlet var groupNameLabel: WKInterfaceLabel!
     @IBOutlet var groupImgView: WKInterfaceImage!
+    @IBOutlet weak var memberCountLbl: WKInterfaceLabel!
     
     override init() {
     }
@@ -19,6 +20,7 @@ class GroupRowController: NSObject {
         didSet {
             guard let item = item else { return }
             groupNameLabel.setText(item.name)
+            memberCountLbl.setText(item.members?.count.description ?? "")
 //            if let url = URL(string: item.profileUrl ?? "") {
 //                SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
 //

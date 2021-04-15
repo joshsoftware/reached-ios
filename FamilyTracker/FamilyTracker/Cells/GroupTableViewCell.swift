@@ -1,20 +1,18 @@
 //
-//  MemberTableViewCell.swift
+//  GroupTableViewCell.swift
 //  FamilyTracker
 //
-//  Created by Vijay Godse on 03/03/21.
+//  Created by Vijay Godse on 15/04/21.
 //
 
 import UIKit
 
-class MemberTableViewCell: UITableViewCell {
-
+class GroupTableViewCell: UITableViewCell {
     @IBOutlet weak var userProfileImgView: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var lastUpdatedLbl: UILabel!
-    @IBOutlet weak var currentLocationLbl: UILabel!
-    
+    @IBOutlet weak var memberCountLbl: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -31,5 +29,6 @@ class MemberTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
     
 }
