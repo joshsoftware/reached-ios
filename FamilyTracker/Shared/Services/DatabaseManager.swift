@@ -36,7 +36,7 @@ class DatabaseManager: NSObject {
     
     func updateLocationFor(userWith id: String, groups: NSDictionary, location: CLLocation) {
         let dtf = DateFormatter()
-        dtf.timeZone = TimeZone.current
+        dtf.timeZone = TimeZone(identifier: "UTC")
         dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let currentDate = dtf.string(from: Date())
         
@@ -90,7 +90,7 @@ class DatabaseManager: NSObject {
         ref = Database.database().reference()
         if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName"), let profileUrl = UserDefaults.standard.string(forKey: "userProfileUrl") {
             let dtf = DateFormatter()
-            dtf.timeZone = TimeZone.current
+            dtf.timeZone = TimeZone(identifier: "UTC")
             dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let currentDate = dtf.string(from: Date())
             
