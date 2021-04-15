@@ -40,14 +40,16 @@ class MapViewController: UIViewController {
     }
     
     private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
-        
         var member = Members()
         member.id = key
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String
-        
-        if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
+        member.profileUrl = value["profileUrl"] as? String
+        member.lastUpdated = value["lastUpdated"] as? String
+
+        if let index = self.memberList.firstIndex(where: {
+                                                    $0.id == member.id }) {
             let allAnnotations = self.mapView.annotations
             self.mapView.removeAnnotations(allAnnotations)
             self.memberList[index] = member

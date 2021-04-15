@@ -69,10 +69,6 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     }
     
     private func setUp() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
-        let locationManager = UserLocationManager.shared
-        locationManager.delegate = self
         
         if let selectedGroup = self.selectedGroup, let groupId = selectedGroup.id {
 //            self.setTitle(selectedGroup.name ?? "")
@@ -167,18 +163,6 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         }
     }
     
-    // MARK: - Notifications
-
-    @objc private func locationUpdateNotification(notification: NSNotification) {
-        let userinfo = notification.userInfo
-        if let currentLocation = userinfo?["location"] as? CLLocation {
-            print("Latitude : \(currentLocation.coordinate.latitude)")
-            print("Longitude : \(currentLocation.coordinate.longitude)")
-            self.updateCurrentUserLocation(location: currentLocation)
-        }
-        
-    }
-    
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         var membersArray: [Members] = []
         
@@ -192,26 +176,6 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         self.pushController(withName: MapInterfaceController.name, context: (membersArray, selectedGroup))
     }
     
-    func updateCurrentUserLocation(location: CLLocation) {
-        
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
-                }
-            }
-        }
-    }
-    
-}
-
-extension MemberListInterfaceController: LocationUpdateDelegate {
-    
-    func locationDidUpdateToLocation(location: CLLocation) {
-        print("Latitude : \(location.coordinate.latitude)")
-        print("Longitude : \(location.coordinate.longitude)")
-        self.updateCurrentUserLocation(location: location)
-    }
 }
 
 extension MemberListInterfaceController: WatchOSDelegate {

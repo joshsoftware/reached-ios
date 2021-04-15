@@ -7,32 +7,30 @@
 
 import WatchKit
 import WatchConnectivity
+import FirebaseCore
+import Firebase
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
+
+    var globalNotificationDictionary: [AnyHashable: Any]?
 
     func applicationDidFinishLaunching() {
-        // Perform any final initialization of your application.
-        self.watchKitSetup()
-    }
-    
-    func watchKitSetup() {
-        if (WCSession.isSupported()) {
-            let session = WCSession.default
-            session.delegate = self
-            session.activate()
-            
-            // In your WatchKit extension, the value of this property is true when the paired iPhone is reachable via Bluetooth.
-            // On iOS, the value is true when the paired Apple Watch is reachable via Bluetooth and the associated Watch app is running in the foreground.
-            // In all other cases, the value is false.
-            if session.isReachable {
-                print("reachable")
-            } else {
-                print("Not reachable")
+        FirebaseApp.configure()
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            if granted {
+                WKExtension.shared().registerForRemoteNotifications()
             }
         }
+        Messaging.messaging().delegate = self
+
+        //Location update set up
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
+        let locationManager = UserLocationManager.shared
+        locationManager.delegate = self
     }
     
-
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -71,19 +69,59 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
         }
     }
+    
+    /// MessagingDelegate
+    func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+      print("token:\n" + (fcmToken ?? ""))
+      Messaging.messaging().subscribe(toTopic: "watch") { error in
+        guard error == nil else {
+          print("error:" + error.debugDescription)
+          return
+        }
+        print("Successfully subscribed to topic")
+      }
+    }
+
+    /// WKExtensionDelegate
+    func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
+      /// Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
+      print("Set APNS Token\n")
+      Messaging.messaging().apnsToken = deviceToken
+    }
 
 }
 
-extension ExtensionDelegate:WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+extension ExtensionDelegate: LocationUpdateDelegate {
+    
+    // MARK: - Notifications
+
+    @objc private func locationUpdateNotification(notification: NSNotification) {
+        let userinfo = notification.userInfo
+        if let currentLocation = userinfo?["location"] as? CLLocation {
+            print("Latitude : \(currentLocation.coordinate.latitude)")
+            print("Longitude : \(currentLocation.coordinate.longitude)")
+            self.updateCurrentUserLocation(location: currentLocation)
+        }
         
     }
     
-    func sessionReachabilityDidChange(_ session: WCSession) {
-        if session.isReachable {
-            print("reachable")
+    
+    private func updateCurrentUserLocation(location: CLLocation) {
+        
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty{
+            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                if let groups = groups {
+                    DatabaseManager.shared.updateLocationFor(userWith: userId, groups: groups, location: location)
+                }
+            }
         } else {
-            print("Not reachable")
+            print("User is not logged in")
         }
+    }
+    
+    func locationDidUpdateToLocation(location: CLLocation) {
+        print("Latitude : \(location.coordinate.latitude)")
+        print("Longitude : \(location.coordinate.longitude)")
+        self.updateCurrentUserLocation(location: location)
     }
 }
