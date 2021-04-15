@@ -109,6 +109,9 @@ class JoinLinkManager: NSObject {
                         })
                     } else if topVC.isKind(of: LoginViewController.self) {
                         UserDefaults.standard.setValue(groupId, forKey: "inviteGroupId")
+                        topVC.presentAlert(withTitle: "Alert", message: "Login first to join group!") {
+                            
+                        }
                     } else if topVC.isKind(of: HomeViewController.self) {
                         self.joinGroupWith(groupId: groupId, completion: {
                             if let vc = topVC as? MemberListViewController {
