@@ -257,7 +257,7 @@ extension MemberListViewController: UITableViewDataSource, UITableViewDelegate {
                 let location = CLLocation(latitude: lat, longitude: long)
                 location.fetchCityAndCountry { (name, city, error) in
                     if error == nil {
-                        cell?.currentLocationLbl.text = "at " + (name ?? "") + ", " + (city ?? "")
+                        cell?.currentLocationLbl.text = (name ?? "") + ", " + (city ?? "")
                     }
                 }
             }
