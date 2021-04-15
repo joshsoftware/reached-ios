@@ -11,10 +11,11 @@ class ShowQRCodeViewController: UIViewController {
     
     @IBOutlet weak var qrCodeImageView: UIImageView!
     @IBOutlet weak var viewGroupBtn: UIButton!
-    
+    @IBOutlet weak var shareJoinLinkBtn: UIButton!
+
     var groupId: String = ""
+    var groupName: String = ""
     var iIsFromCreateGroupFlow = false
-    var currentUserProfileUrl: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,7 @@ class ShowQRCodeViewController: UIViewController {
             viewGroupBtn.isHidden = false
         } else {
             viewGroupBtn.isHidden = true
+            shareJoinLinkBtn.isHidden = false
         }
     }
     
@@ -52,9 +54,14 @@ class ShowQRCodeViewController: UIViewController {
     
     @IBAction func viewGroupBtnAction(_ sender: UIButton) {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
-            vc.currentUserProfileUrl = self.currentUserProfileUrl
             self.navigationController?.pushViewController(vc, animated: false)
         }
+    }
+    
+    @IBAction func shareJoinLinkBtnAction(_ sender: UIButton) {
+        JoinLinkManager.shared.createJoinLinkFor(groupId: self.groupId, groupName: self.groupName, completion: { url in
+            self.showShareActivity(msg: "Join group", image: nil, url: url.absoluteString, sourceRect: nil)
+        })
     }
     
 }

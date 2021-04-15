@@ -19,8 +19,7 @@ class CreateGroupPopUpVC: UIViewController {
     var currentLocation = CLLocationCoordinate2D()
     let groupId = UUID().uuidString
     let locationManager = CLLocationManager()
-    static var groupCreatedHandler: ((_ groupId: String) -> Void)?
-    static var currentUserProfileUrl: String = ""
+    static var groupCreatedHandler: ((_ groupId: String, _ groupName: String) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +63,8 @@ class CreateGroupPopUpVC: UIViewController {
     }
     
     func createGroup(groupName: String) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
-            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "lastUpdated": Date().currentUTCDate(), "profileUrl": CreateGroupPopUpVC.self.currentUserProfileUrl] as [String : Any]
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName"), let profileUrl = UserDefaults.standard.string(forKey: "userProfileUrl") {
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "lastUpdated": Date().currentUTCDate(), "profileUrl": profileUrl] as [String : Any]
             var memberArray : Array = Array<Any>()
             memberArray.append(data)
 
@@ -82,7 +81,7 @@ class CreateGroupPopUpVC: UIViewController {
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
             self.dismiss(animated: true, completion: {
-                CreateGroupPopUpVC.self.groupCreatedHandler?(self.groupId)
+                CreateGroupPopUpVC.self.groupCreatedHandler?(self.groupId, groupName)
             })
         }
     }

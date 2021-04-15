@@ -34,15 +34,14 @@ class MapViewController: UIViewController {
         //Observe updated value for member
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
-                self.familyMembersLocationUpdated(value: value, userId: snapshot.key)
+                self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
         }
     }
     
-    private func familyMembersLocationUpdated(value: NSMutableDictionary, userId: String) {
-        
+    private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
         var member = Members()
-        member.id = userId
+        member.id = key
         member.lat = value["lat"] as? Double
         member.long = value["long"] as? Double
         member.name = value["name"] as? String

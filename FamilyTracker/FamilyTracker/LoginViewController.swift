@@ -15,7 +15,6 @@ class LoginViewController: UIViewController {
 
     var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
-    private var currentUserProfileUrl: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +30,16 @@ class LoginViewController: UIViewController {
     }
     
     private func navigateToHomeVC() {
-        DispatchQueue.main.async {
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
-                vc.currentUserProfileUrl = self.currentUserProfileUrl
-                self.navigationController?.pushViewController(vc, animated: false)
+        if let groupId = UserDefaults.standard.string(forKey: "inviteGroupId") {
+            JoinLinkManager.shared.joinGroupWith(groupId: groupId) {
+                self.navigateToGroupListVC()
+            }
+            UserDefaults.standard.setValue(nil, forKey: "inviteGroupId")
+        } else {
+            DispatchQueue.main.async {
+                if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+                    self.navigationController?.pushViewController(vc, animated: false)
+                }
             }
         }
     }
@@ -42,7 +47,6 @@ class LoginViewController: UIViewController {
     private func navigateToGroupListVC() {
         DispatchQueue.main.async {
             if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
-                vc.currentUserProfileUrl = self.currentUserProfileUrl
                 self.navigationController?.pushViewController(vc, animated: false)
             }
         }
@@ -93,7 +97,7 @@ extension LoginViewController: GIDSignInDelegate {
                     UserDefaults.standard.setValue(true, forKey: "loginStatus")
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
                     UserDefaults.standard.setValue(user.displayName, forKey: "userName")
-                    self.currentUserProfileUrl = user.photoURL?.description
+                    UserDefaults.standard.setValue(user.photoURL?.description, forKey: "userProfileUrl")
                     self.sendLoginStatusToWatch()
                     self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in

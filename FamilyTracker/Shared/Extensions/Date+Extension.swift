@@ -10,7 +10,7 @@ import Foundation
 extension Date {
     func currentUTCDate() -> String {
         let dtf = DateFormatter()
-        dtf.timeZone = TimeZone.current
+        dtf.timeZone = TimeZone(identifier: "UTC")
         dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return dtf.string(from: self)
     }

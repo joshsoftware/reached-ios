@@ -23,7 +23,6 @@ class GroupListViewController: UIViewController {
     private var connectivityHandler = WatchSessionManager.shared
 
     var groups : NSDictionary = NSDictionary()
-    var currentUserProfileUrl: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +51,7 @@ class GroupListViewController: UIViewController {
         
         floatyBtn.addItem("Create Group", icon: UIImage(named: "addGroup")) { (item) in
             CreateGroupPopUpVC.showPopup(parentVC: self)
-            CreateGroupPopUpVC.groupCreatedHandler = { groupId in
+            CreateGroupPopUpVC.groupCreatedHandler = { groupId, groupName in
                 print("Group created..\(groupId)")
                 self.fetchGroups()
             }
@@ -61,7 +60,7 @@ class GroupListViewController: UIViewController {
         floatyBtn.addItem("Join Group", icon: UIImage(named: "joinGroup")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
-                DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
+                DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
                     self.fetchGroups()
                 }
             }
@@ -118,6 +117,7 @@ class GroupListViewController: UIViewController {
         UserDefaults.standard.setValue("", forKey: "userId")
         UserDefaults.standard.setValue("", forKey: "userName")
         UserDefaults.standard.setValue(nil, forKey: "groups")
+        UserDefaults.standard.setValue("", forKey: "userProfileUrl")
 
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()

@@ -15,7 +15,6 @@ class HomeViewController: UIViewController {
     var currentLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     let groupId = UUID().uuidString
     let locationManager = CLLocationManager()
-    var currentUserProfileUrl: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,31 +48,29 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func createGroupButtonPressed(_ sender: Any) {
-        CreateGroupPopUpVC.currentUserProfileUrl = self.currentUserProfileUrl ?? ""
         CreateGroupPopUpVC.showPopup(parentVC: self)
-        CreateGroupPopUpVC.groupCreatedHandler = { groupId in
+        CreateGroupPopUpVC.groupCreatedHandler = { groupId, groupName in
             print("Group created..\(groupId)")
-            self.navigateToShowQRCodeVC(groupId: groupId)
+            self.navigateToShowQRCodeVC(groupId: groupId, groupName: groupName)
         }
     }
     
     @IBAction func joinbuttonPressed(_ sender: Any) {
         ScanQRCodeViewController.showPopup(parentVC: self)
         ScanQRCodeViewController.groupJoinedHandler = { qrString in
-            DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation, profileUrl: self.currentUserProfileUrl ?? "") {
+            DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
                 if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
-                    vc.currentUserProfileUrl = self.currentUserProfileUrl
                     self.navigationController?.pushViewController(vc, animated: false)
                 }
             }
         }
     }
 
-    private func navigateToShowQRCodeVC(groupId: String) {
+    private func navigateToShowQRCodeVC(groupId: String, groupName: String) {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupId = groupId
+            vc.groupName = groupName
             vc.iIsFromCreateGroupFlow = true
-            vc.currentUserProfileUrl = currentUserProfileUrl
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
