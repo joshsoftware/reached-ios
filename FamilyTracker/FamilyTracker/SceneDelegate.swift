@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -65,11 +66,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let urlToOpen = userActivity.webpageURL else {
-              return
-          }
-        
+                return
+        }
         print(urlToOpen)
-
+        JoinLinkManager.shared.linkHandling(urlToOpen)
     }
     
 }

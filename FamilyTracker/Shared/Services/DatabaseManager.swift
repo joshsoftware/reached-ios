@@ -86,9 +86,9 @@ class DatabaseManager: NSObject {
         completion(nil)
     }
     
-    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, profileUrl: String, completion: @escaping () -> Void) {
+    func joinToGroupWith(groupId: String, currentLocation: CLLocationCoordinate2D, completion: @escaping () -> Void) {
         ref = Database.database().reference()
-        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName"), let profileUrl = UserDefaults.standard.string(forKey: "userProfileUrl") {
             let dtf = DateFormatter()
             dtf.timeZone = TimeZone.current
             dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"

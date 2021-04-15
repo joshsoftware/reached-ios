@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             globalNotificationDictionary = notificationData as? [AnyHashable: Any]
         }
         registerForPushNotifications()
-        JoinLinkManager.shared.createLink()
         return true
     }
    
