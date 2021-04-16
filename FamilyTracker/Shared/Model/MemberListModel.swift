@@ -40,7 +40,8 @@ struct Members : Codable {
     var id : String?
     var profileUrl : String?
     var lastUpdated: String?
-    
+    var sosState: Bool?
+
     init() {
     }
     
@@ -52,7 +53,7 @@ struct Members : Codable {
         case id = "id"
         case profileUrl = "profileUrl"
         case lastUpdated = "lastUpdated"
-        
+        case sosState = "sosState"
     }
 
     init(from decoder: Decoder) throws {
@@ -63,6 +64,7 @@ struct Members : Codable {
         id = try values.decodeIfPresent(String.self, forKey: .id)
         profileUrl = try values.decodeIfPresent(String.self, forKey: .profileUrl)
         lastUpdated = try values.decodeIfPresent(String.self, forKey: .lastUpdated)
+        sosState = try values.decodeIfPresent(Bool.self, forKey: .sosState)
     }
 
 }

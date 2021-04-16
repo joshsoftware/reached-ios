@@ -21,6 +21,13 @@ class MemberRowController: NSObject {
             guard let item = item else { return }
             nameLabel.setText(item.name)
             lastUpdatedLocationLabel.setText(DateUtils.formatLastUpdated(dateString: item.lastUpdated ?? ""))
+            
+            if let sosState = item.sosState, sosState {
+                
+            } else {
+                
+            }
+            
             if let url = URL(string: item.profileUrl ?? "") {
                 SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
                     

@@ -108,7 +108,8 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         member.name = value["name"] as? String
         member.profileUrl = value["profileUrl"] as? String
         member.lastUpdated = value["lastUpdated"] as? String
-        
+        member.sosState = value["sosState"] as? Bool
+
         if let index = self.itemList.firstIndex(where: { $0.id == member.id }) {
             self.itemList[index] = member
         }
@@ -122,7 +123,8 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         member.name = value["name"] as? String
         member.profileUrl = value["profileUrl"] as? String
         member.lastUpdated = value["lastUpdated"] as? String
-        
+        member.sosState = value["sosState"] as? Bool
+
         let filtered = self.itemList.filter { ($0.id ?? "").contains(member.id ?? "") }
 
         if filtered.count <= 0 {

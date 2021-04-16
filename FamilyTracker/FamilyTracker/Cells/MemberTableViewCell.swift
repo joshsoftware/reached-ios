@@ -15,15 +15,23 @@ class MemberTableViewCell: UITableViewCell {
     @IBOutlet weak var lastUpdatedLbl: UILabel!
     @IBOutlet weak var currentLocationLbl: UILabel!
     
+    @IBOutlet weak var pinIcon: UIImageView!
+    @IBOutlet weak var lastUpdatedIcon: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         containerView.layer.cornerRadius = 15.0
+        userProfileImgView.backgroundColor = .black
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         userProfileImgView.layer.cornerRadius = userProfileImgView.frame.width / 2
+        pinIcon.image = UIImage(named: "pin")?.withRenderingMode(.alwaysTemplate)
+        lastUpdatedIcon.image = UIImage(named: "lastUpdateIcon")?.withRenderingMode(.alwaysTemplate)
+        pinIcon.tintColor = .red
+        lastUpdatedIcon.tintColor = .darkGray
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

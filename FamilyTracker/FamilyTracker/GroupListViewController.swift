@@ -60,7 +60,7 @@ class GroupListViewController: UIViewController {
             }
         }
         
-        floatyBtn.addItem("Join Group", icon: UIImage(named: "joinGroup")) { (item) in
+        floatyBtn.addItem("Join Group", icon: UIImage(named: "groupPlaceholder")) { (item) in
             ScanQRCodeViewController.showPopup(parentVC: self)
             ScanQRCodeViewController.groupJoinedHandler = { qrString in
                 DatabaseManager.shared.joinToGroupWith(groupId: qrString, currentLocation: self.currentLocation) {
@@ -154,19 +154,25 @@ extension GroupListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupTableViewCell", for: indexPath) as? GroupTableViewCell
-        let data = self.groupList[indexPath.row]
-        cell?.nameLbl.text = data.name
-        cell?.memberCountLbl.text = data.members?.count.description ?? ""
+        let isIndexValid = self.groupList.indices.contains(indexPath.row)
+        if isIndexValid {
+            let data = self.groupList[indexPath.row]
+            cell?.nameLbl.text = data.name
+            cell?.memberCountLbl.text = data.members?.count.description ?? ""
+        }
         cell?.selectionStyle = .none
         return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let data = self.groupList[indexPath.row]
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
-            vc.groupId = data.id ?? ""
-            vc.groupName = data.name ?? ""
-            self.navigationController?.pushViewController(vc, animated: true)
+        let isIndexValid = self.groupList.indices.contains(indexPath.row)
+        if isIndexValid {
+            let data = self.groupList[indexPath.row]
+            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
+                vc.groupId = data.id ?? ""
+                vc.groupName = data.name ?? ""
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     

@@ -47,6 +47,7 @@ class MapViewController: UIViewController {
         member.name = value["name"] as? String
         member.profileUrl = value["profileUrl"] as? String
         member.lastUpdated = value["lastUpdated"] as? String
+        member.sosState = value["sosState"] as? Bool
 
         if let index = self.memberList.firstIndex(where: {
                                                     $0.id == member.id }) {

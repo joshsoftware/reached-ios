@@ -70,6 +70,8 @@ class DatabaseManager: NSObject {
                                     member.long = data["long"] as? Double
                                     member.name = data["name"] as? String
                                     member.lastUpdated = data["lastUpdated"] as? String
+                                    member.sosState = data["sosState"] as? Bool
+
                                     memberList.append(member)
                                 }
                             }
@@ -108,6 +110,15 @@ class DatabaseManager: NSObject {
             }
             completion()
         }
+    }
+    
+    func updateSOSFor(userWith id: String, groups: NSDictionary, sosState: Bool) {
+       
+        for groupId in groups.allKeys {
+            self.ref = Database.database().reference(withPath: "groups/\(groupId)")
+            self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
+        }
+        print("SOS updated...")
     }
 }
 

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "profile-pic-placeholder-2.png",
+      "filename" : "Person-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "profile-pic-placeholder.png",
+      "filename" : "Person-1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "profile-pic-placeholder-1.png",
+      "filename" : "Person-1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
