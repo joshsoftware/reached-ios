@@ -114,7 +114,7 @@ class JoinLinkManager: NSObject {
                         }
                     } else if topVC.isKind(of: HomeViewController.self) {
                         self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? MemberListViewController {
+                            if let vc = topVC as? HomeViewController {
                                 self.navigateToGroupListVC(topVC: vc)
                             }
                         })

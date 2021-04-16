@@ -22,7 +22,18 @@ class LoginViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         ref = Database.database().reference()
         if UserDefaults.standard.bool(forKey: "loginStatus") == true {
-            self.navigateToGroupListVC()
+            LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
+            if let userId = UserDefaults.standard.string(forKey: "userId") {
+                DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                    LoadingOverlay.shared.hideOverlayView()
+                    if groups?.allKeys.count ?? 0 > 0 {
+                        self.navigateToGroupListVC()
+                    } else {
+                        self.navigateToHomeVC()
+                    }
+                    LoadingOverlay.shared.hideOverlayView()
+                }
+            }
         }
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
