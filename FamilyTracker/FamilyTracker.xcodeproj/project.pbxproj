@@ -937,6 +937,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FamilyTracker WatchKit Extension/FamilyTracker WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = "FamilyTracker WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -970,6 +971,7 @@
 				CODE_SIGN_ENTITLEMENTS = "FamilyTracker WatchKit Extension/FamilyTracker WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = "FamilyTracker WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1005,6 +1007,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				IBSC_MODULE = FamilyTracker_WatchKit_Extension;
 				INFOPLIST_FILE = "FamilyTracker WatchKit App/Info.plist";
@@ -1028,6 +1031,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				IBSC_MODULE = FamilyTracker_WatchKit_Extension;
 				INFOPLIST_FILE = "FamilyTracker WatchKit App/Info.plist";
@@ -1053,6 +1057,7 @@
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1078,6 +1083,7 @@
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
