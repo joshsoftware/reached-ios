@@ -71,12 +71,15 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         if let selectedGroup = self.selectedGroup, let groupId = selectedGroup.id {
             groupNameLbl.setText(selectedGroup.name ?? "")
             ref = Database.database().reference(withPath: "groups/\(groupId)")
+            refSOS = Database.database().reference().child("sos")
             observeFirebaseRealtimeDBChanges()
         }
 
     }
     
     private func observeFirebaseRealtimeDBChanges() {
+        observeSOSChanges()
+        
         //Observe updated value for member
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
@@ -140,6 +143,20 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
             self.itemList.remove(at: index)
         }
     }
+    
+    private func observeSOSChanges() {
+        guard let groupId = self.selectedGroup?.id else { return }
+        //Observe updated value for sos
+        self.refSOS.child(groupId).observe(.value) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                if let id = value.value(forKey: "id") as? String, let show = value.value(forKey: "show") as? Bool, let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+                    if id != userId && show {
+                        self.showSOSAlert(sosUserId: id)
+                    }
+                }
+            }
+        }
+    }
 
     private func showSOSAlert(sosUserId: String) {
         
@@ -153,14 +170,17 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
             }
         }
         
+        self.refSOS.child(self.selectedGroup?.id ?? "").removeValue()
+        
         let titleOfAlert = "SOS Alert"
         let messageOfAlert = "Emergency! This is \(userName). \nI need help. Press ok to track me."
-        DispatchQueue.main.async {
-            self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
-                //something after clicking OK
-                self.pushController(withName: MapInterfaceController.name, context: filtered)
-            }])
+        
+        let action = WKAlertAction.init(title: "OK", style: .default) {
+            self.pushController(withName: MapInterfaceController.name, context: (filtered, self.selectedGroup))
         }
+    
+        self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [action])
+
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
@@ -198,12 +218,11 @@ extension MemberListInterfaceController: WatchOSDelegate {
                 UserDefaults.standard.setValue(userId, forKey: "userId")
             }
             
-            if let sosUserId = tuple.message["sosUserId"] as? String {
-                DispatchQueue.main.async {
-                    self.showSOSAlert(sosUserId: sosUserId)
-                }
-            }
-            
+//            if let sosUserId = tuple.message["sosUserId"] as? String {
+//                DispatchQueue.main.async {
+//                    self.showSOSAlert(sosUserId: sosUserId)
+//                }
+//            }
             
         }
     }

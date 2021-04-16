@@ -31,21 +31,22 @@ class MemberListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
+        refSOS = Database.database().reference().child("sos")
 
-        // Do any additional setup after loading the view.
         setUp()
     }
 
     private func setUp() {
+       
         setUpFloatyButton()
+        observeSOSChanges()
         navigationController?.navigationBar.barTintColor = Constant.kColor.KDarkOrangeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         self.title = groupName
-
-        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-        refSOS = Database.database().reference().child("sos")
 
         setUpTableView()
         observeFirebaseRealtimeDBChanges()
@@ -102,12 +103,6 @@ class MemberListViewController: UIViewController {
             print("Error sending message: \(error)")
         })
     }
-    
-    private func sendSOSRecievedStatusToWatch(userId: String) {
-        self.connectivityHandler.sendMessage(message: ["sosUserId" : userId as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
         
     private func observeFirebaseRealtimeDBChanges() {
         //Observe updated value for member
@@ -144,37 +139,36 @@ class MemberListViewController: UIViewController {
         }
     }
     
-//    private func observeSOSChanges() {
-//        //Observe updated value for sos
-//        self.refSOS.child(self.groupId).observe(.value) { (snapshot) in
-//            if let value = snapshot.value as? NSMutableDictionary {
-//                if let id = value.value(forKey: "id"), let name = value.value(forKey: "name"), let show = value.value(forKey: "show"), let userId = UserDefaults.standard.string(forKey: "userId") {
-//                    if id as! String != userId && show as! Bool {
-//                        self.sendSOSRecievedStatusToWatch(userId: id as! String)
-//                        self.presentAlert(withTitle: "SOS Alert", message: "Emergency! This is \(name). \nI need help. Press ok to track me.") {
-//                            self.refSOS.child(self.groupId).removeValue()
-//                            let filtered = self.memberList.filter { $0.id!.contains(id as! String) }
-//                            if let topVC = UIApplication.getTopViewController() {
-//                                if topVC.isKind(of: MapViewController.self) {
-//                                    if let vc = topVC as? MapViewController {
-//                                        vc.memberList = filtered
-//                                        vc.groupId = self.groupId
-//                                        vc.showPinForMembersLocation()
-//                                    }
-//                                } else {
-//                                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
-//                                        vc.memberList = filtered
-//                                        vc.groupId = self.groupId
-//                                        self.navigationController?.pushViewController(vc, animated: false)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private func observeSOSChanges() {
+        //Observe updated value for sos
+        self.refSOS.child(self.groupId).observe(.value) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                if let id = value.value(forKey: "id"), let name = value.value(forKey: "name"), let show = value.value(forKey: "show"), let userId = UserDefaults.standard.string(forKey: "userId") {
+                    if id as! String != userId && show as! Bool {
+                        self.presentAlert(withTitle: "SOS Alert", message: "Emergency! This is \(name). \nI need help. Press ok to track me.") {
+                            self.refSOS.child(self.groupId).removeValue()
+                            let filtered = self.memberList.filter { $0.id!.contains(id as! String) }
+                            if let topVC = UIApplication.getTopViewController() {
+                                if topVC.isKind(of: MapViewController.self) {
+                                    if let vc = topVC as? MapViewController {
+                                        vc.memberList = filtered
+                                        vc.groupId = self.groupId
+                                        vc.showPinForMembersLocation()
+                                    }
+                                } else {
+                                    if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+                                        vc.memberList = filtered
+                                        vc.groupId = self.groupId
+                                        self.navigationController?.pushViewController(vc, animated: false)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
         
