@@ -30,13 +30,13 @@ class JoinLinkManager: NSObject {
             linkBuilder?.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
             linkBuilder?.iOSParameters?.appStoreID = "1561609913"
             linkBuilder?.iOSParameters?.minimumAppVersion = "1.0"
-            linkBuilder?.androidParameters = DynamicLinkAndroidParameters(packageName: bundleID)
+            linkBuilder?.androidParameters = DynamicLinkAndroidParameters(packageName: "com.joshsoftware.reached")
             linkBuilder?.androidParameters?.minimumVersion = 1
         }
         
         linkBuilder?.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-        linkBuilder?.socialMetaTagParameters?.title = "Title Of Promotion"
-        linkBuilder?.socialMetaTagParameters?.descriptionText = "Description Of Promotion"
+        linkBuilder?.socialMetaTagParameters?.title = "Reached - kids & kins are safe"
+        linkBuilder?.socialMetaTagParameters?.descriptionText = ""
         linkBuilder?.socialMetaTagParameters?.imageURL = URL(string: "ImageURL")
         
         guard let longDynamicLink = linkBuilder?.url else { return }
@@ -75,7 +75,7 @@ class JoinLinkManager: NSObject {
     
     func handleJoinLinkNavigation(groupId: String, groupName: String) {
         if let topVC = UIApplication.getTopViewController() {
-            topVC.presentConfirmationAlert(withTitle: "Alert", message: "Do you want to join Group \(groupName)?") { (flag) in
+            topVC.presentConfirmationAlert(withTitle: "Greetings!", message: "You have been invited to the group \(groupName). Please press ok to join.") { (flag) in
                 if flag {
                     if topVC.isKind(of: GroupListViewController.self) {
                         self.joinGroupWith(groupId: groupId, completion: {
@@ -109,7 +109,7 @@ class JoinLinkManager: NSObject {
                         })
                     } else if topVC.isKind(of: LoginViewController.self) {
                         UserDefaults.standard.setValue(groupId, forKey: "inviteGroupId")
-                        topVC.presentAlert(withTitle: "Alert", message: "Login first to join group!") {
+                        topVC.presentAlert(withTitle: "Alert", message: "Please login first to join group!") {
                             
                         }
                     } else if topVC.isKind(of: HomeViewController.self) {
