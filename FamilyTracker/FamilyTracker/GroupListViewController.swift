@@ -30,8 +30,11 @@ class GroupListViewController: UIViewController {
         setUpFloatyButton()
         setUpTableView()
         setUpLocationManager()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchGroups()
-        // Do any additional setup after loading the view.
     }
     
     func setupNavigationBar() {

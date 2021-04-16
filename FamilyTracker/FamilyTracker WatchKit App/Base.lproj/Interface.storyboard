@@ -175,7 +175,7 @@
                         <table alignment="left" spacing="6" id="0c6-Hv-lL2">
                             <items>
                                 <tableRow identifier="MemberRowController" id="MJE-KG-dF1" customClass="MemberRowController" customModule="FamilyTracker_WatchKit_Extension">
-                                    <group key="rootItem" width="1" height="35" alignment="left" layout="overlap" spacing="6" id="4lP-cu-hoV">
+                                    <group key="rootItem" width="1" height="38" alignment="left" layout="overlap" spacing="6" id="4lP-cu-hoV">
                                         <items>
                                             <group width="1" height="1" alignment="center" verticalAlignment="center" spacing="4" id="fEP-0g-L9d">
                                                 <items>
@@ -201,9 +201,12 @@
                                                     </group>
                                                 </items>
                                             </group>
-                                            <group width="1" height="10" alignment="right" verticalAlignment="bottom" layout="vertical" spacing="0.0" id="qf0-cX-EAy">
+                                            <group width="1" height="11" alignment="right" verticalAlignment="bottom" spacing="2" id="qf0-cX-EAy">
                                                 <items>
-                                                    <label width="1" alignment="left" verticalAlignment="center" text="last updated at" textAlignment="right" id="fYi-6w-BRz">
+                                                    <imageView width="10" height="10" alignment="right" image="lastUpdateIcon" id="jZj-Au-Dvp">
+                                                        <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </imageView>
+                                                    <label alignment="right" verticalAlignment="center" textAlignment="right" id="fYi-6w-BRz">
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="font" type="system" pointSize="6"/>
                                                     </label>
@@ -241,6 +244,7 @@
     <resources>
         <image name="appLogo_transparent" width="512" height="512"/>
         <image name="google" width="18" height="18"/>
+        <image name="lastUpdateIcon" width="128" height="128"/>
         <image name="userPlaceholder" width="1120" height="1120"/>
     </resources>
 </document>

@@ -24,17 +24,17 @@ class DateUtils {
                 dateFormatter.timeZone = NSTimeZone.local
                 dateFormatter.dateFormat = "h:mm a"
                 let localTime = dateFormatter.string(from: date)
-                return "Last updated at \(localTime)"
+                return localTime
             } else if calendar.component(.month, from: date) < calendar.component(.month, from: Date()) ||  calendar.component(.year, from: date) < calendar.component(.year, from: Date()) {
                 dateFormatter.timeZone = NSTimeZone.local
                 dateFormatter.dateFormat = "d MMM yyyy"
                 let localTime = dateFormatter.string(from: date)
-                return "Last updated at \(localTime)"
+                return localTime
             } else {
                 dateFormatter.timeZone = NSTimeZone.local
                 dateFormatter.dateFormat = "E d, h:mm a"
                 let localTime = dateFormatter.string(from: date)
-                return "Last updated at \(localTime)"
+                return localTime
             }
         }
         return nil
