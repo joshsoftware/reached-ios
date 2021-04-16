@@ -12,6 +12,7 @@ class MemberRowController: NSObject {
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var userImgView: WKInterfaceImage!
     @IBOutlet weak var lastUpdatedLocationLabel: WKInterfaceLabel!
+    @IBOutlet weak var containerGroup: WKInterfaceGroup!
     
     override init() {
     }
@@ -23,9 +24,9 @@ class MemberRowController: NSObject {
             lastUpdatedLocationLabel.setText(DateUtils.formatLastUpdated(dateString: item.lastUpdated ?? ""))
             
             if let sosState = item.sosState, sosState {
-                
+                containerGroup.setBackgroundColor(.red)
             } else {
-                
+                containerGroup.setBackgroundColor(.clear)
             }
             
             if let url = URL(string: item.profileUrl ?? "") {
