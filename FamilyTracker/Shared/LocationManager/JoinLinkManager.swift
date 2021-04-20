@@ -11,7 +11,6 @@ import CoreLocation
 
 class JoinLinkManager: NSObject {
     static let shared = JoinLinkManager()
-    var currentLocation : CLLocation?
 
     func createJoinLinkFor(groupId: String, groupName: String, completion: @escaping (_ url: URL) -> Void) {
         var components = URLComponents()
@@ -76,50 +75,52 @@ class JoinLinkManager: NSObject {
     func handleJoinLinkNavigation(groupId: String, groupName: String) {
         if let topVC = UIApplication.getTopViewController() {
             topVC.presentConfirmationAlert(withTitle: "Greetings!", message: "You have been invited to the group \(groupName). Please press ok to join.") { (flag) in
-                if flag {
-                    if topVC.isKind(of: GroupListViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? GroupListViewController {
-                                vc.fetchGroups()
+                if let topVC = UIApplication.getTopViewController() {
+                    if flag {
+                        if topVC.isKind(of: GroupListViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? GroupListViewController {
+                                    vc.fetchGroups()
+                                }
+                            })
+                        } else if topVC.isKind(of: MemberListViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? MemberListViewController {
+                                    self.navigateToGroupListVC(topVC: vc)
+                                }
+                            })
+                        } else if topVC.isKind(of: MapViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? MemberListViewController {
+                                    self.navigateToGroupListVC(topVC: vc)
+                                }
+                            })
+                        } else if topVC.isKind(of: ScanQRCodeViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? ScanQRCodeViewController {
+                                    self.navigateToGroupListVC(topVC: vc)
+                                }
+                            })
+                        } else if topVC.isKind(of: ShowQRCodeViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? ShowQRCodeViewController {
+                                    self.navigateToGroupListVC(topVC: vc)
+                                }
+                            })
+                        } else if topVC.isKind(of: LoginViewController.self) {
+                            UserDefaults.standard.setValue(groupId, forKey: "inviteGroupId")
+                            topVC.presentAlert(withTitle: "Alert", message: "Please login first to join group!") {
+                                
                             }
-                        })
-                    } else if topVC.isKind(of: MemberListViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? MemberListViewController {
-                                self.navigateToGroupListVC(topVC: vc)
-                            }
-                        })
-                    } else if topVC.isKind(of: MapViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? MemberListViewController {
-                                self.navigateToGroupListVC(topVC: vc)
-                            }
-                        })
-                    } else if topVC.isKind(of: ScanQRCodeViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? ScanQRCodeViewController {
-                                self.navigateToGroupListVC(topVC: vc)
-                            }
-                        })
-                    } else if topVC.isKind(of: ShowQRCodeViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? ShowQRCodeViewController {
-                                self.navigateToGroupListVC(topVC: vc)
-                            }
-                        })
-                    } else if topVC.isKind(of: LoginViewController.self) {
-                        UserDefaults.standard.setValue(groupId, forKey: "inviteGroupId")
-                        topVC.presentAlert(withTitle: "Alert", message: "Please login first to join group!") {
-                            
+                        } else if topVC.isKind(of: HomeViewController.self) {
+                            self.joinGroupWith(groupId: groupId, completion: {
+                                if let vc = topVC as? HomeViewController {
+                                    self.navigateToGroupListVC(topVC: vc)
+                                }
+                            })
                         }
-                    } else if topVC.isKind(of: HomeViewController.self) {
-                        self.joinGroupWith(groupId: groupId, completion: {
-                            if let vc = topVC as? HomeViewController {
-                                self.navigateToGroupListVC(topVC: vc)
-                            }
-                        })
                     }
-                } else {
+                }else {
                     //Do nothing
                 }
             }
@@ -135,7 +136,7 @@ class JoinLinkManager: NSObject {
     }
     
     func joinGroupWith(groupId: String, completion: @escaping () -> Void) {
-        DatabaseManager.shared.joinToGroupWith(groupId: groupId, currentLocation: self.currentLocation?.coordinate ?? CLLocationCoordinate2D()) {
+        DatabaseManager.shared.joinToGroupWith(groupId: groupId, currentLocation: UserLocationManager.shared.currentLocation?.coordinate ?? CLLocationCoordinate2D()) {
             completion()
         }
     }

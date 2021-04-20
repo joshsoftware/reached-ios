@@ -19,6 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        if let userActivity = connectionOptions.userActivities.first {
+            if let incomingURL = userActivity.webpageURL {
+                JoinLinkManager.shared.linkHandling(incomingURL)
+            }
+        }
         self.scene(scene, openURLContexts: connectionOptions.urlContexts)
     }
 
