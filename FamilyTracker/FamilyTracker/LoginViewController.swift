@@ -219,6 +219,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
                 return
             }
+            
+            let appleId = appleIDCredential.user
+            let appleUserFirstName = appleIDCredential.fullName?.givenName
+            let appleUserLastName = appleIDCredential.fullName?.familyName
+            let appleUserEmail = appleIDCredential.email
+            
             // Initialize a Firebase credential.
             let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                       idToken: idTokenString,
