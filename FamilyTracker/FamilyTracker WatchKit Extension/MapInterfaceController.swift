@@ -8,7 +8,6 @@
 import WatchKit
 import Foundation
 import MapKit
-import WatchConnectivity
 import Contacts
 import FirebaseDatabase
 
@@ -18,7 +17,6 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
     @IBOutlet weak var namelabel: WKInterfaceLabel!
     @IBOutlet weak var addressLabel: WKInterfaceLabel!
     
-    private var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
     private var selectedGroup: Group?
     
@@ -78,8 +76,6 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
     }
     
     override func didDeactivate() {
@@ -125,25 +121,4 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
    
 }
 
-extension MapInterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
-    }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                if !loginStatus {
-                    //TODO
-                    self.popToRootController()
-                }
-            }
-            
-        }
-    }
-    
-}
 

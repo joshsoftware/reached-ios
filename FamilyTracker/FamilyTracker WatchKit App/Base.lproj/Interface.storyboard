@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="rls-zf-vHO">
     <device id="watch38"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
@@ -46,16 +46,55 @@
                     </items>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="-106" y="347"/>
+            <point key="canvasLocation" x="-487" y="366"/>
+        </scene>
+        <!--LoginInterfaceController-->
+        <scene sceneID="gM3-aV-XCP">
+            <objects>
+                <controller identifier="LoginInterfaceController" id="rls-zf-vHO" customClass="LoginInterfaceController" customModule="FamilyTracker_WatchKit_Extension">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" spacing="10" id="0NU-eb-gim">
+                            <items>
+                                <label alignment="center" text="Welcome to Reached!" textAlignment="center" numberOfLines="0" id="7Ef-SI-keZ"/>
+                                <label alignment="center" text="Sign in to begin" textAlignment="center" numberOfLines="0" id="HET-83-8zb">
+                                    <fontDescription key="font" style="UICTFontTextStyleSubhead"/>
+                                </label>
+                                <button alignment="center" verticalAlignment="center" id="KIG-FE-h3y">
+                                    <group key="contentGroup" width="75" height="30" alignment="left" backgroundImage="google" contentMode="center" id="0FS-Ut-XTo">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </group>
+                                    <connections>
+                                        <action selector="signInBtnAction" destination="rls-zf-vHO" id="ui2-Jb-ZBj"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="signInBtn" destination="KIG-FE-h3y" id="oU8-4F-UwM"/>
+                        <outlet property="signInGroup" destination="0NU-eb-gim" id="Jgn-NI-bk6"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-146" y="370"/>
         </scene>
         <!--InterfaceController-->
         <scene sceneID="aou-V4-d1y">
             <objects>
                 <controller identifier="InterfaceController" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Reached" customModuleProvider="target">
                     <items>
-                        <label alignment="left" text="Groups" id="gen-fG-D4w">
-                            <fontDescription key="font" type="system" weight="medium" pointSize="13"/>
-                        </label>
+                        <group width="1" alignment="left" id="ekM-Up-Agd">
+                            <items>
+                                <label alignment="left" text="Groups" id="gen-fG-D4w">
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="13"/>
+                                </label>
+                                <button width="18" height="18" alignment="right" backgroundImage="logout" id="yE7-K4-3kL">
+                                    <connections>
+                                        <action selector="logoutBtnAction" destination="AgC-eL-Hgc" id="f6h-Vt-3Hg"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
                         <table alignment="left" spacing="6" id="e5h-9y-WuM">
                             <items>
                                 <tableRow identifier="GroupRowController" id="mm4-Hy-2rJ" customClass="GroupRowController" customModule="FamilyTracker_WatchKit_Extension">
@@ -101,23 +140,7 @@
                                 </tableRow>
                             </items>
                         </table>
-                        <group width="1" alignment="left" hidden="YES" layout="vertical" spacing="10" id="rVn-du-vkX">
-                            <items>
-                                <label alignment="center" text="Welcome to Reached!" textAlignment="center" numberOfLines="0" id="3xS-K9-xgO"/>
-                                <label alignment="center" text="Sign in to begin" textAlignment="center" numberOfLines="0" id="7b3-Hi-Ziw">
-                                    <fontDescription key="font" style="UICTFontTextStyleSubhead"/>
-                                </label>
-                                <button alignment="center" verticalAlignment="center" id="Aqf-R9-tAD">
-                                    <group key="contentGroup" width="75" height="30" alignment="left" backgroundImage="google" contentMode="center" id="dZR-Xb-ZzI">
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </group>
-                                    <connections>
-                                        <action selector="signInBtnAction" destination="AgC-eL-Hgc" id="Tf0-R8-h0w"/>
-                                    </connections>
-                                </button>
-                            </items>
-                        </group>
-                        <button width="1" alignment="center" verticalAlignment="center" title="Refresh" id="eCb-Sn-gFt">
+                        <button width="1" alignment="center" verticalAlignment="center" hidden="YES" title="Refresh" id="eCb-Sn-gFt">
                             <connections>
                                 <action selector="refreshBtnAction" destination="AgC-eL-Hgc" id="vU9-vQ-4bd"/>
                             </connections>
@@ -125,9 +148,8 @@
                     </items>
                     <connections>
                         <outlet property="headerLbl" destination="gen-fG-D4w" id="8ub-qs-2H0"/>
+                        <outlet property="logoutBtn" destination="yE7-K4-3kL" id="Ed5-Ex-HMT"/>
                         <outlet property="refreshBtn" destination="eCb-Sn-gFt" id="rEc-wz-hrW"/>
-                        <outlet property="signInBtn" destination="Aqf-R9-tAD" id="Jnf-6w-bWW"/>
-                        <outlet property="signInGroup" destination="rVn-du-vkX" id="srE-mp-175"/>
                         <outlet property="tableView" destination="e5h-9y-WuM" id="Jmh-LU-U8t"/>
                     </connections>
                 </controller>
@@ -170,9 +192,18 @@
             <objects>
                 <controller identifier="MemberListInterfaceController" id="iEp-OV-Xye" customClass="MemberListInterfaceController" customModule="FamilyTracker_WatchKit_Extension">
                     <items>
-                        <label alignment="center" text="Group name" id="6aQ-qF-Cv5">
-                            <fontDescription key="font" type="system" weight="medium" pointSize="13"/>
-                        </label>
+                        <group width="1" alignment="left" id="UmZ-gq-fCD">
+                            <items>
+                                <label alignment="left" text="Group name" id="6aQ-qF-Cv5">
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="13"/>
+                                </label>
+                                <button width="18" height="18" alignment="right" backgroundImage="logout" id="4oY-bt-EgE">
+                                    <connections>
+                                        <action selector="logoutBtnAction" destination="iEp-OV-Xye" id="q1s-zJ-a5J"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
                         <table alignment="left" spacing="4" id="0c6-Hv-lL2">
                             <items>
                                 <tableRow identifier="MemberRowController" id="MJE-KG-dF1" customClass="MemberRowController" customModule="FamilyTracker_WatchKit_Extension">
@@ -243,6 +274,7 @@
                     </items>
                     <connections>
                         <outlet property="groupNameLbl" destination="6aQ-qF-Cv5" id="10N-Ja-xZd"/>
+                        <outlet property="logoutBtn" destination="4oY-bt-EgE" id="KYF-fm-0RS"/>
                         <outlet property="showonMapBtn" destination="xpw-E2-aQ3" id="jBS-V5-2gl"/>
                         <outlet property="tableView" destination="0c6-Hv-lL2" id="m2Z-Ok-dvt"/>
                     </connections>
@@ -256,6 +288,7 @@
         <image name="google" width="18" height="18"/>
         <image name="groupPlaceholder" width="24" height="24"/>
         <image name="lastUpdateIcon" width="128" height="128"/>
+        <image name="logout" width="400" height="400"/>
         <image name="userPlaceholder" width="24" height="24"/>
     </resources>
 </document>

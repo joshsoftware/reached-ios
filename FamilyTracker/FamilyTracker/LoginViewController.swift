@@ -9,13 +9,11 @@ import UIKit
 import FirebaseAuth
 import GoogleSignIn
 import Firebase
-import WatchConnectivity
 import AuthenticationServices
 import CryptoKit
 
 class LoginViewController: UIViewController {
 
-    var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
     fileprivate var currentNonce: String?
     fileprivate var displayName: String?
@@ -169,8 +167,6 @@ extension LoginViewController: GIDSignInDelegate {
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
                     UserDefaults.standard.setValue(user.displayName, forKey: "userName")
                     UserDefaults.standard.setValue(user.photoURL?.description, forKey: "userProfileUrl")
-                    self.sendLoginStatusToWatch()
-                    self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
                         LoadingOverlay.shared.hideOverlayView()
                         if groups?.allKeys.count ?? 0 > 0 {
@@ -188,20 +184,6 @@ extension LoginViewController: GIDSignInDelegate {
                 }
             }
             
-        }
-    }
-    
-    private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
-                print("Error sending message: \(error)")
-            })
         }
     }
 }
@@ -239,8 +221,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         UserDefaults.standard.setValue(user.uid, forKey: "userId")
                         UserDefaults.standard.setValue(self.displayName, forKey: "userName")
                         UserDefaults.standard.setValue("", forKey: "userProfileUrl")
-                        self.sendLoginStatusToWatch()
-                        self.sendUserIdToWatch()
                         DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
                             LoadingOverlay.shared.hideOverlayView()
                             if groups?.allKeys.count ?? 0 > 0 {

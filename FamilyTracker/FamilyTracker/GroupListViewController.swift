@@ -20,7 +20,6 @@ class GroupListViewController: UIViewController {
     private var groupList = [Group]()
     private var currentLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     private let locationManager = CLLocationManager()
-    private var connectivityHandler = WatchSessionManager.shared
 
     var groups : NSDictionary = NSDictionary()
 
@@ -125,23 +124,7 @@ class GroupListViewController: UIViewController {
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
-            self.sendLoginStatusToWatch()
-            self.sendUserIdToWatch()
             self.navigationController?.setViewControllers([loginVC], animated: true)
-        }
-    }
-    
-    private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
-                print("Error sending message: \(error)")
-            })
         }
     }
 }

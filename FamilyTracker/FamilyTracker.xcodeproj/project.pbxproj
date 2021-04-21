@@ -66,6 +66,7 @@
 		B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4DDA29425EFAA0900B5F992 /* MemberTableViewCell.xib */; };
 		B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA29F25EFAD3800B5F992 /* Storyboard+Extension.swift */; };
 		B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */; };
+		B4EFDFB3262F09AB0001E1F8 /* LoginInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EFDFB2262F09AB0001E1F8 /* LoginInterfaceController.swift */; };
 		B4F9B7EC261EFD5400EC2983 /* GroupListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617A261C8A1E0053FA57 /* GroupListModel.swift */; };
 		B4F9B8F8261F0AB000EC2983 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617C261C9D160053FA57 /* DatabaseManager.swift */; };
 		B4F9B8FC261F0D4700EC2983 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */; };
@@ -184,6 +185,7 @@
 		B4DDA29425EFAA0900B5F992 /* MemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberTableViewCell.xib; sourceTree = "<group>"; };
 		B4DDA29F25EFAD3800B5F992 /* Storyboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Extension.swift"; sourceTree = "<group>"; };
 		B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		B4EFDFB2262F09AB0001E1F8 /* LoginInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInterfaceController.swift; sourceTree = "<group>"; };
 		B4F9B853261F082E00EC2983 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4F9B900261F11A900EC2983 /* GroupRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRowController.swift; sourceTree = "<group>"; };
 		B4F9B90C261F11CF00EC2983 /* ImageTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTools.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */,
 				B4DDA20D25EF655B00B5F992 /* Cells */,
 				B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */,
+				B4EFDFB2262F09AB0001E1F8 /* LoginInterfaceController.swift */,
 				B4DDA16A25EE46AF00B5F992 /* InterfaceController.swift */,
 				B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */,
 				B4DDA25225EF8E5F00B5F992 /* MapInterfaceController.swift */,
@@ -756,6 +759,7 @@
 				B4DDA21825EF66D000B5F992 /* WKInterfaceController+Extension.swift in Sources */,
 				B4DDA16F25EE46AF00B5F992 /* NotificationController.swift in Sources */,
 				B4C76AF1262825960024B2C2 /* CLLocation+Extension.swift in Sources */,
+				B4EFDFB3262F09AB0001E1F8 /* LoginInterfaceController.swift in Sources */,
 				B4DDA22925EF687000B5F992 /* ApiClient.swift in Sources */,
 				B4DDA20225EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */,
@@ -1055,8 +1059,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
@@ -1067,7 +1071,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached;
 				PRODUCT_NAME = Reached;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Reached_dev_profile;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1082,9 +1086,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FamilyTracker/Reached.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = CHN43HYQZM;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FamilyTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

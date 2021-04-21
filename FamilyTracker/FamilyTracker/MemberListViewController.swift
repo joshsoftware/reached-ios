@@ -8,7 +8,6 @@
 import UIKit
 import CoreLocation
 import Firebase
-import WatchConnectivity
 import Floaty
 import SDWebImage
 import Contacts
@@ -24,7 +23,6 @@ class MemberListViewController: UIViewController {
     private var refSOS: DatabaseReference!
     private var sosState = false
 
-    var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
     var groupName: String = ""
 
@@ -92,16 +90,8 @@ class MemberListViewController: UIViewController {
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
-            self.sendLoginStatusToWatch()
-            self.sendUserIdToWatch()
             self.navigationController?.setViewControllers([loginVC], animated: true)
         }
-    }
-    
-    private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
     }
         
     private func observeFirebaseRealtimeDBChanges() {
@@ -225,14 +215,6 @@ class MemberListViewController: UIViewController {
                     self.floatyBtn.items.last?.title = "Send SOS"
                 }
             }
-        }
-    }
-    
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
-                print("Error sending message: \(error)")
-            })
         }
     }
     

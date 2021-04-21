@@ -8,7 +8,6 @@
 import WatchKit
 import Foundation
 import CoreLocation
-import WatchConnectivity
 import FirebaseDatabase
 import FirebaseCore
 
@@ -17,15 +16,10 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     @IBOutlet weak var tableView: WKInterfaceTable!
     @IBOutlet weak var headerLbl: WKInterfaceLabel!
     @IBOutlet weak var refreshBtn: WKInterfaceButton!
+    @IBOutlet weak var logoutBtn: WKInterfaceButton!
     
-    @IBOutlet weak var signInGroup: WKInterfaceGroup!
-    @IBOutlet weak var signInBtn: WKInterfaceButton!
-    
-    
-    var connectivityHandler = WatchSessionManager.shared
     private var userRef: DatabaseReference!
     var groups : NSDictionary = NSDictionary()
-    var isAlertDismissed = false
     
     private var groupList = [Group]() {
         didSet {
@@ -42,19 +36,12 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         super.awake(withContext: context)
-        signInGroup.setHidden(true)
-        signInBtn.setBackgroundImageNamed("google")
-        
         fetchGroups()
         observeFirebaseRealtimeDBChanges()
-        
     }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
-        setUp()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
     }
         
     override func didDeactivate() {
@@ -63,55 +50,28 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     private func setUp() {
                  
-        if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
-         
-            if !isAlertDismissed {
-                isAlertDismissed = true
-                DispatchQueue.main.async {
-                    self.dismiss()
-                }
-            }
-            
+        if groupList.count > 0 {
+    
             self.tableView.setHidden(false)
             self.headerLbl.setHidden(false)
             self.refreshBtn.setHidden(true)
-            self.signInGroup.setHidden(true)
 
             //TODO - make nav title to center
-            self.setTitle("      Reached")
+            self.setTitle("Reached")
             
-        } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
+        } else {
             self.setTitle("")
-            self.isAlertDismissed = false
             self.tableView.setHidden(true)
             self.headerLbl.setHidden(true)
             self.refreshBtn.setHidden(false)
-            self.signInGroup.setHidden(true)
 
             let titleOfAlert = ""
             let messageOfAlert = "Create or Join group from your connected phone"
             self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
                 //something after clicking OK
             }])
-        } else {
-            self.setTitle("")
-            self.tableView.setHidden(true)
-            self.headerLbl.setHidden(true)
-            self.refreshBtn.setHidden(true)
-            self.signInGroup.setHidden(false)
         }
         
-    }
-    
-    private func showSignInRequiredAlert() {
-        let titleOfAlert = "Sign In required"
-        let messageOfAlert = "Sign In from your connected phone"
-        DispatchQueue.main.async {
-            self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
-                //something after clicking OK
-                self.refreshBtn.setHidden(false)
-            }])
-        }
     }
     
     private func observeFirebaseRealtimeDBChanges() {
@@ -161,14 +121,21 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
             }
         }
     }
-    
-    
-    @IBAction func signInBtnAction() {
-        showSignInRequiredAlert()
-    }
-    
+
     @IBAction func refreshBtnAction() {
         setUp()
+    }
+    
+    
+    @IBAction func logoutBtnAction() {
+        UserDefaults.standard.setValue(false, forKey: "loginStatus")
+        UserDefaults.standard.setValue("", forKey: "userId")
+        UserDefaults.standard.setValue("", forKey: "userName")
+//        UserDefaults.standard.setValue("", forKey: "userProfileUrl")
+        UserDefaults.standard.synchronize()
+        DispatchQueue.main.async() {
+            WKInterfaceController.reloadRootControllers(withNamesAndContexts: [(name: LoginInterfaceController.name, context: "" as AnyObject)])
+        }
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
@@ -178,41 +145,6 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         if isIndexValid {
             let group = self.groupList[rowIndex]
             self.pushController(withName: MemberListInterfaceController.name, context: group)
-        }
-    }
-    
-}
-
-extension InterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
-    }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                self.setUp()
-            }
-            
-            if let userId = tuple.message["userId"] as? String {
-                UserDefaults.standard.setValue(userId, forKey: "userId")
-                self.setUp()
-                if !userId.isEmpty {
-                    self.observeFirebaseRealtimeDBChanges()
-                }
-            }
-                        
-//            if let sosUserId = tuple.message["sosUserId"] as? String {
-//                DispatchQueue.main.async {
-//                    self.showSOSAlert(sosUserId: sosUserId)
-//                }
-//            }
-            
-            
         }
     }
     

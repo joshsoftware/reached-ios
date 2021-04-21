@@ -8,7 +8,6 @@
 import WatchKit
 import Foundation
 import CoreLocation
-import WatchConnectivity
 import FirebaseDatabase
 
 class MemberListInterfaceController: WKInterfaceController, NibLoadableViewController {
@@ -16,8 +15,8 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     @IBOutlet weak var tableView: WKInterfaceTable!
     @IBOutlet weak var groupNameLbl: WKInterfaceLabel!
     @IBOutlet weak var showonMapBtn: WKInterfaceButton!
+    @IBOutlet weak var logoutBtn: WKInterfaceButton!
     
-    private var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
     private var refSOS: DatabaseReference!
 
@@ -57,13 +56,22 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         setUp()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
     }
 
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+    }
+    
+    @IBAction func logoutBtnAction() {
+        UserDefaults.standard.setValue(false, forKey: "loginStatus")
+        UserDefaults.standard.setValue("", forKey: "userId")
+        UserDefaults.standard.setValue("", forKey: "userName")
+//        UserDefaults.standard.setValue("", forKey: "userProfileUrl")
+        UserDefaults.standard.synchronize()
+        DispatchQueue.main.async() {
+            WKInterfaceController.reloadRootControllers(withNamesAndContexts: [(name: LoginInterfaceController.name, context: "" as AnyObject)])
+        }
     }
     
     private func setUp() {
@@ -197,35 +205,4 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
     
 }
 
-extension MemberListInterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
-    }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                if !loginStatus {
-                    self.pop()
-                }
-            }
-            
-            if let userId = tuple.message["userId"] as? String {
-                UserDefaults.standard.setValue(userId, forKey: "userId")
-            }
-            
-//            if let sosUserId = tuple.message["sosUserId"] as? String {
-//                DispatchQueue.main.async {
-//                    self.showSOSAlert(sosUserId: sosUserId)
-//                }
-//            }
-            
-        }
-    }
-    
-}
 
