@@ -18,6 +18,7 @@ class LoginViewController: UIViewController {
     var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
     fileprivate var currentNonce: String?
+    fileprivate var displayName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,26 +221,40 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 return
             }
             
-            let appleId = appleIDCredential.user
-            let appleUserFirstName = appleIDCredential.fullName?.givenName
-            let appleUserLastName = appleIDCredential.fullName?.familyName
-            let appleUserEmail = appleIDCredential.email
-            
+            self.displayName = "\(appleIDCredential.fullName?.givenName ?? "") \(appleIDCredential.fullName?.familyName ?? "")"
             // Initialize a Firebase credential.
             let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
             // Sign in with Firebase.
             Auth.auth().signIn(with: credential) { (authResult, error) in
-                if (error != nil) {
-                    // Error. If error.code == .MissingOrInvalidNonce, make sure
-                    // you're sending the SHA256-hashed nonce as a hex string with
-                    // your request to Apple.
-                    print(error?.localizedDescription)
-                    return
+                if let error = error {
+                    print(error.localizedDescription)
+                    UserDefaults.standard.setValue(false, forKey: "loginStatus")
+                    LoadingOverlay.shared.hideOverlayView()
+                } else {
+                    print("Login Successful.")
+                    if let user = authResult?.user {
+                        UserDefaults.standard.setValue(true, forKey: "loginStatus")
+                        UserDefaults.standard.setValue(user.uid, forKey: "userId")
+                        UserDefaults.standard.setValue(self.displayName, forKey: "userName")
+                        UserDefaults.standard.setValue("", forKey: "userProfileUrl")
+                        self.sendLoginStatusToWatch()
+                        self.sendUserIdToWatch()
+                        DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
+                            LoadingOverlay.shared.hideOverlayView()
+                            if groups?.allKeys.count ?? 0 > 0 {
+                                self.ref = Database.database().reference()
+                                self.ref.child("users").child(user.uid).setValue(["name": self.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": groups!])
+                                self.navigateToGroupListVC()
+                            } else {
+                                self.ref = Database.database().reference()
+                                self.ref.child("users").child(user.uid).setValue(["name": self.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": nil])
+                                self.navigateToHomeVC()
+                            }
+                        }
+                    }
                 }
-                // User is signed in to Firebase with Apple.
-                // ...
             }
         }
     }
