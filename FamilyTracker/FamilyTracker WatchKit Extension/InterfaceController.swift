@@ -26,7 +26,8 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     private var userRef: DatabaseReference!
     var groups : NSDictionary = NSDictionary()
     var isAlertDismissed = false
-    
+    var isDataLoaded = false
+
     private var groupList = [Group]() {
         didSet {
             if groupList.count > 0 {
@@ -45,6 +46,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
         signInGroup.setHidden(true)
         signInBtn.setBackgroundImageNamed("google")
         
+        isDataLoaded = false
         fetchGroups()
         observeFirebaseRealtimeDBChanges()
         
@@ -63,7 +65,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     private func setUp() {
                  
-        if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
+        if isDataLoaded && UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
          
             if !isAlertDismissed {
                 isAlertDismissed = true
@@ -80,7 +82,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
             //TODO - make nav title to center
             self.setTitle("      Reached")
             
-        } else if UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
+        } else if isDataLoaded &&  UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
             self.setTitle("")
             self.isAlertDismissed = false
             self.tableView.setHidden(true)
@@ -104,12 +106,15 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     }
     
     private func showSignInRequiredAlert() {
-        let titleOfAlert = "Sign In required"
-        let messageOfAlert = "Sign In from your connected phone"
+//        let titleOfAlert = "Sign In required"
+//        let messageOfAlert = "Sign In from your connected phone"
+        let titleOfAlert = "Sign In from phone"
+        let messageOfAlert = "Request Sign In from your connected phone"
         DispatchQueue.main.async {
             self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
                 //something after clicking OK
                 self.refreshBtn.setHidden(false)
+                self.requestLoginFromPhone()
             }])
         }
     }
@@ -148,6 +153,7 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
                 if let groups = groups {
                     DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
                         if let data = data {
+                            self.isDataLoaded = true
                             let filtered = self.groupList.filter { ($0.id ?? "").contains(data.id ?? "") }
 
                             if filtered.count <= 0 {
@@ -169,6 +175,12 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     @IBAction func refreshBtnAction() {
         setUp()
+    }
+    
+    private func requestLoginFromPhone() {
+        self.connectivityHandler.sendMessage(message: ["requestlogin" : true as AnyObject], errorHandler:  { (error) in
+            print("Error sending message: \(error)")
+        })
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {

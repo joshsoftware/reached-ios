@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var globalNotificationDictionary: [AnyHashable: Any]?
     var window: UIWindow?
+    var connectivityHandler = WatchSessionManager.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -39,6 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             globalNotificationDictionary = notificationData as? [AnyHashable: Any]
         }
         registerForPushNotifications()
+        
+        connectivityHandler.startSession()
+        connectivityHandler.iOSDelegate = self
+        
         return true
     }
    
@@ -188,4 +193,41 @@ extension AppDelegate: MessagingDelegate {
           }
         }
     }
+}
+
+extension AppDelegate: iOSDelegate {
+    
+    func applicationContextReceived(tuple: ApplicationContextReceived) {
+    }
+    
+    
+    func messageReceived(tuple: MessageReceived) {
+        DispatchQueue.main.async() {
+            
+            if let requestlogin = tuple.message["requestlogin"] as? Bool, requestlogin {
+                
+                if UserDefaults.standard.bool(forKey: "loginStatus") {
+                    self.sendLoginStatusToWatch()
+                    self.sendUserIdToWatch()
+                }
+
+            }
+            
+        }
+    }
+    
+    private func sendLoginStatusToWatch() {
+        self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject], errorHandler:  { (error) in
+            print("Error sending message: \(error)")
+        })
+    }
+    
+    private func sendUserIdToWatch() {
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
+        }
+    }
+    
 }
