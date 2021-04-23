@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: "loginStatus") == true {
             LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
             if let userId = UserDefaults.standard.string(forKey: "userId") {
+                self.setDeviceTokenOnServer(userId: userId)
                 DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
                     LoadingOverlay.shared.hideOverlayView()
                     if groups?.allKeys.count ?? 0 > 0 {
@@ -122,12 +123,19 @@ extension LoginViewController: GIDSignInDelegate {
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": nil])
                             self.navigateToHomeVC()
                         }
+                        self.setDeviceTokenOnServer(userId: user.uid)
                     }
                 } else {
                     LoadingOverlay.shared.hideOverlayView()
                 }
             }
             
+        }
+    }
+    
+    private func setDeviceTokenOnServer(userId: String) {
+        if let token = UserDefaults.standard.object(forKey: "deviceToken") as? String {
+            self.ref.child("users").child(userId).child("token").child("phone").setValue(token)
         }
     }
     

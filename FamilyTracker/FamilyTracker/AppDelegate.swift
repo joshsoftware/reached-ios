@@ -18,7 +18,6 @@ import FirebaseMessaging
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var globalNotificationDictionary: [AnyHashable: Any]?
     var window: UIWindow?
     var connectivityHandler = WatchSessionManager.shared
 
@@ -35,10 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpLocationManager()
 
         //Remote Notification
-        let remoteNotification = launchOptions?[.remoteNotification]
-        if let notificationData = remoteNotification as? NSDictionary {
-            globalNotificationDictionary = notificationData as? [AnyHashable: Any]
-        }
         registerForPushNotifications()
         
         connectivityHandler.startSession()
@@ -165,21 +160,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // This method will be called when app received push notifications in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let notificationData = notification.request.content.userInfo
-        globalNotificationDictionary = notificationData
-        if let dictionary = globalNotificationDictionary {
-            print(dictionary)
-        }
+        
         completionHandler([.alert, .badge, .sound])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         UIApplication.shared.applicationIconBadgeNumber = 0
-        if globalNotificationDictionary != nil {
-        } else {
-            globalNotificationDictionary = response.notification.request.content.userInfo
-            let dictionary = response.notification.request.content.userInfo
-            print(dictionary)
-        }
+        let dictionary = response.notification.request.content.userInfo
+        print(dictionary)
+//        NotificationManager.shared.handleNotification(with: dictionary as [String: Any])
     }
 }
 
@@ -190,6 +179,7 @@ extension AppDelegate: MessagingDelegate {
             print("Error fetching FCM registration token: \(error)")
           } else if let token = token {
             print("FCM registration token: \(token)")
+            UserDefaults.standard.set(token, forKey: "deviceToken")
           }
         }
     }

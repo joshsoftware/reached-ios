@@ -20,6 +20,7 @@ class MemberListViewController: UIViewController {
     @IBOutlet weak var floatyBtn: Floaty!
     
     var memberList = [Members]()
+    private var userRef: DatabaseReference!
     private var ref: DatabaseReference!
     private var refSOS: DatabaseReference!
     private var sosState = false
@@ -31,7 +32,7 @@ class MemberListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        userRef = Database.database().reference()
         ref = Database.database().reference(withPath: "groups/\(self.groupId)")
         refSOS = Database.database().reference().child("sos")
 
@@ -83,12 +84,10 @@ class MemberListViewController: UIViewController {
     
     @objc private func logoutUser() {
         LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
-        UserDefaults.standard.setValue(false, forKey: "loginStatus")
-        UserDefaults.standard.setValue("", forKey: "userId")
-        UserDefaults.standard.setValue("", forKey: "userName")
-        UserDefaults.standard.setValue(nil, forKey: "groups")
-        UserDefaults.standard.setValue("", forKey: "userProfileUrl")
-
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            self.userRef.child("users").child(userId).child("token").child("phone").removeValue()
+        }
+        Utility.logoutUser()
         UserDefaults.standard.synchronize()
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {

@@ -33,6 +33,8 @@
 		B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4C76AE9262819070024B2C2 /* GroupTableViewCell.xib */; };
 		B4C76AF0262825960024B2C2 /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */; };
 		B4C76AF1262825960024B2C2 /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */; };
+		B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B142632C967008D5D8F /* NotificationManager.swift */; };
+		B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B1C2632CCCD008D5D8F /* Utility.swift */; };
 		B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */; };
 		B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */; };
 		B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14925EE46AA00B5F992 /* MapViewController.swift */; };
@@ -151,6 +153,8 @@
 		B4C76AE8262819070024B2C2 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		B4C76AE9262819070024B2C2 /* GroupTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupTableViewCell.xib; sourceTree = "<group>"; };
 		B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extension.swift"; sourceTree = "<group>"; };
+		B4D12B142632C967008D5D8F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		B4D12B1C2632CCCD008D5D8F /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		B4DDA14225EE46AA00B5F992 /* Reached.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reached.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -268,6 +272,14 @@
 			path = LocationManager;
 			sourceTree = "<group>";
 		};
+		B4D12B132632C734008D5D8F /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				B4D12B142632C967008D5D8F /* NotificationManager.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		B4DDA13925EE46AA00B5F992 = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +358,7 @@
 		B4DDA1FF25EE737900B5F992 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B4D12B132632C734008D5D8F /* Notification */,
 				B4F9B9D32620824500EC2983 /* Utils */,
 				3D51FD16261D87BD0016AA95 /* CustomView */,
 				B4E6F16226089C8B007AE4FC /* CustomControls */,
@@ -433,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				B4F9B9D42620825900EC2983 /* DateUtils.swift */,
+				B4D12B1C2632CCCD008D5D8F /* Utility.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -727,6 +741,7 @@
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,
 				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
 				3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */,
+				B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */,
 				B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */,
 				B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */,
 				B492BAAF261DC1AD000AD3F9 /* UIView+Extension.swift in Sources */,
@@ -735,6 +750,7 @@
 				B4DDA28725EFA94F00B5F992 /* MemberListViewController.swift in Sources */,
 				3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */,
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
+				B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */,
 				3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
