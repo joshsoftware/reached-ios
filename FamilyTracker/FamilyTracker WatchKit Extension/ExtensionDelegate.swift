@@ -6,24 +6,17 @@
 //
 
 import WatchKit
-import WatchConnectivity
 import FirebaseCore
 import Firebase
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
-
-    var globalNotificationDictionary: [AnyHashable: Any]?
-
+    
     func applicationDidFinishLaunching() {
         FirebaseApp.configure()
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
-            if granted {
-                WKExtension.shared().registerForRemoteNotifications()
-            }
-        }
-        Messaging.messaging().delegate = self
-
+        
+        //Remote Notification
+        registerForPushNotifications()
+        
         //Location update set up
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
@@ -31,15 +24,26 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
         locationManager.delegate = self
     }
     
+    private func registerForPushNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            if granted {
+                WKExtension.shared().registerForRemoteNotifications()
+            }
+        }
+        Messaging.messaging().delegate = self
+    }
+    
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
-
+    
     func applicationWillResignActive() {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
-
+    
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
         for task in backgroundTasks {
@@ -72,29 +76,34 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, MessagingDelegate {
     
     /// MessagingDelegate
     func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-      print("token:\n" + (fcmToken ?? ""))
-      Messaging.messaging().subscribe(toTopic: "watch") { error in
-        guard error == nil else {
-          print("error:" + error.debugDescription)
-          return
+        print("token:\n" + (fcmToken ?? ""))
+        if let token = fcmToken {
+            UserDefaults.standard.set(token, forKey: "watchDeviceToken")
         }
-        print("Successfully subscribed to topic")
-      }
+        Messaging.messaging().subscribe(toTopic: "watch") { error in
+            guard error == nil else {
+                print("error:" + error.debugDescription)
+                return
+            }
+            print("Successfully subscribed to topic")
+        }
     }
-
+    
     /// WKExtensionDelegate
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
-      /// Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
-      print("Set APNS Token\n")
-      Messaging.messaging().apnsToken = deviceToken
+        /// Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
+        print("Set APNS Token\n")
+        Messaging.messaging().apnsToken = deviceToken
+        UserDefaults.standard.set(deviceToken, forKey: "watchDeviceToken")
+        
     }
-
+    
 }
 
 extension ExtensionDelegate: LocationUpdateDelegate {
     
     // MARK: - Notifications
-
+    
     @objc private func locationUpdateNotification(notification: NSNotification) {
         let userinfo = notification.userInfo
         if let currentLocation = userinfo?["location"] as? CLLocation {
@@ -124,4 +133,16 @@ extension ExtensionDelegate: LocationUpdateDelegate {
         print("Longitude : \(location.coordinate.longitude)")
         self.updateCurrentUserLocation(location: location)
     }
+}
+
+extension ExtensionDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+    }
+    
+    func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (WKBackgroundFetchResult) -> Void) {
+        
+    }
+    
 }

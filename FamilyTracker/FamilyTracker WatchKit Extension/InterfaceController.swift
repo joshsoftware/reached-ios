@@ -24,6 +24,8 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     
     var connectivityHandler = WatchSessionManager.shared
     private var userRef: DatabaseReference!
+    private var userRefForDeviceToken: DatabaseReference!
+
     var groups : NSDictionary = NSDictionary()
     var isAlertDismissed = false
     var isDataLoaded = false
@@ -43,6 +45,8 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         super.awake(withContext: context)
+        userRefForDeviceToken = Database.database().reference()
+
         signInGroup.setHidden(true)
         signInBtn.setBackgroundImageNamed("google")
         
@@ -64,7 +68,9 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
     }
     
     private func setUp() {
-                 
+                
+        updateDeviceTokenOnFirebase()
+        
         if isDataLoaded && UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
          
             if !isAlertDismissed {
@@ -103,6 +109,23 @@ class InterfaceController: WKInterfaceController, NibLoadableViewController {
             self.signInGroup.setHidden(false)
         }
         
+    }
+    
+    private func updateDeviceTokenOnFirebase() {
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            if !userId.isEmpty && UserDefaults.standard.bool(forKey: "loginStatus") == true {
+                UserDefaults.standard.setValue(userId, forKey: "userIdBeforeLogout")
+                if let token = UserDefaults.standard.object(forKey: "watchDeviceToken") as? String {
+                    self.userRefForDeviceToken.child("users").child(userId).child("token").child("watch").setValue(token)
+                }
+            } else {
+                if let userId = UserDefaults.standard.object(forKey: "userIdBeforeLogout") as? String,!userId.isEmpty {
+                    self.userRefForDeviceToken.child("users").child(userId).child("token").child("watch").removeValue()
+                    UserDefaults.standard.setValue(nil, forKey: "userIdBeforeLogout")
+                }
+            }
+           
+        }
     }
     
     private func showSignInRequiredAlert() {
