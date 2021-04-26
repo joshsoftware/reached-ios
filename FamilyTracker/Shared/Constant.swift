@@ -40,5 +40,10 @@ struct Constant {
         static let KDarkOrangeColor = UIColor(red: 175.0 / 255.0, green: 127.0 / 255.0, blue: 16.0 / 255.0, alpha: 1.0)
         
     }
+    
+    enum NotificationType: String {
+        case joinGroup = "join_group"
+        case sos = "sos"
+    }
 }
 

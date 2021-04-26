@@ -36,6 +36,8 @@
 		B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B142632C967008D5D8F /* NotificationManager.swift */; };
 		B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B1C2632CCCD008D5D8F /* Utility.swift */; };
 		B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */; };
+		B4D12BA82636DEEC008D5D8F /* NotificationManager_Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12BA72636DEEC008D5D8F /* NotificationManager_Watch.swift */; };
+		B4D12BAC2636DEF4008D5D8F /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */; };
 		B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */; };
 		B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */; };
 		B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14925EE46AA00B5F992 /* MapViewController.swift */; };
@@ -157,6 +159,7 @@
 		B4D12B142632C967008D5D8F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B4D12B1C2632CCCD008D5D8F /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
+		B4D12BA72636DEEC008D5D8F /* NotificationManager_Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager_Watch.swift; sourceTree = "<group>"; };
 		B4DDA14225EE46AA00B5F992 /* Reached.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reached.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -279,6 +282,7 @@
 			children = (
 				B4D12B142632C967008D5D8F /* NotificationManager.swift */,
 				B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */,
+				B4D12BA72636DEEC008D5D8F /* NotificationManager_Watch.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -786,9 +790,11 @@
 				B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */,
 				B4DDA20F25EF658A00B5F992 /* MemberRowController.swift in Sources */,
 				B4F9B7EC261EFD5400EC2983 /* GroupListModel.swift in Sources */,
+				B4D12BAC2636DEF4008D5D8F /* NotificationModel.swift in Sources */,
 				B4DDA22F25EF722700B5F992 /* Constant.swift in Sources */,
 				B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */,
 				B4DDA24B25EF73F900B5F992 /* Service.swift in Sources */,
+				B4D12BA82636DEEC008D5D8F /* NotificationManager_Watch.swift in Sources */,
 				B4F9B9D62620825900EC2983 /* DateUtils.swift in Sources */,
 				B4DDA21F25EF680500B5F992 /* MemberListModel.swift in Sources */,
 				B4DDA16B25EE46AF00B5F992 /* InterfaceController.swift in Sources */,

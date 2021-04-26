@@ -36,14 +36,14 @@ class NotificationManager: NSObject {
             }
         }
         
-        if type == "join_group" {
+        switch type {
+        case Constant.NotificationType.joinGroup.rawValue:
             if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
                 vc.groupId = payload?.groupId ?? ""
                 navigationController.pushViewController(vc, animated: true)
 
             }
-        } else if type == "sos" {
-
+        case Constant.NotificationType.sos.rawValue:
             if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
                 vc.groupId = payload?.groupId ?? ""
                 vc.sosRecievedMemberId = payload?.memberId ?? ""
@@ -51,9 +51,8 @@ class NotificationManager: NSObject {
             }
 
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToMapOnSOSRemoteNotification"), object: nil, userInfo: nil)
-
-        } else {
-
+        default:
+            break
         }
     }
 }
