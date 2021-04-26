@@ -66,15 +66,16 @@ class JoinLinkManager: NSObject {
                     groupName = queryItems[1].value ?? ""
                 }
             }
+            let groupNameString = groupName.replacingOccurrences(of: "+", with: " ")
             print("Group Id: \(groupId)")
-            print("Group Name: \(groupName)")
-            self.handleJoinLinkNavigation(groupId: groupId, groupName: groupName)
+            print("Group Name: \(groupNameString)")
+            self.handleJoinLinkNavigation(groupId: groupId, groupName: groupNameString)
         }
     }
     
     func handleJoinLinkNavigation(groupId: String, groupName: String) {
         if let topVC = UIApplication.getTopViewController() {
-            topVC.presentConfirmationAlert(withTitle: "Greetings!", message: "You have been invited to the group \(groupName). Please press ok to join.") { (flag) in
+            topVC.presentConfirmationAlert(withTitle: "Greetings!", message: "You have been invited to the group \"\(groupName)\". Please press ok to join.") { (flag) in
                 if let topVC = UIApplication.getTopViewController() {
                     if flag {
                         if topVC.isKind(of: GroupListViewController.self) {
