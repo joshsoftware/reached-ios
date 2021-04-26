@@ -35,6 +35,7 @@
 		B4C76AF1262825960024B2C2 /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */; };
 		B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B142632C967008D5D8F /* NotificationManager.swift */; };
 		B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12B1C2632CCCD008D5D8F /* Utility.swift */; };
+		B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */; };
 		B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */; };
 		B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */; };
 		B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DDA14925EE46AA00B5F992 /* MapViewController.swift */; };
@@ -155,6 +156,7 @@
 		B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extension.swift"; sourceTree = "<group>"; };
 		B4D12B142632C967008D5D8F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B4D12B1C2632CCCD008D5D8F /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		B4DDA14225EE46AA00B5F992 /* Reached.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reached.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				B4D12B142632C967008D5D8F /* NotificationManager.swift */,
+				B4D12BA22636DCFA008D5D8F /* NotificationModel.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -759,6 +762,7 @@
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
+				B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

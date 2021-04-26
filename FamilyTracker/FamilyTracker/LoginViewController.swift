@@ -108,8 +108,8 @@ extension LoginViewController: GIDSignInDelegate {
                 if let user = authResult?.user {
                     UserDefaults.standard.setValue(true, forKey: "loginStatus")
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
-                    UserDefaults.standard.setValue(user.displayName, forKey: "userName")
-                    UserDefaults.standard.setValue(user.photoURL?.description, forKey: "userProfileUrl")
+                    UserDefaults.standard.setValue(user.displayName ?? "", forKey: "userName")
+                    UserDefaults.standard.setValue(user.photoURL?.description ?? "", forKey: "userProfileUrl")
                     self.sendLoginStatusToWatch()
                     self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in

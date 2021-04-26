@@ -28,6 +28,7 @@ class MemberListViewController: UIViewController {
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
     var groupName: String = ""
+    var sosRecievedMemberId: String = ""
 
     
     override func viewDidLoad() {
@@ -37,6 +38,8 @@ class MemberListViewController: UIViewController {
         refSOS = Database.database().reference().child("sos")
 
         setUp()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(navigateToMapViewOnRemoteNotification), name: NSNotification.Name(rawValue: "GoToMapOnSOSRemoteNotification"), object: nil)
     }
 
     private func setUp() {
@@ -167,6 +170,16 @@ class MemberListViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc private func navigateToMapViewOnRemoteNotification() {
+        let filtered = self.memberList.filter { $0.id!.contains(self.sosRecievedMemberId) }
+        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+            vc.memberList = filtered
+            vc.groupId = groupId
+            self.navigationController?.pushViewController(vc, animated: false)
+        }
+        
     }
     
     private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {

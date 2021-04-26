@@ -168,7 +168,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
         let dictionary = response.notification.request.content.userInfo
         print(dictionary)
-//        NotificationManager.shared.handleNotification(with: dictionary as [String: Any])
+        
+        if let data = dictionary as? [String: Any] {
+            NotificationManager.shared.handleNotification(with: data)
+        }
+        
     }
 }
 
