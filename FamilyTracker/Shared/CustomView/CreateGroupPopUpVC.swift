@@ -63,8 +63,8 @@ class CreateGroupPopUpVC: UIViewController {
     }
     
     func createGroup(groupName: String) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName"), let profileUrl = UserDefaults.standard.string(forKey: "userProfileUrl") {
-            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": name, "lastUpdated": Date().currentUTCDate(), "profileUrl": profileUrl] as [String : Any]
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "name", "lastUpdated": Date().currentUTCDate(), "profileUrl": "profileUrl"] as [String : Any]
             var memberArray : Array = Array<Any>()
             memberArray.append(data)
 

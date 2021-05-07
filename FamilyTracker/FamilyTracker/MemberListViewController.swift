@@ -29,6 +29,7 @@ class MemberListViewController: UIViewController {
     var groupId: String = ""
     var groupName: String = ""
     var sosRecievedMemberId: String = ""
+    var groupRefreshHandler: (() -> Void)?
 
     
     override func viewDidLoad() {
@@ -76,6 +77,36 @@ class MemberListViewController: UIViewController {
             }
 
             self.updateCurrentUsersSOSOnServer(sosState: !self.sosState)
+        }
+        
+        floatyBtn.addItem("Leave Group", icon: UIImage(named: "addMember")) { (item) in
+            self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(self.groupName) group?") { (flag) in
+                if flag {
+                    if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: {
+                            if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
+                                self.memberList.remove(at: index)
+                                self.tableView.reloadData()
+                                self.groupRefreshHandler?()
+                            }
+                        })
+                    }
+                } else {
+                    //Do nothing
+                }
+            }
+        }
+        
+        floatyBtn.addItem("Delete Group", icon: UIImage(named: "addMember")) { (item) in
+            self.presentConfirmationAlert(withTitle: "Delete Group", message: "Are you want to delete \(self.groupName) group?") { (flag) in
+                if flag {
+                    DatabaseManager.shared.deleteGroup(groupId: self.groupId) {
+                        self.groupRefreshHandler?()
+                    }
+                } else {
+                    //Do nothing
+                }
+            }
         }
                 
         for item in floatyBtn.items {

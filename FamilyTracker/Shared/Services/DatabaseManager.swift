@@ -120,5 +120,33 @@ class DatabaseManager: NSObject {
         }
         print("SOS updated...")
     }
+    
+    func leaveGroup(userWith id: String, groupId: String, completion: @escaping () -> Void) {
+        self.ref = Database.database().reference(withPath: "groups/\(groupId)").child("members").child(id)
+        self.ref.removeValue()
+        self.ref = Database.database().reference().child("users").child(id).child("groups").child(groupId)
+        self.ref.removeValue()
+        completion()
+    }
+    
+    func deleteGroup(groupId: String, completion: @escaping () -> Void) {
+        self.ref = Database.database().reference().child("groups/\(groupId)").child("members")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let members = snapshot.value as? NSDictionary {
+                    for key in members.allKeys {
+                        self.ref = Database.database().reference().child("users").child(key as! String).child("groups").child(groupId)
+                        self.ref.removeValue()
+                    }
+                    self.ref = Database.database().reference().child("groups/\(groupId)")
+                    self.ref.removeValue()
+                }
+                completion()
+            } else {
+                print("Group not created")
+                completion()
+            }
+        })
+    }
 }
 
