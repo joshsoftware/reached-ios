@@ -171,5 +171,20 @@ class DatabaseManager: NSObject {
             }
         })
     }
+    
+    func requestForLeaveGroup(groupId: String, groupName: String, createBy: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let name = UserDefaults.standard.string(forKey: "userName") {
+            let data = ["from": ["id": userId, "name": name], "group": ["id": groupId, "name": groupName], "to": createBy] as [String : Any]
+            let value = ["data": data, "type": "LEAVE"] as [String : Any]
+            self.ref = Database.database().reference().child("requests").childByAutoId()
+            self.ref.setValue(value) { (error, reference) in
+                if (error != nil) {
+                    completion(nil, "Error while creating leave group request")
+                } else {
+                    completion("Request for leave group raise sucessfully", nil)
+                }
+            }
+        }
+    }
 }
 

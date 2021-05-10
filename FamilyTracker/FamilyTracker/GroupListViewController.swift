@@ -170,6 +170,7 @@ extension GroupListViewController: UITableViewDataSource, UITableViewDelegate {
             if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
                 vc.groupId = data.id ?? ""
                 vc.groupName = data.name ?? ""
+                vc.createdBy = data.createdBy ?? ""
                 vc.groupRefreshHandler = {
                     self.fetchGroups()
                 }

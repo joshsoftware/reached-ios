@@ -28,6 +28,7 @@ class MemberListViewController: UIViewController {
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
     var groupName: String = ""
+    var createdBy: String = ""
     var sosRecievedMemberId: String = ""
     var groupRefreshHandler: (() -> Void)?
 
@@ -82,15 +83,24 @@ class MemberListViewController: UIViewController {
         floatyBtn.addItem("Leave Group", icon: UIImage(named: "addMember")) { (item) in
             self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(self.groupName) group?") { (flag) in
                 if flag {
-                    if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: { response, error in
-                            if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
-                                self.memberList.remove(at: index)
-                                self.tableView.reloadData()
-                                self.groupRefreshHandler?()
+                    DatabaseManager.shared.requestForLeaveGroup(groupId: self.groupId, groupName: self.groupName, createBy: self.createdBy) { (response, error) in
+                        if let err = error {
+                            self.presentAlert(withTitle: "Error", message: err) {
+                                
                             }
-                        })
+                        } else {
+                            
+                        }
                     }
+//                    if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+//                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: { response, error in
+//                            if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
+//                                self.memberList.remove(at: index)
+//                                self.tableView.reloadData()
+//                                self.groupRefreshHandler?()
+//                            }
+//                        })
+//                    }
                 } else {
                     //Do nothing
                 }
