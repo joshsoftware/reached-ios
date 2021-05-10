@@ -16,6 +16,7 @@ import CoreLocation
 class DatabaseManager: NSObject {
     static let shared = DatabaseManager()
     private var ref: DatabaseReference!
+    let group = DispatchGroup()
 
     func fetchGroupsFor(userWith id: String, completion: @escaping (_ result: NSDictionary?) -> Void) {
         self.ref = Database.database().reference().child("users").child(id).child("groups")
@@ -121,30 +122,52 @@ class DatabaseManager: NSObject {
         print("SOS updated...")
     }
     
-    func leaveGroup(userWith id: String, groupId: String, completion: @escaping () -> Void) {
+    func leaveGroup(userWith id: String, groupId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
         self.ref = Database.database().reference(withPath: "groups/\(groupId)").child("members").child(id)
-        self.ref.removeValue()
-        self.ref = Database.database().reference().child("users").child(id).child("groups").child(groupId)
-        self.ref.removeValue()
-        completion()
+        self.ref.removeValue { (error, reference) in
+            if (error != nil) {
+                completion(nil, "Error while leaving group")
+            } else {
+                self.ref = Database.database().reference().child("users").child(id).child("groups").child(groupId)
+                self.ref.removeValue { (error, reference) in
+                    if (error != nil) {
+                        completion(nil, "Error while leaving group")
+                    } else {
+                        completion("Leave group sucessfully", nil)
+                    }
+                }
+            }
+        }
     }
     
-    func deleteGroup(groupId: String, completion: @escaping () -> Void) {
+    func deleteGroup(groupId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
         self.ref = Database.database().reference().child("groups/\(groupId)").child("members")
         self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if(snapshot.exists()) {
                 if let members = snapshot.value as? NSDictionary {
                     for key in members.allKeys {
+                        self.group.enter()
                         self.ref = Database.database().reference().child("users").child(key as! String).child("groups").child(groupId)
-                        self.ref.removeValue()
+                        self.ref.removeValue { (error, reference) in
+                            if (error != nil) {
+                                completion(nil, "Error while deleting group")
+                            } else {
+                                // Do nothing
+                            }
+                            self.group.leave()
+                        }
                     }
                     self.ref = Database.database().reference().child("groups/\(groupId)")
-                    self.ref.removeValue()
+                    self.ref.removeValue { (error, reference) in
+                        if (error != nil) {
+                            completion(nil, "Error while deleting group")
+                        } else {
+                            completion("Leave group sucessfully", nil)
+                        }
+                    }
                 }
-                completion()
             } else {
-                print("Group not created")
-                completion()
+                completion(nil, "Error while deleting group")
             }
         })
     }

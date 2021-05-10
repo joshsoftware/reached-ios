@@ -83,7 +83,7 @@ class MemberListViewController: UIViewController {
             self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(self.groupName) group?") { (flag) in
                 if flag {
                     if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: {
+                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: { response, error in
                             if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
                                 self.memberList.remove(at: index)
                                 self.tableView.reloadData()
@@ -100,8 +100,20 @@ class MemberListViewController: UIViewController {
         floatyBtn.addItem("Delete Group", icon: UIImage(named: "addMember")) { (item) in
             self.presentConfirmationAlert(withTitle: "Delete Group", message: "Are you want to delete \(self.groupName) group?") { (flag) in
                 if flag {
-                    DatabaseManager.shared.deleteGroup(groupId: self.groupId) {
-                        self.groupRefreshHandler?()
+                    DatabaseManager.shared.deleteGroup(groupId: self.groupId) { response, error in
+                        if let err = error {
+                            self.presentAlert(withTitle: "Error", message: err) {
+                                
+                            }
+                        } else {
+                            self.presentAlert(withTitle: "Alert", message: response ?? "") {
+                                if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                                    dict.removeValue(forKey: self.groupId)
+                                    UserDefaults.standard.setValue(dict, forKey: "groups")
+                                }
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        }
                     }
                 } else {
                     //Do nothing
