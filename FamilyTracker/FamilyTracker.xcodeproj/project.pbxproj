@@ -20,6 +20,9 @@
 		3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D546176261C665B0053FA57 /* GroupListViewController.swift */; };
 		3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617A261C8A1E0053FA57 /* GroupListModel.swift */; };
 		3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D54617C261C9D160053FA57 /* DatabaseManager.swift */; };
+		3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C52E2649250B008410B8 /* OnboardingViewController.swift */; };
+		3D56C53226492512008410B8 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D56C53126492511008410B8 /* Intro.storyboard */; };
+		3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C5332649252F008410B8 /* IntroViewController.swift */; };
 		3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA17223260092BB00A7E9F6 /* LoginViewController.swift */; };
 		3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */; };
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
@@ -139,6 +142,9 @@
 		3D546176261C665B0053FA57 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
 		3D54617A261C8A1E0053FA57 /* GroupListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListModel.swift; sourceTree = "<group>"; };
 		3D54617C261C9D160053FA57 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		3D56C52E2649250B008410B8 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		3D56C53126492511008410B8 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
+		3D56C5332649252F008410B8 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		3DA17223260092BB00A7E9F6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -257,6 +263,14 @@
 			path = QRCodeVCs;
 			sourceTree = "<group>";
 		};
+		3D56C53026492511008410B8 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				3D56C53126492511008410B8 /* Intro.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		A76F5CCFD66C61206DEC2246 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,8 +332,11 @@
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
 				3DA17223260092BB00A7E9F6 /* LoginViewController.swift */,
+				3D56C52E2649250B008410B8 /* OnboardingViewController.swift */,
 				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
+				3D56C5332649252F008410B8 /* IntroViewController.swift */,
 				3D51FD21261DE3E20016AA95 /* ViewControllers */,
+				3D56C53026492511008410B8 /* Storyboards */,
 				3D546176261C665B0053FA57 /* GroupListViewController.swift */,
 				B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */,
 				B4DDA28625EFA94F00B5F992 /* MemberListViewController.swift */,
@@ -582,6 +599,7 @@
 				B4DDA15225EE46AE00B5F992 /* LaunchScreen.storyboard in Resources */,
 				B4DDA14F25EE46AE00B5F992 /* Assets.xcassets in Resources */,
 				3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */,
+				3D56C53226492512008410B8 /* Intro.storyboard in Resources */,
 				3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */,
 				B4DDA14D25EE46AA00B5F992 /* Main.storyboard in Resources */,
 				B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */,
@@ -736,6 +754,7 @@
 			files = (
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
+				3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */,
 				B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */,
 				3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */,
 				B4DDA21E25EF680500B5F992 /* MemberListModel.swift in Sources */,
@@ -766,6 +785,7 @@
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
+				3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */,
 				B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
 			);
