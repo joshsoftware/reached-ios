@@ -80,53 +80,57 @@ class MemberListViewController: UIViewController {
             self.updateCurrentUsersSOSOnServer(sosState: !self.sosState)
         }
         
-        floatyBtn.addItem("Leave Group", icon: UIImage(named: "addMember")) { (item) in
-            self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(self.groupName) group?") { (flag) in
-                if flag {
-                    DatabaseManager.shared.requestForLeaveGroup(groupId: self.groupId, groupName: self.groupName, createBy: self.createdBy) { (response, error) in
-                        if let err = error {
-                            self.presentAlert(withTitle: "Error", message: err) {
-                                
-                            }
-                        } else {
-                            
-                        }
-                    }
-//                    if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-//                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: { response, error in
-//                            if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
-//                                self.memberList.remove(at: index)
-//                                self.tableView.reloadData()
-//                                self.groupRefreshHandler?()
-//                            }
-//                        })
-//                    }
-                } else {
-                    //Do nothing
-                }
-            }
-        }
-        
-        floatyBtn.addItem("Delete Group", icon: UIImage(named: "addMember")) { (item) in
-            self.presentConfirmationAlert(withTitle: "Delete Group", message: "Are you want to delete \(self.groupName) group?") { (flag) in
-                if flag {
-                    DatabaseManager.shared.deleteGroup(groupId: self.groupId) { response, error in
-                        if let err = error {
-                            self.presentAlert(withTitle: "Error", message: err) {
-                                
-                            }
-                        } else {
-                            self.presentAlert(withTitle: "Alert", message: response ?? "") {
-                                if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
-                                    dict.removeValue(forKey: self.groupId)
-                                    UserDefaults.standard.setValue(dict, forKey: "groups")
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            if userId == self.createdBy {
+                floatyBtn.addItem("Delete Group", icon: UIImage(named: "addMember")) { (item) in
+                    self.presentConfirmationAlert(withTitle: "Delete Group", message: "Are you want to delete \(self.groupName) group?") { (flag) in
+                        if flag {
+                            DatabaseManager.shared.deleteGroup(groupId: self.groupId) { response, error in
+                                if let err = error {
+                                    self.presentAlert(withTitle: "Error", message: err) {
+                                        
+                                    }
+                                } else {
+                                    self.presentAlert(withTitle: "Alert", message: response ?? "") {
+                                        if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                                            dict.removeValue(forKey: self.groupId)
+                                            UserDefaults.standard.setValue(dict, forKey: "groups")
+                                        }
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
                                 }
-                                self.navigationController?.popViewController(animated: true)
                             }
+                        } else {
+                            //Do nothing
                         }
                     }
-                } else {
-                    //Do nothing
+                }
+            } else {
+                floatyBtn.addItem("Leave Group", icon: UIImage(named: "addMember")) { (item) in
+                    self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(self.groupName) group?") { (flag) in
+                        if flag {
+                            DatabaseManager.shared.requestForLeaveGroup(groupId: self.groupId, groupName: self.groupName, createBy: self.createdBy) { (response, error) in
+                                if let err = error {
+                                    self.presentAlert(withTitle: "Error", message: err) {
+                                        
+                                    }
+                                } else {
+                                    
+                                }
+                            }
+                            //                    if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+                            //                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: self.groupId, completion: { response, error in
+                            //                            if let index = self.memberList.firstIndex(where: { $0.id == userId }) {
+                            //                                self.memberList.remove(at: index)
+                            //                                self.tableView.reloadData()
+                            //                                self.groupRefreshHandler?()
+                            //                            }
+                            //                        })
+                            //                    }
+                        } else {
+                            //Do nothing
+                        }
+                    }
                 }
             }
         }
