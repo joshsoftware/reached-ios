@@ -28,6 +28,7 @@ class LoginViewController: UIViewController {
                 DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
                     LoadingOverlay.shared.hideOverlayView()
                     if groups?.allKeys.count ?? 0 > 0 {
+                        UserDefaults.standard.setValue(groups, forKey: "groups")
                         self.navigateToGroupListVC()
                     } else {
                         self.navigateToHomeVC()
@@ -117,6 +118,7 @@ extension LoginViewController: GIDSignInDelegate {
                         if groups?.allKeys.count ?? 0 > 0 {
                             self.ref = Database.database().reference()
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": groups!])
+                            UserDefaults.standard.setValue(groups, forKey: "groups")
                             self.navigateToGroupListVC()
                         } else {
                             self.ref = Database.database().reference()
