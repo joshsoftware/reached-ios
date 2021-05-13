@@ -242,15 +242,15 @@
         <!--Navigation Controller-->
         <scene sceneID="RSv-hs-z9C">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r82-wB-k5J" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="r82-wB-k5J" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mMU-gg-OaG">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="fjb-PB-Vlh" kind="relationship" relationship="rootViewController" id="79a-RE-g7K"/>
+                        <segue destination="laI-M3-9t8" kind="relationship" relationship="rootViewController" id="v8D-b2-MJ1"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iLW-fh-cHh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
