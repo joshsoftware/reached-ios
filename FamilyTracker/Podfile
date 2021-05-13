@@ -16,6 +16,7 @@ target 'FamilyTracker' do
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
   pod 'Floaty', '~> 4.2.0'
+  pod 'Panels'
   
 end
 
