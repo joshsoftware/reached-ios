@@ -16,7 +16,8 @@ class MapViewController: UIViewController {
     private var ref: DatabaseReference!
     var memberList: [Members] = []
     var groupId: String = ""
-
+    var toShowAllGroupMembers = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -37,6 +38,22 @@ class MapViewController: UIViewController {
                 self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
         }
+        
+        if toShowAllGroupMembers {
+            //Observe newly added member
+            self.ref.child("/members").observe(.childAdded) { (snapshot) in
+                if let value = snapshot.value as? NSMutableDictionary {
+                    self.newFamilyMemberAdded(key: snapshot.key, value: value)
+                }
+            }
+            
+            //Observe family member removed
+            self.ref.child("/members").observe(.childRemoved) { (snapshot) in
+                if let value = snapshot.value as? NSMutableDictionary {
+                    self.familyMemberRemoved(value: value)
+                }
+            }
+        }
     }
     
     private func familyMembersLocationUpdated(key: String, value: NSMutableDictionary) {
@@ -54,6 +71,35 @@ class MapViewController: UIViewController {
             let allAnnotations = self.mapView.annotations
             self.mapView.removeAnnotations(allAnnotations)
             self.memberList[index] = member
+            self.showPinForMembersLocation()
+        }
+    }
+    
+    private func newFamilyMemberAdded(key: String, value: NSMutableDictionary) {
+        
+        var member = Members()
+        member.id = key
+        member.lat = value["lat"] as? Double
+        member.long = value["long"] as? Double
+        member.name = value["name"] as? String
+        member.profileUrl = value["profileUrl"] as? String
+        member.lastUpdated = value["lastUpdated"] as? String
+        member.sosState = value["sosState"] as? Bool
+        self.memberList.append(member)
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+        self.showPinForMembersLocation()
+        
+    }
+    
+    private func familyMemberRemoved(value: NSMutableDictionary) {
+        
+        var member = Members()
+        member.id = value["id"] as? String
+        if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
+            self.memberList.remove(at: index)
+            let allAnnotations = self.mapView.annotations
+            self.mapView.removeAnnotations(allAnnotations)
             self.showPinForMembersLocation()
         }
     }

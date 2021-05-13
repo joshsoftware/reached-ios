@@ -28,6 +28,12 @@
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
+		B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */; };
+		B455BDED264D3D7400AAE677 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */; };
+		B455BDF7264D40B000AAE677 /* GroupListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BDF5264D40B000AAE677 /* GroupListCollectionViewCell.swift */; };
+		B455BDF8264D40B000AAE677 /* GroupListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */; };
+		B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */; };
+		B455BE02264D4E0F00AAE677 /* GroupMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */; };
 		B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */; };
 		B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */; };
 		B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */; };
@@ -154,6 +160,12 @@
 		71BD1743B4644990D03FEAB7 /* Pods_FamilyTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADA4615038C63A7A43E27177 /* Pods-FamilyTracker WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit Extension/Pods-FamilyTracker WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B416337625F625ED004F9911 /* UserLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationManager.swift; sourceTree = "<group>"; };
+		B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		B455BDF5264D40B000AAE677 /* GroupListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListCollectionViewCell.swift; sourceTree = "<group>"; };
+		B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCollectionViewCell.xib; sourceTree = "<group>"; };
+		B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
+		B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMemberTableViewCell.xib; sourceTree = "<group>"; };
 		B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashInterfaceController.swift; sourceTree = "<group>"; };
 		B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FamilyTracker WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -248,6 +260,7 @@
 		3D51FD21261DE3E20016AA95 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B455BDEB264D3D5900AAE677 /* Dashboard */,
 				3D51FD22261DE3E20016AA95 /* QRCodeVCs */,
 			);
 			path = ViewControllers;
@@ -267,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				3D56C53126492511008410B8 /* Intro.storyboard */,
+				B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -289,6 +303,26 @@
 				B416337625F625ED004F9911 /* UserLocationManager.swift */,
 			);
 			path = LocationManager;
+			sourceTree = "<group>";
+		};
+		B455BDEB264D3D5900AAE677 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				B455BDF4264D3FF800AAE677 /* Cells */,
+				B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		B455BDF4264D3FF800AAE677 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B455BDF5264D40B000AAE677 /* GroupListCollectionViewCell.swift */,
+				B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */,
+				B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */,
+				B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		B4D12B132632C734008D5D8F /* Notification */ = {
@@ -602,7 +636,10 @@
 				3D56C53226492512008410B8 /* Intro.storyboard in Resources */,
 				3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */,
 				B4DDA14D25EE46AA00B5F992 /* Main.storyboard in Resources */,
+				B455BDF8264D40B000AAE677 /* GroupListCollectionViewCell.xib in Resources */,
 				B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */,
+				B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */,
+				B455BE02264D4E0F00AAE677 /* GroupMemberTableViewCell.xib in Resources */,
 				B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -752,6 +789,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B455BDF7264D40B000AAE677 /* GroupListCollectionViewCell.swift in Sources */,
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
 				3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */,
@@ -761,6 +799,7 @@
 				B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */,
 				3D51FD28261DE3E20016AA95 /* ShowQRCodeViewController.swift in Sources */,
 				3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */,
+				B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */,
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
 				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
@@ -784,6 +823,7 @@
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
+				B455BDED264D3D7400AAE677 /* DashboardViewController.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */,
 				B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */,

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Dashboard View Controller-->
+        <scene sceneID="hei-WX-O0A">
+            <objects>
+                <viewController storyboardIdentifier="DashboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VMQ-M0-ZHB" customClass="DashboardViewController" customModule="Reached" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CPG-Jc-hee">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tA1-Pm-nrj">
+                                <rect key="frame" x="0.0" y="807" width="414" height="55"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="55" id="2TV-tW-6vP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="Show on MAP">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="showOnMapBtnAction:" destination="VMQ-M0-ZHB" eventType="touchUpInside" id="l7Z-mU-g1H"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7W-Hc-SJZ">
+                                <rect key="frame" x="15" y="118" width="88" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4pL-h0-qG2">
+                                <rect key="frame" x="113" y="104" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="TfQ-dP-Tlo"/>
+                                    <constraint firstAttribute="width" constant="50" id="dOv-EC-blx"/>
+                                </constraints>
+                                <state key="normal" image="addGroupCircular"/>
+                                <connections>
+                                    <action selector="addGroupBtnAction:" destination="VMQ-M0-ZHB" eventType="touchUpInside" id="rgU-TK-fe1"/>
+                                </connections>
+                            </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vNi-HL-xm9">
+                                <rect key="frame" x="0.0" y="174" width="414" height="583"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2tq-xk-KwB">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tsV-6B-R6B"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="v7W-Hc-SJZ" firstAttribute="leading" secondItem="tsV-6B-R6B" secondAttribute="leading" constant="15" id="4Ry-GW-gES"/>
+                            <constraint firstItem="v7W-Hc-SJZ" firstAttribute="top" secondItem="tsV-6B-R6B" secondAttribute="top" constant="30" id="4dg-yr-d2f"/>
+                            <constraint firstItem="4pL-h0-qG2" firstAttribute="leading" secondItem="v7W-Hc-SJZ" secondAttribute="trailing" constant="10" id="FbQ-Qf-e9l"/>
+                            <constraint firstItem="tsV-6B-R6B" firstAttribute="trailing" secondItem="vNi-HL-xm9" secondAttribute="trailing" id="GuF-FF-Dn7"/>
+                            <constraint firstItem="tA1-Pm-nrj" firstAttribute="bottom" secondItem="tsV-6B-R6B" secondAttribute="bottom" id="L6W-5i-yIT"/>
+                            <constraint firstItem="tsV-6B-R6B" firstAttribute="trailing" secondItem="tA1-Pm-nrj" secondAttribute="trailing" id="N5U-dZ-gpJ"/>
+                            <constraint firstItem="tA1-Pm-nrj" firstAttribute="top" secondItem="vNi-HL-xm9" secondAttribute="bottom" constant="50" id="bSo-ha-e3q"/>
+                            <constraint firstItem="4pL-h0-qG2" firstAttribute="centerY" secondItem="v7W-Hc-SJZ" secondAttribute="centerY" id="jgi-RC-IQZ"/>
+                            <constraint firstItem="vNi-HL-xm9" firstAttribute="top" secondItem="4pL-h0-qG2" secondAttribute="bottom" constant="20" id="o3D-es-kM2"/>
+                            <constraint firstItem="tA1-Pm-nrj" firstAttribute="leading" secondItem="tsV-6B-R6B" secondAttribute="leading" id="q4Y-LP-1bX"/>
+                            <constraint firstItem="vNi-HL-xm9" firstAttribute="leading" secondItem="tsV-6B-R6B" secondAttribute="leading" id="zFu-06-uo8"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="addGroupBtn" destination="4pL-h0-qG2" id="Cqf-kL-25g"/>
+                        <outlet property="collectionView" destination="vNi-HL-xm9" id="yqb-cL-NoX"/>
+                        <outlet property="myGroupsLbl" destination="v7W-Hc-SJZ" id="a67-9m-xsq"/>
+                        <outlet property="showOnMapBtn" destination="tA1-Pm-nrj" id="kMr-7F-20w"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uxx-ie-MFn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-407.24637681159425" y="-17.410714285714285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="addGroupCircular" width="60" height="60"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

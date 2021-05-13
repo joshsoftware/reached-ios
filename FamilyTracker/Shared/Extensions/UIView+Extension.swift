@@ -18,4 +18,12 @@ extension UIView {
         }
         return nil
     }
+    
+    func setShadowToAllSides(color: UIColor = .lightGray) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize.zero
+        layer.shadowRadius = 5
+    }
 }
