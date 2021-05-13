@@ -25,6 +25,8 @@
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
+		B455BCFE2649618C00AAE677 /* GeotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BCFD2649618C00AAE677 /* GeotificationData.swift */; };
+		B455BCFF2649618C00AAE677 /* GeotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BCFD2649618C00AAE677 /* GeotificationData.swift */; };
 		B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */; };
 		B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */; };
 		B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */; };
@@ -148,6 +150,7 @@
 		71BD1743B4644990D03FEAB7 /* Pods_FamilyTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADA4615038C63A7A43E27177 /* Pods-FamilyTracker WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit Extension/Pods-FamilyTracker WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B416337625F625ED004F9911 /* UserLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationManager.swift; sourceTree = "<group>"; };
+		B455BCFD2649618C00AAE677 /* GeotificationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeotificationData.swift; sourceTree = "<group>"; };
 		B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashInterfaceController.swift; sourceTree = "<group>"; };
 		B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FamilyTracker WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -408,6 +411,7 @@
 			children = (
 				B4DDA21D25EF680500B5F992 /* MemberListModel.swift */,
 				3D54617A261C8A1E0053FA57 /* GroupListModel.swift */,
+				B455BCFD2649618C00AAE677 /* GeotificationData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -737,6 +741,7 @@
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
 				B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */,
+				B455BCFE2649618C00AAE677 /* GeotificationData.swift in Sources */,
 				3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */,
 				B4DDA21E25EF680500B5F992 /* MemberListModel.swift in Sources */,
 				B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */,
@@ -784,6 +789,7 @@
 				B4DDA20225EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4F9B901261F11A900EC2983 /* GroupRowController.swift in Sources */,
 				B4DDA17125EE46AF00B5F992 /* ComplicationController.swift in Sources */,
+				B455BCFF2649618C00AAE677 /* GeotificationData.swift in Sources */,
 				B4DDA16D25EE46AF00B5F992 /* ExtensionDelegate.swift in Sources */,
 				B4F9B915261F12DF00EC2983 /* MemberListInterfaceController.swift in Sources */,
 				B4DDA25425EF8E5F00B5F992 /* MapInterfaceController.swift in Sources */,

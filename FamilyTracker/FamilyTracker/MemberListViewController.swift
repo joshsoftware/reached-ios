@@ -23,6 +23,7 @@ class MemberListViewController: UIViewController {
     private var userRef: DatabaseReference!
     private var ref: DatabaseReference!
     private var refSOS: DatabaseReference!
+    private var refGeofencing: DatabaseReference!
     private var sosState = false
 
     var connectivityHandler = WatchSessionManager.shared
@@ -35,9 +36,12 @@ class MemberListViewController: UIViewController {
         super.viewDidLoad()
         userRef = Database.database().reference()
         ref = Database.database().reference(withPath: "groups/\(self.groupId)")
+        refGeofencing = Database.database().reference(withPath: "groups/\(self.groupId)/geofencing")
         refSOS = Database.database().reference().child("sos")
 
         setUp()
+        //MARK: FOR TESTING ONLY
+//        addGeofencingData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(navigateToMapViewOnRemoteNotification), name: NSNotification.Name(rawValue: "GoToMapOnSOSRemoteNotification"), object: nil)
     }
@@ -266,6 +270,17 @@ class MemberListViewController: UIViewController {
     
     @IBAction func showOnMapBtnAction(_ sender: Any) {
         navigateToMap(membersArray: self.memberList)
+    }
+    
+    private func addGeofencingData() {
+        let data1 = ["lat": 18.6015, "long": 73.8986, "name": "Home", "radius": 100] as [String : Any]
+        let data2 = ["lat": 21.1702, "long": 72.8311, "name": "Office", "radius": 5000] as [String : Any]
+        let data3 = ["lat": 19.9975, "long": 73.7898, "name": "Sports club", "radius": 4000] as [String : Any]
+
+        let array = [data1]
+        
+        self.refGeofencing.setValue(array)
+
     }
     
 }

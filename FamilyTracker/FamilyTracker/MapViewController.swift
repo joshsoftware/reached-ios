@@ -14,8 +14,10 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     private var ref: DatabaseReference!
+    private var refGeofencing: DatabaseReference!
     var memberList: [Members] = []
     var groupId: String = ""
+    var arrGeoFenceData = [GeotificationData]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +26,8 @@ class MapViewController: UIViewController {
     
     private func setUp() {
         ref = Database.database().reference(withPath: "groups/\(groupId)")
+        refGeofencing = Database.database().reference(withPath: "groups/\(self.groupId)/geofencing")
+
         mapView.delegate = self
         mapView.mapType = .standard
         showPinForMembersLocation()
@@ -35,6 +39,25 @@ class MapViewController: UIViewController {
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMembersLocationUpdated(key: snapshot.key, value: value)
+            }
+        }
+        
+        //Observe updated value for geofencing
+        self.refGeofencing.observe(.childChanged) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                self.geoFencingUpdated(value: value)
+            }
+        }
+        
+        self.refGeofencing.observe(.childAdded) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                self.geoFencingAdded(value: value)
+            }
+        }
+        
+        self.refGeofencing.observe(.childRemoved) { (snapshot) in
+            if let value = snapshot.value as? NSMutableDictionary {
+                self.geoFencingUpdated(value: value, isRemoved: true)
             }
         }
     }
@@ -56,6 +79,34 @@ class MapViewController: UIViewController {
             self.memberList[index] = member
             self.showPinForMembersLocation()
         }
+    }
+    
+    private func geoFencingUpdated(value: NSMutableDictionary, isRemoved: Bool = false) {
+        var data = GeotificationData()
+        data.lat = value["lat"] as? Double
+        data.long = value["long"] as? Double
+        data.name = value["name"] as? String
+        data.radius = value["radius"] as? Double
+
+        if let index = self.arrGeoFenceData.firstIndex(where: {
+                                                    $0.name == data.name }) {
+            if isRemoved {
+                self.arrGeoFenceData.remove(at: index)
+            } else {
+                self.arrGeoFenceData[index] = data
+            }
+            self.getGeoFencing()
+        }
+    }
+    
+    private func geoFencingAdded(value: NSMutableDictionary) {
+        var data = GeotificationData()
+        data.lat = value["lat"] as? Double
+        data.long = value["long"] as? Double
+        data.name = value["name"] as? String
+        data.radius = value["radius"] as? Double
+        self.arrGeoFenceData.append(data)
+        self.getGeoFencing()
     }
     
     func showPinForMembersLocation() {
@@ -112,4 +163,67 @@ extension MapViewController : MKMapViewDelegate {
         return annotationView
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+           guard let circleOverlay = overlay as? MKCircle else {
+            return MKOverlayRenderer()
+           }
+           let circleRender = MKCircleRenderer(circle: circleOverlay)
+           circleRender.strokeColor = .blue
+           circleRender.fillColor = .blue
+           circleRender.alpha = 0.1
+           return circleRender
+       }
+    
+}
+
+//Geofencing methods
+extension MapViewController {
+    //show notification
+    
+    func showNotification(title:String, message:String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+        content.badge = 1
+        content.sound = .default
+        let request = UNNotificationRequest(identifier: "notifi", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    func monitorRegionAtLocation(center: CLLocationCoordinate2D, identifier: String, radius: Double ) {
+        // Make sure the devices supports region monitoring.
+        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            // Register the region.
+            let maxDistance = CLLocationDistance(radius)
+            let region = CLCircularRegion(center: center,
+                                          radius: maxDistance, identifier: identifier)
+            region.notifyOnEntry = true
+            region.notifyOnExit = false
+            let circle = MKCircle(center: center, radius: maxDistance)
+            mapView.addOverlay(circle)
+            
+        }
+    }
+    
+    
+    private func getGeoFencing() {
+        let locationManager = UserLocationManager.shared
+        locationManager.generateGeofenceRegion(geotificationDataList: arrGeoFenceData)
+        
+        for item in arrGeoFenceData {
+            if let lat = item.lat, let long = item.long, let radius = item.radius {
+                print("Your location with lat and long :- \(item)")
+                let cordi = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                monitorRegionAtLocation(center: cordi, identifier: "Geofence", radius: radius)
+            }
+        }
+    }
+    
+    private func render(_ location: CLLocation) {
+        let coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        mapView.showsUserLocation = true
+    }
 }
