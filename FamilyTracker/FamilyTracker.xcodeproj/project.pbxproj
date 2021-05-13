@@ -23,6 +23,8 @@
 		3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C52E2649250B008410B8 /* OnboardingViewController.swift */; };
 		3D56C53226492512008410B8 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D56C53126492511008410B8 /* Intro.storyboard */; };
 		3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C5332649252F008410B8 /* IntroViewController.swift */; };
+		3D56C53A264D0942008410B8 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D56C539264D0942008410B8 /* SignIn.storyboard */; };
+		3D56C53C264D0C42008410B8 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */; };
 		3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA17223260092BB00A7E9F6 /* LoginViewController.swift */; };
 		3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */; };
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
@@ -145,6 +147,8 @@
 		3D56C52E2649250B008410B8 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		3D56C53126492511008410B8 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
 		3D56C5332649252F008410B8 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		3D56C539264D0942008410B8 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
+		3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		3DA17223260092BB00A7E9F6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				3D56C53126492511008410B8 /* Intro.storyboard */,
+				3D56C539264D0942008410B8 /* SignIn.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				3D51FD1B261DB8490016AA95 /* Reached.entitlements */,
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
+				3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */,
 				3DA17223260092BB00A7E9F6 /* LoginViewController.swift */,
 				3D56C52E2649250B008410B8 /* OnboardingViewController.swift */,
 				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
@@ -600,6 +606,7 @@
 				B4DDA14F25EE46AE00B5F992 /* Assets.xcassets in Resources */,
 				3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */,
 				3D56C53226492512008410B8 /* Intro.storyboard in Resources */,
+				3D56C53A264D0942008410B8 /* SignIn.storyboard in Resources */,
 				3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */,
 				B4DDA14D25EE46AA00B5F992 /* Main.storyboard in Resources */,
 				B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */,
@@ -765,6 +772,7 @@
 				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,
+				3D56C53C264D0C42008410B8 /* WelcomeViewController.swift in Sources */,
 				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
 				3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */,
 				B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */,

@@ -16,7 +16,7 @@ extension UIStoryboard {
             case .MainTvOS:
                 return "MainTvOS"
             case .MainiOS:
-                return "Main"
+                return "SignIn"
             }
         }
     }
@@ -46,7 +46,7 @@ extension UIStoryboard {
     class var sharedInstance: UIStoryboard {
         struct Singleton {
             #if os(iOS)
-            static let instance = UIStoryboard(name: "Main", bundle: nil)
+            static let instance = UIStoryboard(name: "SignIn", bundle: nil)
             #elseif os(tvOS)
             static let instance = UIStoryboard(name: "Main_tvOS", bundle: nil)
             #endif
