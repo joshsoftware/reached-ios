@@ -34,6 +34,10 @@
 		B455BDF8264D40B000AAE677 /* GroupListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */; };
 		B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */; };
 		B455BE02264D4E0F00AAE677 /* GroupMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */; };
+		B455BE36264DA18000AAE677 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BE35264DA17E00AAE677 /* SideMenuViewController.swift */; };
+		B455BE3C264DA1F900AAE677 /* SideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BE3A264DA1F900AAE677 /* SideMenuCell.swift */; };
+		B455BE3D264DA1F900AAE677 /* SideMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455BE3B264DA1F900AAE677 /* SideMenuCell.xib */; };
+		B455BE43264DA73800AAE677 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455BE42264DA73700AAE677 /* MainViewController.swift */; };
 		B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */; };
 		B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */; };
 		B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B492BAA9261DBFFF000AD3F9 /* UIViewController+Extension.swift */; };
@@ -166,6 +170,10 @@
 		B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupListCollectionViewCell.xib; sourceTree = "<group>"; };
 		B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMemberTableViewCell.xib; sourceTree = "<group>"; };
+		B455BE35264DA17E00AAE677 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		B455BE3A264DA1F900AAE677 /* SideMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuCell.swift; sourceTree = "<group>"; };
+		B455BE3B264DA1F900AAE677 /* SideMenuCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideMenuCell.xib; sourceTree = "<group>"; };
+		B455BE42264DA73700AAE677 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashInterfaceController.swift; sourceTree = "<group>"; };
 		B492BA5C261D8049000AD3F9 /* FamilyTracker WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FamilyTracker WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		B492BAA4261DBFD8000AD3F9 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -260,6 +268,7 @@
 		3D51FD21261DE3E20016AA95 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B455BE34264DA16E00AAE677 /* SideMenu */,
 				B455BDEB264D3D5900AAE677 /* Dashboard */,
 				3D51FD22261DE3E20016AA95 /* QRCodeVCs */,
 			);
@@ -323,6 +332,17 @@
 				B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		B455BE34264DA16E00AAE677 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B455BE35264DA17E00AAE677 /* SideMenuViewController.swift */,
+				B455BE3A264DA1F900AAE677 /* SideMenuCell.swift */,
+				B455BE3B264DA1F900AAE677 /* SideMenuCell.xib */,
+				B455BE42264DA73700AAE677 /* MainViewController.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		B4D12B132632C734008D5D8F /* Notification */ = {
@@ -641,6 +661,7 @@
 				B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */,
 				B455BE02264D4E0F00AAE677 /* GroupMemberTableViewCell.xib in Resources */,
 				B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */,
+				B455BE3D264DA1F900AAE677 /* SideMenuCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +818,7 @@
 				3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */,
 				B4DDA21E25EF680500B5F992 /* MemberListModel.swift in Sources */,
 				B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */,
+				B455BE36264DA18000AAE677 /* SideMenuViewController.swift in Sources */,
 				3D51FD28261DE3E20016AA95 /* ShowQRCodeViewController.swift in Sources */,
 				3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */,
 				B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */,
@@ -809,6 +831,7 @@
 				B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */,
 				B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */,
 				B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */,
+				B455BE43264DA73800AAE677 /* MainViewController.swift in Sources */,
 				B492BAAF261DC1AD000AD3F9 /* UIView+Extension.swift in Sources */,
 				B4DDA14825EE46AA00B5F992 /* SceneDelegate.swift in Sources */,
 				B4DDA22825EF687000B5F992 /* ApiClient.swift in Sources */,
@@ -817,6 +840,7 @@
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
 				B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */,
 				3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */,
+				B455BE3C264DA1F900AAE677 /* SideMenuCell.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
 				B4C76AF0262825960024B2C2 /* CLLocation+Extension.swift in Sources */,

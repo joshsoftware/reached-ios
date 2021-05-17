@@ -15,8 +15,12 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var addGroupBtn: UIButton!
     @IBOutlet weak var showOnMapBtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var infoBtn: UIButton!
+    @IBOutlet weak var sosView: UIView!
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var menuBtn: UIButton!
+    
     private let spacing: CGFloat = 20.0
-
     
     private var ref: DatabaseReference!
     private var groupList = [Group]()
@@ -33,6 +37,15 @@ class DashboardViewController: UIViewController {
         setUp()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     private func setUp() {
         setUpCollectionView()
         setUpLocationManager()
@@ -42,8 +55,9 @@ class DashboardViewController: UIViewController {
         myGroupsLbl.text = "My Groups"
         showOnMapBtn.setTitle("Show on MAP", for: .normal)
         showOnMapBtn.backgroundColor = Constant.kColor.KAppOrangeShade1
+        pageControl.hidesForSinglePage = true
     }
-    
+   
     private func setUpCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -89,12 +103,20 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    @IBAction func menuBtnAction(_ sender: Any) {
+        revealViewController()?.revealSideMenu()
+    }
+    
     @IBAction func addGroupBtnAction(_ sender: Any) {
     }
     
     
     @IBAction func showOnMapBtnAction(_ sender: Any) {
         navigateToMap()
+    }
+    
+    
+    @IBAction func infoBtnAction(_ sender: Any) {
     }
     
     private func navigateToMap() {
@@ -110,12 +132,21 @@ class DashboardViewController: UIViewController {
         }
     }
     
-
 }
 
 extension DashboardViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        setUpPageControl()
         return groupList.count
+    }
+    
+    private func setUpPageControl() {
+        pageControl.numberOfPages = groupList.count
+        pageControl.currentPage = 0
+        pageControl.transform = CGAffineTransform (scaleX: 1.2, y: 1.2)
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.currentPageIndicatorTintColor = .black
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -145,6 +176,7 @@ extension DashboardViewController: UICollectionViewDataSource, UICollectionViewD
     
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
         self.collectionView.scrollToNearestVisibleCollectionViewCell()
         for cell in collectionView.visibleCells {
             let indexPath = collectionView.indexPath(for: cell)
@@ -158,6 +190,13 @@ extension DashboardViewController: UICollectionViewDataSource, UICollectionViewD
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offSet = scrollView.contentOffset.x
+        let width = scrollView.frame.width
+        let horizontalCenter = width / 2
+
+        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
+    }
 }
 
 extension DashboardViewController: CLLocationManagerDelegate {

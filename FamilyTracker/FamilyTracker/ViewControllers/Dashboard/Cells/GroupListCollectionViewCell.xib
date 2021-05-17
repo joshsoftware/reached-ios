@@ -21,42 +21,69 @@
                         <rect key="frame" x="5" y="5" width="214" height="263"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n10-x9-jQE">
-                                <rect key="frame" x="15" y="13" width="149" height="24"/>
+                                <rect key="frame" x="10" y="10.5" width="159" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menuDots" translatesAutoresizingMaskIntoConstraints="NO" id="xcP-iR-Vgz">
-                                <rect key="frame" x="174" y="10" width="30" height="30"/>
+                                <rect key="frame" x="179" y="10" width="25" height="25"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="6OJ-2O-xv7"/>
-                                    <constraint firstAttribute="height" constant="30" id="PMW-Xr-4ti"/>
+                                    <constraint firstAttribute="width" constant="25" id="6OJ-2O-xv7"/>
+                                    <constraint firstAttribute="height" constant="25" id="PMW-Xr-4ti"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addGroupMember" translatesAutoresizingMaskIntoConstraints="NO" id="cnt-be-kUm">
-                                <rect key="frame" x="82" y="47" width="50" height="50"/>
+                                <rect key="frame" x="166" y="49.5" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="9jq-Q3-tgI"/>
-                                    <constraint firstAttribute="width" constant="50" id="Y1o-DH-1b4"/>
+                                    <constraint firstAttribute="height" constant="40" id="9jq-Q3-tgI"/>
+                                    <constraint firstAttribute="width" constant="40" id="Y1o-DH-1b4"/>
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YaD-tD-gb4">
-                                <rect key="frame" x="0.0" y="105" width="214" height="158"/>
+                                <rect key="frame" x="0.0" y="104.5" width="214" height="158.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdc-lj-nU4">
+                                <rect key="frame" x="10" y="49.5" width="107.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.2196078431372549" green="0.27058823529411763" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Members are" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mft-yt-5bc">
+                                <rect key="frame" x="10" y="69.5" width="105" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAFE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbU-NE-Nic">
+                                <rect key="frame" x="119" y="69" width="60" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="vIs-VG-jAJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <color key="textColor" red="0.082352941176470587" green="0.81176470588235294" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="YaD-tD-gb4" secondAttribute="bottom" id="13T-lw-U69"/>
+                            <constraint firstItem="mft-yt-5bc" firstAttribute="top" secondItem="wdc-lj-nU4" secondAttribute="bottom" constant="4" id="4Cx-3g-Wjj"/>
                             <constraint firstAttribute="trailing" secondItem="YaD-tD-gb4" secondAttribute="trailing" id="Bnu-dP-ltd"/>
                             <constraint firstAttribute="trailing" secondItem="xcP-iR-Vgz" secondAttribute="trailing" constant="10" id="Gvf-MN-bf0"/>
                             <constraint firstItem="n10-x9-jQE" firstAttribute="centerY" secondItem="xcP-iR-Vgz" secondAttribute="centerY" id="JUu-R9-NZX"/>
                             <constraint firstItem="YaD-tD-gb4" firstAttribute="leading" secondItem="TIw-PN-CFU" secondAttribute="leading" id="Neb-7d-HP1"/>
-                            <constraint firstItem="cnt-be-kUm" firstAttribute="top" secondItem="n10-x9-jQE" secondAttribute="bottom" constant="10" id="TnJ-2u-sWm"/>
+                            <constraint firstItem="wbU-NE-Nic" firstAttribute="leading" secondItem="mft-yt-5bc" secondAttribute="trailing" constant="4" id="SAo-hP-xkP"/>
+                            <constraint firstItem="cnt-be-kUm" firstAttribute="top" secondItem="n10-x9-jQE" secondAttribute="bottom" constant="15" id="TnJ-2u-sWm"/>
                             <constraint firstItem="xcP-iR-Vgz" firstAttribute="top" secondItem="TIw-PN-CFU" secondAttribute="top" constant="10" id="Ysz-Nc-T1j"/>
-                            <constraint firstItem="cnt-be-kUm" firstAttribute="centerX" secondItem="TIw-PN-CFU" secondAttribute="centerX" id="mAa-Vq-bYb"/>
-                            <constraint firstItem="YaD-tD-gb4" firstAttribute="top" secondItem="cnt-be-kUm" secondAttribute="bottom" constant="8" id="pF6-CU-5FS"/>
-                            <constraint firstItem="n10-x9-jQE" firstAttribute="leading" secondItem="TIw-PN-CFU" secondAttribute="leading" constant="15" id="qTu-XA-yy0"/>
+                            <constraint firstItem="mft-yt-5bc" firstAttribute="leading" secondItem="wdc-lj-nU4" secondAttribute="leading" id="ZyT-BQ-h5L"/>
+                            <constraint firstItem="wdc-lj-nU4" firstAttribute="top" secondItem="n10-x9-jQE" secondAttribute="bottom" constant="15" id="d9y-nt-9ye"/>
+                            <constraint firstAttribute="trailing" secondItem="cnt-be-kUm" secondAttribute="trailing" constant="8" id="fLb-dq-Wv8"/>
+                            <constraint firstItem="wbU-NE-Nic" firstAttribute="centerY" secondItem="mft-yt-5bc" secondAttribute="centerY" id="iua-g4-7Wh"/>
+                            <constraint firstItem="wdc-lj-nU4" firstAttribute="leading" secondItem="n10-x9-jQE" secondAttribute="leading" id="kg5-tZ-Erq"/>
+                            <constraint firstItem="YaD-tD-gb4" firstAttribute="top" secondItem="cnt-be-kUm" secondAttribute="bottom" constant="15" id="pF6-CU-5FS"/>
+                            <constraint firstItem="n10-x9-jQE" firstAttribute="leading" secondItem="TIw-PN-CFU" secondAttribute="leading" constant="10" id="qTu-XA-yy0"/>
                             <constraint firstItem="xcP-iR-Vgz" firstAttribute="leading" secondItem="n10-x9-jQE" secondAttribute="trailing" constant="10" id="w82-JB-U0s"/>
                         </constraints>
                     </view>
@@ -72,16 +99,19 @@
             <size key="customSize" width="224" height="273"/>
             <connections>
                 <outlet property="addGroupMemberImgView" destination="cnt-be-kUm" id="cnr-io-s3G"/>
+                <outlet property="allMembersLbl" destination="mft-yt-5bc" id="mIa-JB-Mfe"/>
                 <outlet property="containerView" destination="TIw-PN-CFU" id="C6x-gz-mVL"/>
                 <outlet property="groupNameLbl" destination="n10-x9-jQE" id="2rE-0e-rb7"/>
                 <outlet property="menuImageView" destination="xcP-iR-Vgz" id="jOr-s8-ozZ"/>
+                <outlet property="safeUnsafeLbl" destination="wbU-NE-Nic" id="lY6-ak-szs"/>
                 <outlet property="tableView" destination="YaD-tD-gb4" id="DAe-Pm-hhk"/>
+                <outlet property="trackingLocationLbl" destination="wdc-lj-nU4" id="mg9-yJ-WfT"/>
             </connections>
             <point key="canvasLocation" x="144.92753623188406" y="132.25446428571428"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="addGroupMember" width="37" height="32"/>
-        <image name="menuDots" width="26" height="54"/>
+        <image name="addGroupMember" width="37" height="37"/>
+        <image name="menuDots" width="4" height="18"/>
     </resources>
 </document>

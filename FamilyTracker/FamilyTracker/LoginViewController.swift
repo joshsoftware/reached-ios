@@ -59,7 +59,11 @@ class LoginViewController: UIViewController {
     
     private func navigateToGroupListVC() {
         DispatchQueue.main.async {
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+//            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+//                self.navigationController?.pushViewController(vc, animated: false)
+//            }
+            
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
                 self.navigationController?.pushViewController(vc, animated: false)
             }
         }

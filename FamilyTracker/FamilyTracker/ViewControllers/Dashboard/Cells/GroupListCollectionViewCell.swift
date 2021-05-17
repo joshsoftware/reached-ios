@@ -20,11 +20,15 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var addGroupMemberImgView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var trackingLocationLbl: UILabel!
+    @IBOutlet weak var allMembersLbl: UILabel!
+    @IBOutlet weak var safeUnsafeLbl: UILabel!
     
     var memberList = [Members]()
     private var userRef: DatabaseReference!
     private var ref: DatabaseReference!
-
+    private var isAllMemberSafe = true
+    
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
 //    var createdBy: String = ""
@@ -52,7 +56,17 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     private func setUp() {
         setUpTableView()
         observeFirebaseRealtimeDBChanges()
-
+        updateSafeUnsafeText()
+    }
+    
+    private func updateSafeUnsafeText() {
+        if isAllMemberSafe {
+            safeUnsafeLbl.text = "SAFE"
+            safeUnsafeLbl.textColor = Constant.kColor.KAppGreen
+        } else {
+            safeUnsafeLbl.text = "UNSAFE"
+            safeUnsafeLbl.textColor = .red
+        }
     }
     
     private func setUpTableView() {
