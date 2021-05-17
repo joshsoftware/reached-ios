@@ -25,6 +25,8 @@
 		3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C5332649252F008410B8 /* IntroViewController.swift */; };
 		3D56C53A264D0942008410B8 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D56C539264D0942008410B8 /* SignIn.storyboard */; };
 		3D56C53C264D0C42008410B8 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */; };
+		3D56C540264E5112008410B8 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C53F264E5112008410B8 /* PageViewController.swift */; };
+		3D56C544264E7953008410B8 /* IntroPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D56C543264E7953008410B8 /* IntroPageViewController.swift */; };
 		3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA17223260092BB00A7E9F6 /* LoginViewController.swift */; };
 		3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */; };
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
@@ -149,6 +151,8 @@
 		3D56C5332649252F008410B8 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		3D56C539264D0942008410B8 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		3D56C53F264E5112008410B8 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		3D56C543264E7953008410B8 /* IntroPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPageViewController.swift; sourceTree = "<group>"; };
 		3DA17223260092BB00A7E9F6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 		3D51FD21261DE3E20016AA95 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3D56C53D264E507C008410B8 /* Login */,
+				3D56C53E264E50C2008410B8 /* Intro */,
 				3D51FD22261DE3E20016AA95 /* QRCodeVCs */,
 			);
 			path = ViewControllers;
@@ -274,6 +280,24 @@
 				3D56C539264D0942008410B8 /* SignIn.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		3D56C53D264E507C008410B8 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		3D56C53E264E50C2008410B8 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				3D56C5332649252F008410B8 /* IntroViewController.swift */,
+				3D56C543264E7953008410B8 /* IntroPageViewController.swift */,
+				3D56C53F264E5112008410B8 /* PageViewController.swift */,
+			);
+			path = Intro;
 			sourceTree = "<group>";
 		};
 		A76F5CCFD66C61206DEC2246 /* Frameworks */ = {
@@ -336,11 +360,9 @@
 				3D51FD1B261DB8490016AA95 /* Reached.entitlements */,
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
-				3D56C53B264D0C41008410B8 /* WelcomeViewController.swift */,
 				3DA17223260092BB00A7E9F6 /* LoginViewController.swift */,
 				3D56C52E2649250B008410B8 /* OnboardingViewController.swift */,
 				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
-				3D56C5332649252F008410B8 /* IntroViewController.swift */,
 				3D51FD21261DE3E20016AA95 /* ViewControllers */,
 				3D56C53026492511008410B8 /* Storyboards */,
 				3D546176261C665B0053FA57 /* GroupListViewController.swift */,
@@ -775,6 +797,7 @@
 				3D56C53C264D0C42008410B8 /* WelcomeViewController.swift in Sources */,
 				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
 				3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */,
+				3D56C544264E7953008410B8 /* IntroPageViewController.swift in Sources */,
 				B4D12B1D2632CCCD008D5D8F /* Utility.swift in Sources */,
 				B4DDA14625EE46AA00B5F992 /* AppDelegate.swift in Sources */,
 				B492BAAA261DBFFF000AD3F9 /* UIViewController+Extension.swift in Sources */,
@@ -792,6 +815,7 @@
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
+				3D56C540264E5112008410B8 /* PageViewController.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */,
 				B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */,

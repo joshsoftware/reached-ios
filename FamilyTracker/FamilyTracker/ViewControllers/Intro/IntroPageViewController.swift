@@ -1,22 +1,23 @@
 //
-//  IntroViewController.swift
+//  IntroPageViewController.swift
 //  FamilyTracker
 //
-//  Created by Mahesh on 07/05/21.
+//  Created by Mahesh on 14/05/21.
 //
 
 import UIKit
-import Panels
 
-class IntroViewController: UIViewController, Panelable {
-    @IBOutlet var headerHeight: NSLayoutConstraint!
-    
-    @IBOutlet var headerPanel: UIView!
-    
+class IntroPageViewController: UIViewController {
+    @IBOutlet var bgImageView: UIImageView!
+    @IBOutlet var infoImageView: UIImageView!
+
+    var bgImage : UIImage = UIImage()
+    var infoImage : UIImage = UIImage()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        bgImageView.image = self.bgImage
+        infoImageView.image = self.infoImage
         // Do any additional setup after loading the view.
     }
     
