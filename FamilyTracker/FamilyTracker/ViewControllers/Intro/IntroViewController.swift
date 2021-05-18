@@ -12,6 +12,7 @@ class IntroViewController: UIViewController, Panelable {
     @IBOutlet var headerHeight: NSLayoutConstraint!
     @IBOutlet var headerPanel: UIView!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var pageControl: UIPageControl!
 
     var pageViewController: PageViewController? {
         didSet {
@@ -46,6 +47,10 @@ class IntroViewController: UIViewController, Panelable {
             self.imageView.transform = CGAffineTransform(rotationAngle: (180.0 * .pi) / 180.0)
         })
     }
+    
+    @IBAction func skipButtonAction(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "collapsePanelNotification"), object: nil)
+    }
 
     /*
     // MARK: - Navigation
@@ -61,10 +66,10 @@ class IntroViewController: UIViewController, Panelable {
 
 extension IntroViewController: PageViewControllerDelegate {
     func pageViewController(pageViewController: PageViewController, didUpdatePageCount count: Int) {
-
+        self.pageControl.numberOfPages = count
     }
     
     func pageViewController(pageViewController: PageViewController, didUpdatePageIndex index: Int) {
-
+        self.pageControl.currentPage = index
     }
 }

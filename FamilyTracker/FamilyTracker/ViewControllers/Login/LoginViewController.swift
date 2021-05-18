@@ -12,6 +12,7 @@ import Firebase
 import WatchConnectivity
 
 class LoginViewController: UIViewController {
+    @IBOutlet var topView: UIView!
 
     var connectivityHandler = WatchSessionManager.shared
     private var ref: DatabaseReference!
@@ -40,6 +41,11 @@ class LoginViewController: UIViewController {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        topView.roundBottom(radius: 10)
     }
     
     private func navigateToHomeVC() {

@@ -22,8 +22,8 @@ class PageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataSource = self
-        delegate = self
+        self.dataSource = self
+        self.delegate = self
         
         if let initialViewController = orderedViewControllers.first {
             scrollToViewController(viewController: initialViewController)
@@ -62,8 +62,10 @@ class PageViewController: UIPageViewController {
             instantiateViewController(withIdentifier: "IntroPageViewController")
         if vc.isKind(of: IntroPageViewController.self) {
             if let vc = vc as? IntroPageViewController {
-                vc.bgImage = UIImage(named: "onboarding_bg_\(index + 1)")!
-                vc.infoImage = UIImage(named: "onboarding_\(index + 1)")!
+                vc.index = index
+                vc.nextButtonClickHandler = {
+                    self.scrollToNextViewController()
+                }
             }
         }
         return vc
@@ -150,7 +152,7 @@ extension PageViewController: UIPageViewControllerDataSource {
 
 extension PageViewController: UIPageViewControllerDelegate {
     
-    func pageViewController(pageViewController: UIPageViewController,
+    func pageViewController(_ pageViewController: UIPageViewController,
         didFinishAnimating finished: Bool,
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool) {
