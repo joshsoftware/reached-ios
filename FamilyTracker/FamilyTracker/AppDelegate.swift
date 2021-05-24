@@ -14,12 +14,14 @@ import CoreLocation
 import FirebaseDynamicLinks
 import UserNotifications
 import FirebaseMessaging
+import SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var connectivityHandler = WatchSessionManager.shared
+    var ref: DatabaseReference!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -39,6 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         connectivityHandler.startSession()
         connectivityHandler.iOSDelegate = self
         
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+
+        checkLoginSession()
         return true
     }
    
@@ -72,6 +78,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(locationUpdateNotification(notification:)), name: NSNotification.Name(rawValue: kLocationDidChangeNotification), object: nil)
         let locationManager = UserLocationManager.shared
         locationManager.delegate = self
+    }
+    
+    private func checkLoginSession() {
+        ref = Database.database().reference()
+        if UserDefaults.standard.bool(forKey: "loginStatus") == true {
+            if let userId = UserDefaults.standard.string(forKey: "userId") {
+                DatabaseManager.shared.setDeviceTokenOnServer(userId: userId)
+                DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
+                    if groups?.allKeys.count ?? 0 > 0 {
+                        UserDefaults.standard.setValue(groups, forKey: "groups")
+                        self.navigateToGroupListVC()
+                    } else {
+                        self.navigateToHomeVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func navigateToHomeVC() {
+        if let groupId = UserDefaults.standard.string(forKey: "inviteGroupId") {
+            JoinLinkManager.shared.joinGroupWith(groupId: groupId) {
+                self.navigateToGroupListVC()
+            }
+            UserDefaults.standard.setValue(nil, forKey: "inviteGroupId")
+        } else {
+            DispatchQueue.main.async {
+                if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+                    if let topVC = UIApplication.getTopViewController() {
+                        topVC.navigationController?.pushViewController(vc, animated: false)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func navigateToGroupListVC() {
+        DispatchQueue.main.async {
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+                if let topVC = UIApplication.getTopViewController() {
+                    topVC.navigationController?.pushViewController(vc, animated: false)
+                }
+            }
+        }
     }
     
     // MARK: - Notifications

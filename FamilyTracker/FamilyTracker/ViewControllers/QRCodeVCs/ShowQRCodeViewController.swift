@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ShowQRCodeViewController: UIViewController {
     
     @IBOutlet weak var qrCodeImageView: UIImageView!
-    @IBOutlet weak var viewGroupBtn: UIButton!
-    @IBOutlet weak var shareJoinLinkBtn: UIButton!
+    @IBOutlet var topView: UIView!
+    @IBOutlet weak var groupNameLabel: UILabel!
 
     var groupId: String = ""
     var groupName: String = ""
@@ -19,17 +20,14 @@ class ShowQRCodeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        groupNameLabel.text = self.groupName
         createBarcode()
     }
     
-    private func setUp() {
-        if iIsFromCreateGroupFlow {
-            viewGroupBtn.isHidden = false
-        } else {
-            viewGroupBtn.isHidden = true
-            shareJoinLinkBtn.isHidden = false
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        topView.roundBottom(radius: 10)
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     private func createBarcode() {
@@ -53,13 +51,15 @@ class ShowQRCodeViewController: UIViewController {
     
     
     @IBAction func viewGroupBtnAction(_ sender: UIButton) {
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
     
     @IBAction func shareJoinLinkBtnAction(_ sender: UIButton) {
+        SVProgressHUD.show()
         JoinLinkManager.shared.createJoinLinkFor(groupId: self.groupId, groupName: self.groupName, completion: { url in
+            SVProgressHUD.dismiss()
             self.showShareActivity(msg: "Join group", image: nil, url: url.absoluteString, sourceRect: nil)
         })
     }

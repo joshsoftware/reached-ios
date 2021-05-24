@@ -11,7 +11,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5Ll-uU-sQf">
             <objects>
-                <navigationController navigationBarHidden="YES" id="vcO-WL-RTk" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignInNavVC" navigationBarHidden="YES" id="vcO-WL-RTk" sceneMemberID="viewController">
                     <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tKd-mQ-777">
                         <autoresizingMask key="autoresizingMask"/>
@@ -74,7 +74,7 @@
                                 <color key="backgroundColor" red="0.3411764706" green="0.3411764706" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ee5-O1-r8W">
-                                <rect key="frame" x="132" y="655" width="150" height="29"/>
+                                <rect key="frame" x="132" y="690" width="150" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="SCq-9e-2L2"/>
                                     <constraint firstAttribute="width" constant="150" id="cLg-HO-VHM"/>
@@ -124,14 +124,17 @@ Family Tracker</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6X2-N0-qLs">
-                                <rect key="frame" x="116.5" y="474" width="181" height="181"/>
+                                <rect key="frame" x="116.5" y="509" width="181" height="181"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6X2-N0-qLs" secondAttribute="height" multiplier="1:1" id="P3X-KI-SrK"/>
                                 </constraints>
                                 <state key="normal" image="login_with_google"/>
+                                <connections>
+                                    <action selector="googleSignInPressed:" destination="N5p-Wr-Koi" eventType="touchUpInside" id="AhD-Dh-Gi5"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="With Your Google Account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NoQ-bs-dI6">
-                                <rect key="frame" x="131" y="689" width="152" height="14.5"/>
+                                <rect key="frame" x="131" y="724" width="152" height="14.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="JUm-rA-RUJ"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="10" id="wgA-sG-rlm"/>
@@ -141,7 +144,7 @@ Family Tracker</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAFEGARD FAMILY &amp; FRIEND!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0P-Ca-ZM0">
-                                <rect key="frame" x="95.5" y="711" width="223.5" height="20"/>
+                                <rect key="frame" x="95.5" y="746" width="223.5" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="KHR-RY-9wU"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="OfJ-D3-bOb"/>
@@ -157,7 +160,7 @@ Family Tracker</string>
                             <constraint firstItem="6X2-N0-qLs" firstAttribute="centerX" secondItem="Pi7-6g-Hea" secondAttribute="centerX" id="3BF-Lu-2rz"/>
                             <constraint firstItem="lOx-MP-tlS" firstAttribute="centerX" secondItem="Pi7-6g-Hea" secondAttribute="centerX" id="7Rv-5Q-wVQ"/>
                             <constraint firstItem="lOx-MP-tlS" firstAttribute="width" secondItem="Pi7-6g-Hea" secondAttribute="width" multiplier="0.65" id="ASb-tf-f9i"/>
-                            <constraint firstItem="6X2-N0-qLs" firstAttribute="top" secondItem="lOx-MP-tlS" secondAttribute="bottom" constant="45" id="ClS-1E-qGp"/>
+                            <constraint firstItem="6X2-N0-qLs" firstAttribute="top" secondItem="lOx-MP-tlS" secondAttribute="bottom" constant="80" id="ClS-1E-qGp"/>
                             <constraint firstItem="O0P-Ca-ZM0" firstAttribute="centerX" secondItem="Pi7-6g-Hea" secondAttribute="centerX" id="I9K-Dx-iSp"/>
                             <constraint firstItem="O0P-Ca-ZM0" firstAttribute="top" secondItem="NoQ-bs-dI6" secondAttribute="bottom" constant="7.5" id="Tsz-tT-Kzx"/>
                             <constraint firstItem="lOx-MP-tlS" firstAttribute="top" secondItem="Pi7-6g-Hea" secondAttribute="top" constant="-1" id="UG6-Ob-CuZ"/>
@@ -180,7 +183,7 @@ Family Tracker</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tHa-5Y-OSZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="600" y="49.553571428571423"/>
+            <point key="canvasLocation" x="625" y="50"/>
         </scene>
     </scenes>
     <resources>

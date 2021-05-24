@@ -10,6 +10,7 @@ import FirebaseAuth
 import GoogleSignIn
 import Firebase
 import WatchConnectivity
+import SVProgressHUD
 
 class LoginViewController: UIViewController {
     @IBOutlet var topView: UIView!
@@ -21,23 +22,6 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = Constant.kColor.KDarkOrangeColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        ref = Database.database().reference()
-        if UserDefaults.standard.bool(forKey: "loginStatus") == true {
-            LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
-            if let userId = UserDefaults.standard.string(forKey: "userId") {
-                self.setDeviceTokenOnServer(userId: userId)
-                DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                    LoadingOverlay.shared.hideOverlayView()
-                    if groups?.allKeys.count ?? 0 > 0 {
-                        UserDefaults.standard.setValue(groups, forKey: "groups")
-                        self.navigateToGroupListVC()
-                    } else {
-                        self.navigateToHomeVC()
-                    }
-                    LoadingOverlay.shared.hideOverlayView()
-                }
-            }
-        }
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
         // Do any additional setup after loading the view.
@@ -56,8 +40,8 @@ class LoginViewController: UIViewController {
             UserDefaults.standard.setValue(nil, forKey: "inviteGroupId")
         } else {
             DispatchQueue.main.async {
-                if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
-                    self.navigationController?.pushViewController(vc, animated: false)
+                if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
         }
@@ -65,7 +49,7 @@ class LoginViewController: UIViewController {
     
     private func navigateToGroupListVC() {
         DispatchQueue.main.async {
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
                 self.navigationController?.pushViewController(vc, animated: false)
             }
         }
@@ -103,13 +87,12 @@ extension LoginViewController: GIDSignInDelegate {
         guard let auth = user.authentication else { return }
         let credentials = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
         
-        LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
-        
+        SVProgressHUD.show()
         Auth.auth().signIn(with: credentials) { (authResult, error) in
             if let error = error {
                 print(error.localizedDescription)
                 UserDefaults.standard.setValue(false, forKey: "loginStatus")
-                LoadingOverlay.shared.hideOverlayView()
+                SVProgressHUD.showError(withStatus: "Login failed!")
             } else {
                 print("Login Successful.")
                 if let user = authResult?.user {
@@ -120,7 +103,7 @@ extension LoginViewController: GIDSignInDelegate {
                     self.sendLoginStatusToWatch()
                     self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
-                        LoadingOverlay.shared.hideOverlayView()
+                        SVProgressHUD.dismiss()
                         if groups?.allKeys.count ?? 0 > 0 {
                             self.ref = Database.database().reference()
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": groups!])
@@ -131,19 +114,13 @@ extension LoginViewController: GIDSignInDelegate {
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": nil])
                             self.navigateToHomeVC()
                         }
-                        self.setDeviceTokenOnServer(userId: user.uid)
+                        DatabaseManager.shared.setDeviceTokenOnServer(userId: user.uid)
                     }
                 } else {
-                    LoadingOverlay.shared.hideOverlayView()
+                    SVProgressHUD.dismiss()
                 }
             }
             
-        }
-    }
-    
-    private func setDeviceTokenOnServer(userId: String) {
-        if let token = UserDefaults.standard.object(forKey: "deviceToken") as? String {
-            self.ref.child("users").child(userId).child("token").child("phone").setValue(token)
         }
     }
     

@@ -30,6 +30,8 @@
 		3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA17223260092BB00A7E9F6 /* LoginViewController.swift */; };
 		3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */; };
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
+		3DBE0CA22653CE7C00B713B1 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA12653CE7C00B713B1 /* Home.storyboard */; };
+		3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B468BFAC2608C3790064C35B /* SplashInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B468BFAB2608C3790064C35B /* SplashInterfaceController.swift */; };
@@ -156,6 +158,8 @@
 		3DA17223260092BB00A7E9F6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		3DBE0CA12653CE7C00B713B1 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
+		3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		546B6CEE3423225BBEAD574A /* Pods-FamilyTracker WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit App/Pods-FamilyTracker WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2224E6614AB49CBDF9BC4 /* Pods-FamilyTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -256,6 +260,7 @@
 		3D51FD21261DE3E20016AA95 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3DBE0CA32653CEDE00B713B1 /* Home */,
 				3D56C53D264E507C008410B8 /* Login */,
 				3D56C53E264E50C2008410B8 /* Intro */,
 				3D51FD22261DE3E20016AA95 /* QRCodeVCs */,
@@ -277,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				3D56C53126492511008410B8 /* Intro.storyboard */,
+				3DBE0CA12653CE7C00B713B1 /* Home.storyboard */,
 				3D56C539264D0942008410B8 /* SignIn.storyboard */,
 			);
 			path = Storyboards;
@@ -299,6 +305,15 @@
 				3D56C53F264E5112008410B8 /* PageViewController.swift */,
 			);
 			path = Intro;
+			sourceTree = "<group>";
+		};
+		3DBE0CA32653CEDE00B713B1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
+				3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		A76F5CCFD66C61206DEC2246 /* Frameworks */ = {
@@ -362,7 +377,6 @@
 				B4DDA29225EFA9EC00B5F992 /* Cells */,
 				B4DDA14525EE46AA00B5F992 /* AppDelegate.swift */,
 				3D56C52E2649250B008410B8 /* OnboardingViewController.swift */,
-				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
 				3D51FD21261DE3E20016AA95 /* ViewControllers */,
 				3D56C53026492511008410B8 /* Storyboards */,
 				3D546176261C665B0053FA57 /* GroupListViewController.swift */,
@@ -625,6 +639,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4DDA15225EE46AE00B5F992 /* LaunchScreen.storyboard in Resources */,
+				3DBE0CA22653CE7C00B713B1 /* Home.storyboard in Resources */,
 				B4DDA14F25EE46AE00B5F992 /* Assets.xcassets in Resources */,
 				3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */,
 				3D56C53226492512008410B8 /* Intro.storyboard in Resources */,
@@ -791,6 +806,7 @@
 				3D51FD28261DE3E20016AA95 /* ShowQRCodeViewController.swift in Sources */,
 				3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */,
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
+				3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */,
 				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,

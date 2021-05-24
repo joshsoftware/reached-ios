@@ -17,6 +17,7 @@ target 'FamilyTracker' do
   pod 'GoogleSignIn'
   pod 'Floaty', '~> 4.2.0'
   pod 'Panels'
+  pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
   
 end
 

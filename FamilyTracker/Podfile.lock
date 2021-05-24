@@ -122,6 +122,9 @@ PODS:
   - SDWebImage (5.10.4):
     - SDWebImage/Core (= 5.10.4)
   - SDWebImage/Core (5.10.4)
+  - SVProgressHUD (2.2.6):
+    - SVProgressHUD/Core (= 2.2.6)
+  - SVProgressHUD/Core (2.2.6)
 
 DEPENDENCIES:
   - Alamofire (~> 5.2)
@@ -136,6 +139,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - Panels
   - SDWebImage (~> 5.0)
+  - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
 
 SPEC REPOS:
   trunk:
@@ -164,6 +168,15 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
 
+EXTERNAL SOURCES:
+  SVProgressHUD:
+    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
+
+CHECKOUT OPTIONS:
+  SVProgressHUD:
+    :commit: de1d4dba816a19454329031156b8788692bcfa2c
+    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
+
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
@@ -189,7 +202,8 @@ SPEC CHECKSUMS:
   Panels: cfafe2d0f92387f393a3b5e827af9ffffe46b073
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+  SVProgressHUD: de812b4f0e1d65358f0064416473174ae619843f
 
-PODFILE CHECKSUM: e7b3d4115d4d328f69174da8ec10c69e07f279ca
+PODFILE CHECKSUM: f5997215720da2711825bbac2b0df2ef2d9b3e79
 
 COCOAPODS: 1.10.0

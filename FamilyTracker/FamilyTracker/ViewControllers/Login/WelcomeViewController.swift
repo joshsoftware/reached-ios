@@ -20,9 +20,17 @@ class WelcomeViewController: UIViewController, PanelNotifications {
         panelManager.delegate = self
         
         self.embed(vc, inView: self.view)
-        vc.view.isHidden = true
 
-        panelManager.show(panel: panel, config: panelConfiguration)
+        if !UserDefaults.standard.bool(forKey: "showIntro") {
+            vc.view.isHidden = true
+            panelManager.show(panel: panel, config: panelConfiguration)
+            UIView.animate(withDuration: 2.0) {
+                self.panelManager.expandPanel()
+            }
+            UserDefaults.standard.setValue(true, forKey: "showIntro")
+        } else {
+            vc.view.isHidden = UserDefaults.standard.bool(forKey: "loginStatus")
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.collapsePanel), name: NSNotification.Name(rawValue: "collapsePanelNotification"), object: nil)
 
@@ -49,7 +57,7 @@ class WelcomeViewController: UIViewController, PanelNotifications {
     
     @objc func collapsePanel() {
         vc.view.isHidden = false
-        self.panelManager.collapsePanel()
+        self.panelManager.dismiss()
     }
     
 
