@@ -78,7 +78,7 @@ class MainViewController: UIViewController {
     // Keep the state of the side menu (expanded or collapse) in rotation
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate { _ in
+        coordinator.animate(alongsideTransition: nil) { _ in
             if self.revealSideMenuOnTop {
                 self.sideMenuTrailingConstraint.constant = self.isExpanded ? 0 : (-self.sideMenuRevealWidth - self.paddingForRotation)
             }

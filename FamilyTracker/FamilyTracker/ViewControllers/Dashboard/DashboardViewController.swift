@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import CoreLocation
+import SVProgressHUD
 
 class DashboardViewController: UIViewController {
     
@@ -88,9 +89,9 @@ class DashboardViewController: UIViewController {
     private func fetchGroups() {
         self.groupList.removeAll()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
-            LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow ?? self.view)
+            SVProgressHUD.show()
             DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                LoadingOverlay.shared.hideOverlayView()
+                SVProgressHUD.dismiss()
                 if let groups = groups {
                     DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
                         if let data = data {

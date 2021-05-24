@@ -12,6 +12,7 @@ import Firebase
 import FirebaseDatabase
 #endif
 import CoreLocation
+import Foundation
 
 class DatabaseManager: NSObject {
     static let shared = DatabaseManager()
@@ -186,5 +187,11 @@ class DatabaseManager: NSObject {
             }
         }
     }
+    
+    func setDeviceTokenOnServer(userId: String) {
+        ref = Database.database().reference()
+        if let token = UserDefaults.standard.object(forKey: "deviceToken") as? String {
+            self.ref.child("users").child(userId).child("token").child("phone").setValue(token)
+        }
+    }
 }
-
