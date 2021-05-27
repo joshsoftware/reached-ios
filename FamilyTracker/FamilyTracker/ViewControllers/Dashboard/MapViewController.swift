@@ -139,6 +139,10 @@ class MapViewController: UIViewController {
 
     }
     
+    @IBAction func showListBtnAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 extension MapViewController : MKMapViewDelegate {
