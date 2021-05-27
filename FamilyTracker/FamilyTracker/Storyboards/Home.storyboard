@@ -53,7 +53,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="2pm-PT-e4M"/>
                                                     <constraint firstAttribute="width" constant="50" id="Q9j-fl-wt7"/>
                                                 </constraints>
-                                                <state key="normal" image="arrow_button"/>
+                                                <state key="normal" image="orange_btn"/>
                                                 <connections>
                                                     <action selector="createGroupButtonAction:" destination="6UX-1g-vtQ" eventType="touchUpInside" id="Ga4-BH-Bvo"/>
                                                 </connections>
@@ -428,10 +428,10 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
     <resources>
         <image name="OR" width="30" height="23"/>
         <image name="app_logo" width="142" height="161"/>
-        <image name="arrow_button" width="37" height="35"/>
         <image name="gray_bg" width="376" height="40"/>
         <image name="group_graphics" width="334" height="296"/>
         <image name="line" width="132" height="1"/>
         <image name="location_pin" width="69.5" height="93"/>
+        <image name="orange_btn" width="49" height="26"/>
     </resources>
 </document>

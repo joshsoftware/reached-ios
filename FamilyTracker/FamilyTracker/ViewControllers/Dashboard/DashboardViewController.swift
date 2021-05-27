@@ -29,9 +29,7 @@ class DashboardViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var connectivityHandler = WatchSessionManager.shared
     private var groups : NSDictionary = NSDictionary()
-    
-    private var visibleGroupIndex = 0
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -43,10 +41,6 @@ class DashboardViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
     private func setUp() {
         setUpCollectionView()
         setUpLocationManager()
@@ -54,7 +48,6 @@ class DashboardViewController: UIViewController {
 
         //TODO: get strings from localized file
         myGroupsLbl.text = "My Groups"
-        showOnMapBtn.setTitle("Show on MAP", for: .normal)
         showOnMapBtn.backgroundColor = Constant.kColor.KAppOrangeShade1
         pageControl.hidesForSinglePage = true
     }
@@ -109,6 +102,7 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func addGroupBtnAction(_ sender: Any) {
+        
     }
     
     
@@ -118,18 +112,27 @@ class DashboardViewController: UIViewController {
     
     
     @IBAction func infoBtnAction(_ sender: Any) {
+        
     }
     
     private func navigateToMap() {
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+        if let vc = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
             
-            let isIndexValid = groupList.indices.contains(visibleGroupIndex)
+            let isIndexValid = groupList.indices.contains(pageControl.currentPage)
             if isIndexValid {
-                let group = groupList[visibleGroupIndex]
+                let group = groupList[pageControl.currentPage]
                 vc.groupId = group.id ?? ""
-                vc.toShowAllGroupMembers = true
+                vc.showAllGroupMembers = true
+                vc.index = pageControl.currentPage
+                vc.groupName = group.name ?? ""
+                vc.groupsCount = groupList.count
             }
-            self.navigationController?.pushViewController(vc, animated: false)
+            vc.groupListHandler = { index in
+                let selectedGroup = self.groupList[index]
+                vc.groupName = selectedGroup.name ?? ""
+                vc.setUp(groupId: selectedGroup.id ?? "")
+            }
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -159,6 +162,30 @@ extension DashboardViewController: UICollectionViewDataSource, UICollectionViewD
             cell?.groupNameLbl.text = group.name
             cell?.initiateCell(groupId: group.id ?? "")
         }
+        
+        cell?.addMemberHandler = { groupId, groupName in
+            if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
+                vc.groupId = groupId
+                vc.groupName = groupName
+                vc.iIsFromCreateGroupFlow = false
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        
+        cell?.onClickMemberHandler = { members in
+            if let vc = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+                
+                let isIndexValid = self.groupList.indices.contains(indexPath.row)
+                if isIndexValid {
+                    let group = self.groupList[indexPath.row]
+                    vc.groupId = group.id ?? ""
+                    vc.showAllGroupMembers = false
+                    vc.memberList = members
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+        }
         return cell ?? UICollectionViewCell()
     }
     
@@ -172,17 +199,6 @@ extension DashboardViewController: UICollectionViewDataSource, UICollectionViewD
         let width = (collectionView.frame.width - totalSpacing) / numberOfItemsPerRow
         
         return CGSize(width: width, height: collectionView.frame.size.height)
-    }
-    
-    
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-        self.collectionView.scrollToNearestVisibleCollectionViewCell()
-        for cell in collectionView.visibleCells {
-            let indexPath = collectionView.indexPath(for: cell)
-            self.visibleGroupIndex = indexPath?.row ?? 0
-        }
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

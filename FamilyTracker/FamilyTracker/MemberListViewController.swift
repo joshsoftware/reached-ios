@@ -315,7 +315,6 @@ class MemberListViewController: UIViewController {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupName = self.groupName
             vc.groupId = groupId
-            vc.iIsFromCreateGroupFlow = false
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }

@@ -16,8 +16,6 @@ import Contacts
 class GroupListCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var groupNameLbl: UILabel!
-    @IBOutlet weak var menuImageView: UIImageView!
-    @IBOutlet weak var addGroupMemberImgView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var trackingLocationLbl: UILabel!
@@ -25,14 +23,14 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var safeUnsafeLbl: UILabel!
     
     var memberList = [Members]()
-    private var userRef: DatabaseReference!
     private var ref: DatabaseReference!
     private var isAllMemberSafe = true
     
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
-//    var createdBy: String = ""
-//    var groupRefreshHandler: (() -> Void)?
+    var addMemberHandler: ((_ groupId: String, _ groupName: String) -> Void)?
+    var onClickMemberHandler: ((_ members: [Members]) -> Void)?
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,9 +40,10 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     func initiateCell(groupId: String) {
         self.memberList.removeAll()
         self.groupId = groupId
-        userRef = Database.database().reference()
-        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-        setUp()
+        if ref == nil {
+            ref = Database.database().reference(withPath: "groups/\(self.groupId)")
+            setUp()
+        }
     }
     
     override func layoutSubviews() {
@@ -161,6 +160,13 @@ class GroupListCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    @IBAction func addMemberButtonPressed(_ sender: Any) {
+        addMemberHandler?(self.groupId, self.groupNameLbl.text!)
+    }
+    
+    @IBAction func menuButtonPressed(_ sender: Any) {
+
+    }
 
 }
 
@@ -172,17 +178,20 @@ extension GroupListCollectionViewCell: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupMemberTableViewCell", for: indexPath) as? GroupMemberTableViewCell
-        cell?.selectionStyle = .none
         let isIndexValid = memberList.indices.contains(indexPath.row)
         if isIndexValid {
             let member = memberList[indexPath.row]
             cell?.updateCell(member: member)
+            cell?.onClickMemberHandler = {
+                var selectedMember = [Members]()
+                selectedMember.append(member)
+                self.onClickMemberHandler?(selectedMember)
+            }
         }
         return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 85
     }
-    
 }

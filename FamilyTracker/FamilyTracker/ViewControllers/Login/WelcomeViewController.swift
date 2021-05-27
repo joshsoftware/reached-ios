@@ -24,7 +24,7 @@ class WelcomeViewController: UIViewController, PanelNotifications {
         if !UserDefaults.standard.bool(forKey: "showIntro") {
             vc.view.isHidden = true
             panelManager.show(panel: panel, config: panelConfiguration)
-            UIView.animate(withDuration: 2.0) {
+            UIView.animate(withDuration: 1.0) {
                 self.panelManager.expandPanel()
             }
             UserDefaults.standard.setValue(true, forKey: "showIntro")

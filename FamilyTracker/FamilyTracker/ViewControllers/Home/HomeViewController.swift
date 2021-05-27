@@ -43,6 +43,7 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
  
@@ -92,7 +93,6 @@ class HomeViewController: UIViewController {
         if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupId = groupId
             vc.groupName = groupName
-            vc.iIsFromCreateGroupFlow = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

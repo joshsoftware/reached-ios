@@ -13,33 +13,61 @@ import Contacts
 class MapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var nameLbl: UILabel!
+    @IBOutlet weak var safetyStatusLbl: UILabel!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var memberDetailsView: UIView!
+    @IBOutlet weak var groupsNameLbl: UILabel!
+    @IBOutlet weak var safetyGroupStatusLbl: UILabel!
+    @IBOutlet weak var groupDetailsView: UIView!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var previousButton: UIButton!
+
     private var ref: DatabaseReference!
     var memberList: [Members] = []
     var groupId: String = ""
-    var toShowAllGroupMembers = false
-    
+    var groupName: String = ""
+    var showAllGroupMembers = false
+    var index: Int = 0
+    var groupsCount: Int = 0
+    var groupListHandler: ((_ index: Int) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        handleButtons()
+        setUp(groupId: self.groupId)
     }
     
-    private func setUp() {
+    func setUp(groupId: String) {
         ref = Database.database().reference(withPath: "groups/\(groupId)")
         mapView.delegate = self
         mapView.mapType = .standard
-        showPinForMembersLocation()
+        
+        memberDetailsView.isHidden = showAllGroupMembers
+        if showAllGroupMembers {
+            groupDetailsView.addTopShadow(shadowColor: UIColor.gray, shadowOpacity: 0.5, shadowRadius: 3, offset: CGSize(width: 0.0, height : -5.0))
+            backButton.setTitle("Show List", for: .normal)
+            groupsNameLbl.text = groupName
+        } else {
+            memberDetailsView.addTopShadow(shadowColor: UIColor.gray, shadowOpacity: 0.5, shadowRadius: 3, offset: CGSize(width: 0.0, height : -5.0))
+            backButton.setTitle("Back", for: .normal)
+            nameLbl.text = memberList[0].name
+            showPinForMembersLocation()
+        }
         observeFirebaseRealtimeDBChanges()
     }
     
     private func observeFirebaseRealtimeDBChanges() {
         //Observe updated value for member
+        self.memberList.removeAll()
+        self.ref.removeAllObservers()
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMembersLocationUpdated(key: snapshot.key, value: value)
             }
         }
         
-        if toShowAllGroupMembers {
+        if showAllGroupMembers {
             //Observe newly added member
             self.ref.child("/members").observe(.childAdded) { (snapshot) in
                 if let value = snapshot.value as? NSMutableDictionary {
@@ -68,8 +96,6 @@ class MapViewController: UIViewController {
 
         if let index = self.memberList.firstIndex(where: {
                                                     $0.id == member.id }) {
-            let allAnnotations = self.mapView.annotations
-            self.mapView.removeAnnotations(allAnnotations)
             self.memberList[index] = member
             self.showPinForMembersLocation()
         }
@@ -86,8 +112,6 @@ class MapViewController: UIViewController {
         member.lastUpdated = value["lastUpdated"] as? String
         member.sosState = value["sosState"] as? Bool
         self.memberList.append(member)
-        let allAnnotations = self.mapView.annotations
-        self.mapView.removeAnnotations(allAnnotations)
         self.showPinForMembersLocation()
         
     }
@@ -98,13 +122,14 @@ class MapViewController: UIViewController {
         member.id = value["id"] as? String
         if let index = self.memberList.firstIndex(where: { $0.id == member.id }) {
             self.memberList.remove(at: index)
-            let allAnnotations = self.mapView.annotations
-            self.mapView.removeAnnotations(allAnnotations)
             self.showPinForMembersLocation()
         }
     }
     
     func showPinForMembersLocation() {
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+        
         for index in 0..<memberList.count {
             let item = memberList[index]
             
@@ -143,6 +168,26 @@ class MapViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func sosBtnAction(_ sender: Any) {
+
+    }
+    
+    @IBAction func nextBtnAction(_ sender: Any) {
+        index = index + 1
+        groupListHandler?(index)
+        handleButtons()
+    }
+    
+    @IBAction func previousBtnAction(_ sender: Any) {
+        index = index - 1
+        groupListHandler?(index)
+        handleButtons()
+    }
+    
+    func handleButtons() {
+        previousButton.isEnabled = !(index == 0)
+        nextButton.isEnabled = !(index == groupsCount - 1)
+    }
 }
 
 extension MapViewController : MKMapViewDelegate {

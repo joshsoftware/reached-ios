@@ -21,11 +21,16 @@ class GroupMemberTableViewCell: UITableViewCell {
     @IBOutlet weak var distanceLbl: UILabel!
     @IBOutlet weak var awayLbl: UILabel!
     
+    var onClickMemberHandler: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         distanceLbl.isHidden = true
         awayLbl.isHidden = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        containerView.addGestureRecognizer(tap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -48,7 +53,7 @@ class GroupMemberTableViewCell: UITableViewCell {
         let memberId = member.id
         let userId = UserDefaults.standard.string(forKey: "userId")
         if memberId == userId {
-            memberNameLbl.text = "Me"
+            memberNameLbl.text = "You"
         } else {
             memberNameLbl.text = member.name
         }
@@ -67,6 +72,10 @@ class GroupMemberTableViewCell: UITableViewCell {
                 }
             }
         }
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        onClickMemberHandler?()
     }
     
 }

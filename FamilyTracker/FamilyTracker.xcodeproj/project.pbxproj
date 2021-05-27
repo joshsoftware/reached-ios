@@ -364,6 +364,7 @@
 			children = (
 				B455BDF4264D3FF800AAE677 /* Cells */,
 				B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */,
+				B4DDA14925EE46AA00B5F992 /* MapViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -436,7 +437,6 @@
 				3D546176261C665B0053FA57 /* GroupListViewController.swift */,
 				B4DDA14725EE46AA00B5F992 /* SceneDelegate.swift */,
 				B4DDA28625EFA94F00B5F992 /* MemberListViewController.swift */,
-				B4DDA14925EE46AA00B5F992 /* MapViewController.swift */,
 				B4DDA14B25EE46AA00B5F992 /* Main.storyboard */,
 				B4DDA14E25EE46AE00B5F992 /* Assets.xcassets */,
 				B4DDA15025EE46AE00B5F992 /* LaunchScreen.storyboard */,

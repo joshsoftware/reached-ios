@@ -16,7 +16,7 @@ class ShowQRCodeViewController: UIViewController {
 
     var groupId: String = ""
     var groupName: String = ""
-    var iIsFromCreateGroupFlow = false
+    var iIsFromCreateGroupFlow = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,6 @@ class ShowQRCodeViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         topView.roundBottom(radius: 10)
-        self.navigationController?.navigationBar.isHidden = true
     }
     
     private func createBarcode() {
@@ -51,8 +50,12 @@ class ShowQRCodeViewController: UIViewController {
     
     
     @IBAction func viewGroupBtnAction(_ sender: UIButton) {
-        if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
-            self.navigationController?.pushViewController(vc, animated: false)
+        if iIsFromCreateGroupFlow {
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+                self.navigationController?.pushViewController(vc, animated: false)
+            }
+        } else {
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
