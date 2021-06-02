@@ -9,6 +9,8 @@ import UIKit
 import Firebase
 import CoreLocation
 import SVProgressHUD
+import Panels
+import MSPeekCollectionViewDelegateImplementation
 
 class DashboardViewController: UIViewController {
     
@@ -29,11 +31,23 @@ class DashboardViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var connectivityHandler = WatchSessionManager.shared
     private var groups : NSDictionary = NSDictionary()
+    private let groupId = UUID().uuidString
+    
+    lazy var panelManager = Panels(target: self)
+    let panel = UIStoryboard.instantiatePanel(identifier: "Home")
+    var behavior: MSCollectionViewPeekingBehavior!
         
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
         setUp()
+        
+        if let vc = panel as? Panelable & CreateGroupViewController {
+            vc.endEditingHandler = { groupName in
+                self.panelManager.dismiss()
+                self.createGroup(groupName: groupName)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,18 +65,18 @@ class DashboardViewController: UIViewController {
         showOnMapBtn.backgroundColor = Constant.kColor.KAppOrangeShade1
         pageControl.hidesForSinglePage = true
     }
+    
+    func reloadDelegate() {
+        behavior = MSCollectionViewPeekingBehavior(cellSpacing: 10, cellPeekWidth: 20, maximumItemsToScroll: 1, numberOfItemsToShow: 1, scrollDirection: .horizontal)
+        collectionView.configureForPeekingBehavior(behavior: behavior)
+        collectionView.reloadData()
+    }
    
     private func setUpCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "GroupListCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GroupListCollectionViewCell")
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
-        layout.minimumLineSpacing = spacing
-        layout.minimumInteritemSpacing = spacing
-        collectionView.setCollectionViewLayout(layout, animated: true)
+        reloadDelegate()
     }
     
     private func setUpLocationManager() {
@@ -97,12 +111,43 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    func createGroup(groupName: String) {
+        SVProgressHUD.show()
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "name", "lastUpdated": Date().currentUTCDate(), "profileUrl": "profileUrl"] as [String : Any]
+            var memberArray : Array = Array<Any>()
+            memberArray.append(data)
+
+            self.ref.child("groups").child(self.groupId).setValue(["created_by": userId, "name": groupName])
+            self.ref.child("groups").child(self.groupId).child("members").child(userId).setValue(data)
+            
+            if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                dict[self.groupId] = true
+                self.ref.child("users").child(userId).child("groups").setValue(dict)
+                UserDefaults.standard.setValue(dict, forKey: "groups")
+            } else {
+                let dict = [self.groupId: true]
+                self.ref.child("users").child(userId).child("groups").setValue(dict)
+                UserDefaults.standard.setValue(dict, forKey: "groups")
+            }
+            SVProgressHUD.dismiss()
+            fetchGroups()
+        }
+    }
+    
     @IBAction func menuBtnAction(_ sender: Any) {
         revealViewController()?.revealSideMenu()
     }
     
     @IBAction func addGroupBtnAction(_ sender: Any) {
-        
+        var panelConfiguration = PanelConfiguration(size: .custom(100.0))
+        panelConfiguration.enclosedNavigationBar = false
+        panelManager.delegate = self
+        panelManager.show(panel: panel, config: panelConfiguration)
+        panelManager.expandPanel()
+        if let vc = panel as? Panelable & CreateGroupViewController {
+            vc.textField.becomeFirstResponder()
+        }
     }
     
     
@@ -138,7 +183,11 @@ class DashboardViewController: UIViewController {
     
 }
 
-extension DashboardViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension DashboardViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         setUpPageControl()
         return groupList.count
@@ -184,35 +233,39 @@ extension DashboardViewController: UICollectionViewDataSource, UICollectionViewD
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            
+             
+        }
+        
+        cell?.menuHandler = {
+            if let vc = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "ManageGroupViewController") as? ManageGroupViewController {
+                let group = self.groupList[indexPath.row]
+                vc.memberList = group.members!
+                vc.groupId = group.id ?? ""
+                vc.groupName = group.name ?? ""
+                vc.groupMemberUpdatedHandler = {
+                    self.fetchGroups()
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        
+        cell?.onClickMemberProfileHandler = {
+            if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController {
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
         return cell ?? UICollectionViewCell()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-                
-        let numberOfItemsPerRow: CGFloat = 1
-        let spacingBetweenCells: CGFloat = 30
+}
 
-        let totalSpacing = (2 * spacing) + (numberOfItemsPerRow * spacingBetweenCells) // Amount of total spacing in a row
-
-        let width = (collectionView.frame.width - totalSpacing) / numberOfItemsPerRow
-        
-        return CGSize(width: width, height: collectionView.frame.size.height)
+extension DashboardViewController: UICollectionViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        behavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
 
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            self.collectionView.scrollToNearestVisibleCollectionViewCell()
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offSet = scrollView.contentOffset.x
-        let width = scrollView.frame.width
-        let horizontalCenter = width / 2
-
-        pageControl.currentPage = Int(offSet + horizontalCenter) / Int(width)
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print(behavior.currentIndex)
+        self.pageControl.currentPage = behavior.currentIndex
     }
 }
 
@@ -224,30 +277,22 @@ extension DashboardViewController: CLLocationManagerDelegate {
     }
 }
 
-
-
-extension UICollectionView {
-    func scrollToNearestVisibleCollectionViewCell() {
-        self.decelerationRate = UIScrollView.DecelerationRate.fast
-        let visibleCenterPositionOfScrollView = Float(self.contentOffset.x + (self.bounds.size.width / 2))
-        var closestCellIndex = -1
-        var closestDistance: Float = .greatestFiniteMagnitude
-        for i in 0..<self.visibleCells.count {
-            let cell = self.visibleCells[i]
-            let cellWidth = cell.bounds.size.width
-            let cellCenter = Float(cell.frame.origin.x + cellWidth / 2)
-
-            // Now calculate closest cell
-            let distance: Float = fabsf(visibleCenterPositionOfScrollView - cellCenter)
-            if distance < closestDistance {
-                closestDistance = distance
-                closestCellIndex = self.indexPath(for: cell)!.row
-            }
+extension DashboardViewController: PanelNotifications {
+    func panelDidPresented() {
+        if let vc = panel as? Panelable & CreateGroupViewController {
+            vc.panelDidPresented()
         }
-        if closestCellIndex != -1 {
-            self.isPagingEnabled = false
-            self.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
-            self.isPagingEnabled = true
+    }
+    
+    func panelDidCollapse() {
+        if let vc = panel as? Panelable & CreateGroupViewController {
+            vc.panelDismiss()
+        }
+    }
+    
+    func panelDidOpen() {
+        if let vc = panel as? Panelable & CreateGroupViewController {
+            vc.panelDidOpen()
         }
     }
 }

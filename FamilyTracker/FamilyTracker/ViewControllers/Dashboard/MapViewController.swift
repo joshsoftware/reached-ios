@@ -203,6 +203,8 @@ extension MapViewController : MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
+        annotationView?.centerOffset = CGPoint(x: 0, y: -40)
+        annotationView?.image = UIImage(named: "pin_with_profile_pic")
 
         return annotationView
     }

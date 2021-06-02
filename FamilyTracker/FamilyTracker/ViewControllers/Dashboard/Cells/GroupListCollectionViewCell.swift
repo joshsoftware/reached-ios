@@ -29,7 +29,9 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
     var addMemberHandler: ((_ groupId: String, _ groupName: String) -> Void)?
+    var menuHandler: (() -> Void)?
     var onClickMemberHandler: ((_ members: [Members]) -> Void)?
+    var onClickMemberProfileHandler: (() -> Void)?
 
     
     override func awakeFromNib() {
@@ -165,7 +167,7 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func menuButtonPressed(_ sender: Any) {
-
+        menuHandler?()
     }
 
 }
@@ -186,6 +188,9 @@ extension GroupListCollectionViewCell: UITableViewDataSource, UITableViewDelegat
                 var selectedMember = [Members]()
                 selectedMember.append(member)
                 self.onClickMemberHandler?(selectedMember)
+            }
+            cell?.onClickMemberProfileHandler = {
+                self.onClickMemberProfileHandler?()
             }
         }
         return cell ?? UITableViewCell()

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		102EFC6EFD2AE895C2BDBE46 /* Pods_FamilyTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71BD1743B4644990D03FEAB7 /* Pods_FamilyTracker.framework */; };
 		2C125F29EEF17B3A63A3810C /* Pods_FamilyTracker_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA24368C814F203E4E37770D /* Pods_FamilyTracker_WatchKit_App.framework */; };
+		3D3323ED2660B4E50043C0FA /* ManageGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3323EC2660B4E40043C0FA /* ManageGroupViewController.swift */; };
+		3D3323EF2660B57E0043C0FA /* ManageGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3323EE2660B57E0043C0FA /* ManageGroupTableViewCell.swift */; };
+		3D3323F12664E8B50043C0FA /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D3323F02664E8B50043C0FA /* Profile.storyboard */; };
 		3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */; };
 		3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD17261D87E60016AA95 /* CreateGroupPopUpVC.swift */; };
 		3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD18261D87E60016AA95 /* CreateGroupPopUpVC.xib */; };
@@ -32,6 +35,11 @@
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
 		3DBE0CA22653CE7C00B713B1 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA12653CE7C00B713B1 /* Home.storyboard */; };
 		3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */; };
+		3DE78110266600E500BF5328 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7810F266600E500BF5328 /* ProfileViewController.swift */; };
+		3DE781152666012300BF5328 /* AddressCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE781132666012300BF5328 /* AddressCollectionViewCell.swift */; };
+		3DE781162666012300BF5328 /* AddressCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */; };
+		3DE7811826673F8A00BF5328 /* SearchAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */; };
+		3DE7811A2667514C00BF5328 /* SaveAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE781192667514C00BF5328 /* SaveAddressViewController.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */; };
@@ -146,6 +154,9 @@
 /* Begin PBXFileReference section */
 		1B10156191672F82ADA3FE3D /* Pods-FamilyTracker WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit App/Pods-FamilyTracker WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 		25534CD39BDC54EBCCA40E9B /* Pods-FamilyTracker WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit Extension/Pods-FamilyTracker WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		3D3323EC2660B4E40043C0FA /* ManageGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageGroupViewController.swift; sourceTree = "<group>"; };
+		3D3323EE2660B57E0043C0FA /* ManageGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageGroupTableViewCell.swift; sourceTree = "<group>"; };
+		3D3323F02664E8B50043C0FA /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D51FD17261D87E60016AA95 /* CreateGroupPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupPopUpVC.swift; sourceTree = "<group>"; };
 		3D51FD18261D87E60016AA95 /* CreateGroupPopUpVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupPopUpVC.xib; sourceTree = "<group>"; };
@@ -170,6 +181,11 @@
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3DBE0CA12653CE7C00B713B1 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
+		3DE7810F266600E500BF5328 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		3DE781132666012300BF5328 /* AddressCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCollectionViewCell.swift; sourceTree = "<group>"; };
+		3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCollectionViewCell.xib; sourceTree = "<group>"; };
+		3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAddressViewController.swift; sourceTree = "<group>"; };
+		3DE781192667514C00BF5328 /* SaveAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressViewController.swift; sourceTree = "<group>"; };
 		546B6CEE3423225BBEAD574A /* Pods-FamilyTracker WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit App/Pods-FamilyTracker WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2224E6614AB49CBDF9BC4 /* Pods-FamilyTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -280,6 +296,7 @@
 		3D51FD21261DE3E20016AA95 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3DE7810E266600D000BF5328 /* Profile */,
 				B455BE34264DA16E00AAE677 /* SideMenu */,
 				B455BDEB264D3D5900AAE677 /* Dashboard */,
 				3DBE0CA32653CEDE00B713B1 /* Home */,
@@ -307,6 +324,7 @@
 				B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */,
 				3DBE0CA12653CE7C00B713B1 /* Home.storyboard */,
 				3D56C539264D0942008410B8 /* SignIn.storyboard */,
+				3D3323F02664E8B50043C0FA /* Profile.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -339,6 +357,26 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		3DE7810E266600D000BF5328 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				3DE7810F266600E500BF5328 /* ProfileViewController.swift */,
+				3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */,
+				3DE781192667514C00BF5328 /* SaveAddressViewController.swift */,
+				3DE781122666010E00BF5328 /* Cell */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		3DE781122666010E00BF5328 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3DE781132666012300BF5328 /* AddressCollectionViewCell.swift */,
+				3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		A76F5CCFD66C61206DEC2246 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,6 +403,7 @@
 				B455BDF4264D3FF800AAE677 /* Cells */,
 				B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */,
 				B4DDA14925EE46AA00B5F992 /* MapViewController.swift */,
+				3D3323EC2660B4E40043C0FA /* ManageGroupViewController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -376,6 +415,7 @@
 				B455BDF6264D40B000AAE677 /* GroupListCollectionViewCell.xib */,
 				B455BDFF264D4E0F00AAE677 /* GroupMemberTableViewCell.swift */,
 				B455BE00264D4E0F00AAE677 /* GroupMemberTableViewCell.xib */,
+				3D3323EE2660B57E0043C0FA /* ManageGroupTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -703,7 +743,9 @@
 				B455BDF8264D40B000AAE677 /* GroupListCollectionViewCell.xib in Resources */,
 				B4C76AEB262819070024B2C2 /* GroupTableViewCell.xib in Resources */,
 				B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */,
+				3DE781162666012300BF5328 /* AddressCollectionViewCell.xib in Resources */,
 				B455BE02264D4E0F00AAE677 /* GroupMemberTableViewCell.xib in Resources */,
+				3D3323F12664E8B50043C0FA /* Profile.storyboard in Resources */,
 				B4DDA29725EFAA0900B5F992 /* MemberTableViewCell.xib in Resources */,
 				B455BE3D264DA1F900AAE677 /* SideMenuCell.xib in Resources */,
 			);
@@ -856,9 +898,11 @@
 			files = (
 				B455BDF7264D40B000AAE677 /* GroupListCollectionViewCell.swift in Sources */,
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
+				3DE7811A2667514C00BF5328 /* SaveAddressViewController.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
 				3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */,
 				B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */,
+				3DE7811826673F8A00BF5328 /* SearchAddressViewController.swift in Sources */,
 				3D546177261C665B0053FA57 /* GroupListViewController.swift in Sources */,
 				B4DDA21E25EF680500B5F992 /* MemberListModel.swift in Sources */,
 				B4DDA14A25EE46AA00B5F992 /* MapViewController.swift in Sources */,
@@ -872,6 +916,7 @@
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,
 				3D56C53C264D0C42008410B8 /* WelcomeViewController.swift in Sources */,
+				3D3323EF2660B57E0043C0FA /* ManageGroupTableViewCell.swift in Sources */,
 				B492BAA5261DBFD8000AD3F9 /* UIApplication+Extension.swift in Sources */,
 				3D54617B261C8A1E0053FA57 /* GroupListModel.swift in Sources */,
 				3D56C544264E7953008410B8 /* IntroPageViewController.swift in Sources */,
@@ -885,13 +930,16 @@
 				B4DDA28725EFA94F00B5F992 /* MemberListViewController.swift in Sources */,
 				3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */,
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
+				3DE78110266600E500BF5328 /* ProfileViewController.swift in Sources */,
 				B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */,
 				3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */,
 				B455BE3C264DA1F900AAE677 /* SideMenuCell.swift in Sources */,
+				3D3323ED2660B4E50043C0FA /* ManageGroupViewController.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
 				3D51FD1D261DBA680016AA95 /* JoinLinkManager.swift in Sources */,
 				B4C76AF0262825960024B2C2 /* CLLocation+Extension.swift in Sources */,
 				3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */,
+				3DE781152666012300BF5328 /* AddressCollectionViewCell.swift in Sources */,
 				B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */,
 				3D51FD2A26201EB80016AA95 /* Date+Extension.swift in Sources */,
 				B455BDED264D3D7400AAE677 /* DashboardViewController.swift in Sources */,

@@ -40,6 +40,10 @@ class CreateGroupViewController: UIViewController, Panelable {
         groupNameView.isHidden = false
     }
     
+    func panelDismiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 
     /*
     // MARK: - Navigation

@@ -22,6 +22,7 @@ class GroupMemberTableViewCell: UITableViewCell {
     @IBOutlet weak var awayLbl: UILabel!
     
     var onClickMemberHandler: (() -> Void)?
+    var onClickMemberProfileHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,6 +32,9 @@ class GroupMemberTableViewCell: UITableViewCell {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         containerView.addGestureRecognizer(tap)
+        
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap(_:)))
+        memberProfileImgView.addGestureRecognizer(profileTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -76,6 +80,10 @@ class GroupMemberTableViewCell: UITableViewCell {
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         onClickMemberHandler?()
+    }
+    
+    @objc func handleProfileTap(_ sender: UITapGestureRecognizer? = nil) {
+        onClickMemberProfileHandler?()
     }
     
 }

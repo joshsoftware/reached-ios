@@ -18,6 +18,7 @@ target 'FamilyTracker' do
   pod 'Floaty', '~> 4.2.0'
   pod 'Panels'
   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+  pod 'MSPeekCollectionViewDelegateImplementation'
   
 end
 

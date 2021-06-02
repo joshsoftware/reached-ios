@@ -64,10 +64,10 @@ class DatabaseManager: NSObject {
                         
                         var memberList = [Members]()
                         if let members = data["members"] as? NSDictionary {
-                            for member in members.allValues {
+                            for (key, member) in members {
                                 if let data = member as? NSDictionary {
                                     var member = Members()
-                                    member.id = snapshot.key
+                                    member.id = key as? String
                                     member.lat = data["lat"] as? Double
                                     member.long = data["long"] as? Double
                                     member.name = data["name"] as? String

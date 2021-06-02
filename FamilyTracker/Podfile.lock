@@ -108,6 +108,7 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
   - leveldb-library (1.22.1)
+  - MSPeekCollectionViewDelegateImplementation (3.2.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -133,6 +134,7 @@ DEPENDENCIES:
   - FirebaseDatabase
   - Floaty (~> 4.2.0)
   - GoogleSignIn
+  - MSPeekCollectionViewDelegateImplementation
   - Panels
   - SDWebImage (~> 5.0)
   - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
@@ -159,6 +161,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - leveldb-library
+    - MSPeekCollectionViewDelegateImplementation
     - nanopb
     - Panels
     - PromisesObjC
@@ -194,12 +197,13 @@ SPEC CHECKSUMS:
   GTMAppAuth: 5b53231ef6920f149ab84b2969cb0ab572da3077
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
+  MSPeekCollectionViewDelegateImplementation: be35a217bd302976a9e4476151be992c1f150127
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   Panels: cfafe2d0f92387f393a3b5e827af9ffffe46b073
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   SVProgressHUD: de812b4f0e1d65358f0064416473174ae619843f
 
-PODFILE CHECKSUM: f5997215720da2711825bbac2b0df2ef2d9b3e79
+PODFILE CHECKSUM: d7392864b13baa547e19bacc74f01aaeb9ddb91b
 
 COCOAPODS: 1.10.0

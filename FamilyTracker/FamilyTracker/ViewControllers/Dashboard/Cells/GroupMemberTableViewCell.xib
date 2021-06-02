@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBk-NJ-tjq">
-                        <rect key="frame" x="12" y="10" width="356" height="65"/>
+                        <rect key="frame" x="15" y="10" width="350" height="65"/>
                         <subviews>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1d-vn-czM">
-                                <rect key="frame" x="61" y="10" width="239" height="18"/>
+                                <rect key="frame" x="61" y="10" width="233" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -35,7 +35,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Away" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8oh-6k-Uoc">
-                                <rect key="frame" x="308" y="37" width="40" height="18"/>
+                                <rect key="frame" x="302" y="37" width="40" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="2pq-La-Yn9"/>
                                     <constraint firstAttribute="height" constant="18" id="PPk-dE-B3i"/>
@@ -73,7 +73,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KdM-y0-XsV">
-                                <rect key="frame" x="308" y="10" width="40" height="19"/>
+                                <rect key="frame" x="302" y="10" width="40" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="cej-Sk-UoM"/>
                                 </constraints>
@@ -103,8 +103,8 @@
                 <constraints>
                     <constraint firstItem="rBk-NJ-tjq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="DLh-fY-qNK"/>
                     <constraint firstAttribute="bottom" secondItem="rBk-NJ-tjq" secondAttribute="bottom" constant="10" id="ohA-ga-wGS"/>
-                    <constraint firstItem="rBk-NJ-tjq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="qIK-hV-9Jv"/>
-                    <constraint firstAttribute="trailing" secondItem="rBk-NJ-tjq" secondAttribute="trailing" constant="12" id="yUJ-BA-jtB"/>
+                    <constraint firstItem="rBk-NJ-tjq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="qIK-hV-9Jv"/>
+                    <constraint firstAttribute="trailing" secondItem="rBk-NJ-tjq" secondAttribute="trailing" constant="15" id="yUJ-BA-jtB"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
