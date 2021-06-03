@@ -40,6 +40,7 @@
 		3DE781162666012300BF5328 /* AddressCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */; };
 		3DE7811826673F8A00BF5328 /* SearchAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */; };
 		3DE7811A2667514C00BF5328 /* SaveAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE781192667514C00BF5328 /* SaveAddressViewController.swift */; };
+		3DE7811C266798CA00BF5328 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811B266798CA00BF5328 /* PlaceModel.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */; };
@@ -186,6 +187,7 @@
 		3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCollectionViewCell.xib; sourceTree = "<group>"; };
 		3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAddressViewController.swift; sourceTree = "<group>"; };
 		3DE781192667514C00BF5328 /* SaveAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressViewController.swift; sourceTree = "<group>"; };
+		3DE7811B266798CA00BF5328 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
 		546B6CEE3423225BBEAD574A /* Pods-FamilyTracker WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit App/Pods-FamilyTracker WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2224E6614AB49CBDF9BC4 /* Pods-FamilyTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -561,6 +563,7 @@
 			children = (
 				B4DDA21D25EF680500B5F992 /* MemberListModel.swift */,
 				3D54617A261C8A1E0053FA57 /* GroupListModel.swift */,
+				3DE7811B266798CA00BF5328 /* PlaceModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -929,6 +932,7 @@
 				B4DDA22825EF687000B5F992 /* ApiClient.swift in Sources */,
 				B4DDA28725EFA94F00B5F992 /* MemberListViewController.swift in Sources */,
 				3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */,
+				3DE7811C266798CA00BF5328 /* PlaceModel.swift in Sources */,
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
 				3DE78110266600E500BF5328 /* ProfileViewController.swift in Sources */,
 				B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */,

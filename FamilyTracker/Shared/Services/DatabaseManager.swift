@@ -194,4 +194,27 @@ class DatabaseManager: NSObject {
             self.ref.child("users").child(userId).child("token").child("phone").setValue(token)
         }
     }
+    
+    
+    func addAddress(userId: String, groupId: String, placeData: [String : Any]) {
+        ref = Database.database().reference()
+        self.ref.child("groups/\(groupId)").child("members").child(userId).child("address").childByAutoId().setValue(placeData)
+    }
+    
+    func fetchAddressFor(userWith id: String, groupId: String, completion: @escaping (_ result: NSDictionary?) -> Void) {
+        ref = Database.database().reference().child("groups/\(groupId)").child("members").child(id).child("address")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let data = snapshot.value as? NSDictionary {
+                    print("Address fetched...")
+                    completion(data)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                print("Address not created")
+                completion(nil)
+            }
+        })
+    }
 }

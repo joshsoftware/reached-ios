@@ -15,6 +15,7 @@ import FirebaseDynamicLinks
 import UserNotifications
 import FirebaseMessaging
 import SVProgressHUD
+import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WatchSessionManager.shared.startSession()
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         Messaging.messaging().delegate = self
-
+        GMSPlacesClient.provideAPIKey("AIzaSyB5MbxPWTtuGgtV_J3KCPygqhwtiItw6Bw")
+        
         UINavigationBar.appearance().tintColor = UIColor.white
         
         //To update current user's location

@@ -6,15 +6,38 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ProfileViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var nameLabel: UILabel!
+    var groupId: String = ""
+    var addressList = [Place]()
+    var member = Members()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
-
+        nameLabel.text = member.name
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            SVProgressHUD.show()
+            DatabaseManager.shared.fetchAddressFor(userWith: userId, groupId: self.groupId) { (response) in
+                SVProgressHUD.dismiss()
+                for address in response?.allValues ?? [Any]() {
+                    if let data = address as? NSDictionary {
+                        var place = Place()
+                        place.lat = data["lat"] as? Double
+                        place.long = data["long"] as? Double
+                        place.address = data["address"] as? String
+                        place.name = data["name"] as? String
+                        place.radius = data["radius"] as? Double
+                        self.addressList.append(place)
+                    }
+                }
+                self.collectionView.reloadData()
+            }
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -27,6 +50,7 @@ class ProfileViewController: UIViewController {
     
     @IBAction func addAddressBtnAction(_ sender: Any) {
         if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SearchAddressViewController") as? SearchAddressViewController {
+            vc.groupId = self.groupId
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -34,6 +58,16 @@ class ProfileViewController: UIViewController {
     @IBAction func backBtnAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func loacateBtnAction(_ sender: Any) {
+        if let vc = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+            vc.groupId = groupId
+            vc.showAllGroupMembers = false
+            vc.memberList.append(member)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
 
     /*
     // MARK: - Navigation
@@ -53,11 +87,13 @@ extension ProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return self.addressList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddressCollectionViewCell", for: indexPath) as? AddressCollectionViewCell
+        let address = self.addressList[indexPath.row]
+        cell?.setupCell(place: address)
         return cell ?? UICollectionViewCell()
     }
 }

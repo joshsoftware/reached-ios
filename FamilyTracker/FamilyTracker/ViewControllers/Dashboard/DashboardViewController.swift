@@ -249,8 +249,11 @@ extension DashboardViewController: UICollectionViewDataSource {
             }
         }
         
-        cell?.onClickMemberProfileHandler = {
+        cell?.onClickMemberProfileHandler = { member in
             if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController {
+                let group = self.groupList[indexPath.row]
+                vc.groupId = group.id ?? ""
+                vc.member = member
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

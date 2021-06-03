@@ -176,6 +176,11 @@
                 <constraint firstAttribute="bottom" secondItem="4p3-Ti-9Dh" secondAttribute="bottom" id="aT6-OG-kQL"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="addressLabel" destination="YGc-dF-arq" id="2U0-mD-tiq"/>
+                <outlet property="nameLabel" destination="Stb-rk-F0Z" id="tew-kn-x2P"/>
+                <outlet property="radiusLabel" destination="8ke-DK-ozv" id="IHQ-cx-evl"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
         </collectionViewCell>
     </objects>

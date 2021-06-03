@@ -80,6 +80,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
+  - GooglePlaces (5.0.0)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
@@ -133,6 +134,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - FirebaseDatabase
   - Floaty (~> 4.2.0)
+  - GooglePlaces (= 5.0.0)
   - GoogleSignIn
   - MSPeekCollectionViewDelegateImplementation
   - Panels
@@ -156,6 +158,7 @@ SPEC REPOS:
     - Floaty
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GooglePlaces
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
@@ -192,6 +195,7 @@ SPEC CHECKSUMS:
   Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
   GoogleAppMeasurement: 1c863b1161fc3c8cf614a7460d1be6a7c262aab3
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
+  GooglePlaces: 5d87ca13ed98b7a937e0d8bc7026f718c7263271
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   GTMAppAuth: 5b53231ef6920f149ab84b2969cb0ab572da3077
@@ -204,6 +208,6 @@ SPEC CHECKSUMS:
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   SVProgressHUD: de812b4f0e1d65358f0064416473174ae619843f
 
-PODFILE CHECKSUM: d7392864b13baa547e19bacc74f01aaeb9ddb91b
+PODFILE CHECKSUM: 2efd11ba5fd5de3a153eeb1653906823d1ccd7ef
 
 COCOAPODS: 1.10.0

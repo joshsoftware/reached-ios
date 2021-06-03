@@ -31,7 +31,7 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     var addMemberHandler: ((_ groupId: String, _ groupName: String) -> Void)?
     var menuHandler: (() -> Void)?
     var onClickMemberHandler: ((_ members: [Members]) -> Void)?
-    var onClickMemberProfileHandler: (() -> Void)?
+    var onClickMemberProfileHandler: ((_ member: Members) -> Void)?
 
     
     override func awakeFromNib() {
@@ -190,7 +190,7 @@ extension GroupListCollectionViewCell: UITableViewDataSource, UITableViewDelegat
                 self.onClickMemberHandler?(selectedMember)
             }
             cell?.onClickMemberProfileHandler = {
-                self.onClickMemberProfileHandler?()
+                self.onClickMemberProfileHandler?(member)
             }
         }
         return cell ?? UITableViewCell()
