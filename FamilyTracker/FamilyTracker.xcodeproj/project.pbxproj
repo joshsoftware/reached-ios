@@ -12,6 +12,7 @@
 		3D3323ED2660B4E50043C0FA /* ManageGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3323EC2660B4E40043C0FA /* ManageGroupViewController.swift */; };
 		3D3323EF2660B57E0043C0FA /* ManageGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3323EE2660B57E0043C0FA /* ManageGroupTableViewCell.swift */; };
 		3D3323F12664E8B50043C0FA /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D3323F02664E8B50043C0FA /* Profile.storyboard */; };
+		3D4F1702266DE9E1009DC3F4 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */; };
 		3D51FD15261D7DA40016AA95 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD14261D7DA30016AA95 /* GoogleService-Info.plist */; };
 		3D51FD19261D87E60016AA95 /* CreateGroupPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D51FD17261D87E60016AA95 /* CreateGroupPopUpVC.swift */; };
 		3D51FD1A261D87E60016AA95 /* CreateGroupPopUpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D51FD18261D87E60016AA95 /* CreateGroupPopUpVC.xib */; };
@@ -35,12 +36,17 @@
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
 		3DBE0CA22653CE7C00B713B1 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA12653CE7C00B713B1 /* Home.storyboard */; };
 		3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */; };
+		3DD019BA266E675400DDCDF8 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD019B9266E675400DDCDF8 /* ProgressHUD.swift */; };
+		3DDD8522266A659600347331 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDD8521266A659600347331 /* KeyboardLayoutConstraint.swift */; };
 		3DE78110266600E500BF5328 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7810F266600E500BF5328 /* ProfileViewController.swift */; };
 		3DE781152666012300BF5328 /* AddressCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE781132666012300BF5328 /* AddressCollectionViewCell.swift */; };
 		3DE781162666012300BF5328 /* AddressCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */; };
 		3DE7811826673F8A00BF5328 /* SearchAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */; };
 		3DE7811A2667514C00BF5328 /* SaveAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE781192667514C00BF5328 /* SaveAddressViewController.swift */; };
-		3DE7811C266798CA00BF5328 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811B266798CA00BF5328 /* PlaceModel.swift */; };
+		3DE7811E266A0C8B00BF5328 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811D266A0C8A00BF5328 /* PlaceModel.swift */; };
+		3DE7811F266A0DC700BF5328 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE7811D266A0C8A00BF5328 /* PlaceModel.swift */; };
+		3DE78121266A1FEB00BF5328 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE78120266A1FEB00BF5328 /* UIColor+Extension.swift */; };
+		3DE78128266A488000BF5328 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE78127266A488000BF5328 /* CustomAnnotationView.swift */; };
 		B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B416337E25F63BCC004F9911 /* UserLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B416337625F625ED004F9911 /* UserLocationManager.swift */; };
 		B455BDE7264D3AFF00AAE677 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B455BDE6264D3AFF00AAE677 /* Dashboard.storyboard */; };
@@ -107,7 +113,6 @@
 		B4F9B915261F12DF00EC2983 /* MemberListInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B914261F12DF00EC2983 /* MemberListInterfaceController.swift */; };
 		B4F9B9D52620825900EC2983 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B9D42620825900EC2983 /* DateUtils.swift */; };
 		B4F9B9D62620825900EC2983 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F9B9D42620825900EC2983 /* DateUtils.swift */; };
-		DE960CA5FE783BEF75263C03 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,12 +187,16 @@
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3DBE0CA12653CE7C00B713B1 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
+		3DD019B9266E675400DDCDF8 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
+		3DDD8521266A659600347331 /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
 		3DE7810F266600E500BF5328 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		3DE781132666012300BF5328 /* AddressCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCollectionViewCell.swift; sourceTree = "<group>"; };
 		3DE781142666012300BF5328 /* AddressCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCollectionViewCell.xib; sourceTree = "<group>"; };
 		3DE7811726673F8A00BF5328 /* SearchAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAddressViewController.swift; sourceTree = "<group>"; };
 		3DE781192667514C00BF5328 /* SaveAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAddressViewController.swift; sourceTree = "<group>"; };
-		3DE7811B266798CA00BF5328 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
+		3DE7811D266A0C8A00BF5328 /* PlaceModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
+		3DE78120266A1FEB00BF5328 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		3DE78127266A488000BF5328 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		546B6CEE3423225BBEAD574A /* Pods-FamilyTracker WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-FamilyTracker WatchKit App/Pods-FamilyTracker WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		5DC13EB050A7479370BB752B /* Pods_FamilyTracker_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTracker_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C2224E6614AB49CBDF9BC4 /* Pods-FamilyTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTracker.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTracker/Pods-FamilyTracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -271,7 +280,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE960CA5FE783BEF75263C03 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */,
+				3D4F1702266DE9E1009DC3F4 /* Pods_FamilyTracker_WatchKit_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +368,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		3DD019B8266E675400DDCDF8 /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				3DD019B9266E675400DDCDF8 /* ProgressHUD.swift */,
+			);
+			name = Loader;
+			path = Shared/Loader;
+			sourceTree = SOURCE_ROOT;
+		};
 		3DE7810E266600D000BF5328 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,6 +424,7 @@
 				B455BDEC264D3D7400AAE677 /* DashboardViewController.swift */,
 				B4DDA14925EE46AA00B5F992 /* MapViewController.swift */,
 				3D3323EC2660B4E40043C0FA /* ManageGroupViewController.swift */,
+				3DE78127266A488000BF5328 /* CustomAnnotationView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -520,6 +539,7 @@
 		B4DDA1FF25EE737900B5F992 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				3DD019B8266E675400DDCDF8 /* Loader */,
 				B4D12B132632C734008D5D8F /* Notification */,
 				B4F9B9D32620824500EC2983 /* Utils */,
 				3D51FD16261D87BD0016AA95 /* CustomView */,
@@ -554,6 +574,7 @@
 				B492BAAE261DC1AD000AD3F9 /* UIView+Extension.swift */,
 				3D51FD2926201EB80016AA95 /* Date+Extension.swift */,
 				B4C76AEF262825950024B2C2 /* CLLocation+Extension.swift */,
+				3DE78120266A1FEB00BF5328 /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -562,8 +583,8 @@
 			isa = PBXGroup;
 			children = (
 				B4DDA21D25EF680500B5F992 /* MemberListModel.swift */,
+				3DE7811D266A0C8A00BF5328 /* PlaceModel.swift */,
 				3D54617A261C8A1E0053FA57 /* GroupListModel.swift */,
-				3DE7811B266798CA00BF5328 /* PlaceModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -593,6 +614,7 @@
 			isa = PBXGroup;
 			children = (
 				B4E6F16326089CB0007AE4FC /* LoadingOverlay.swift */,
+				3DDD8521266A659600347331 /* KeyboardLayoutConstraint.swift */,
 			);
 			path = CustomControls;
 			sourceTree = "<group>";
@@ -901,7 +923,9 @@
 			files = (
 				B455BDF7264D40B000AAE677 /* GroupListCollectionViewCell.swift in Sources */,
 				B4DDA22E25EF722700B5F992 /* Constant.swift in Sources */,
+				3DD019BA266E675400DDCDF8 /* ProgressHUD.swift in Sources */,
 				3DE7811A2667514C00BF5328 /* SaveAddressViewController.swift in Sources */,
+				3DE78121266A1FEB00BF5328 /* UIColor+Extension.swift in Sources */,
 				B4DDA24A25EF73F900B5F992 /* Service.swift in Sources */,
 				3D56C5342649252F008410B8 /* IntroViewController.swift in Sources */,
 				B4DDA2A025EFAD3800B5F992 /* Storyboard+Extension.swift in Sources */,
@@ -914,6 +938,7 @@
 				3D51FD26261DE3E20016AA95 /* ScanQRCodeViewController.swift in Sources */,
 				B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */,
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
+				3DE78128266A488000BF5328 /* CustomAnnotationView.swift in Sources */,
 				3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */,
 				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
@@ -932,11 +957,11 @@
 				B4DDA22825EF687000B5F992 /* ApiClient.swift in Sources */,
 				B4DDA28725EFA94F00B5F992 /* MemberListViewController.swift in Sources */,
 				3DA17224260092BB00A7E9F6 /* LoginViewController.swift in Sources */,
-				3DE7811C266798CA00BF5328 /* PlaceModel.swift in Sources */,
 				B416337725F625ED004F9911 /* UserLocationManager.swift in Sources */,
 				3DE78110266600E500BF5328 /* ProfileViewController.swift in Sources */,
 				B4D12B152632C967008D5D8F /* NotificationManager.swift in Sources */,
 				3D51FD27261DE3E20016AA95 /* QRScannerView.swift in Sources */,
+				3DE7811E266A0C8B00BF5328 /* PlaceModel.swift in Sources */,
 				B455BE3C264DA1F900AAE677 /* SideMenuCell.swift in Sources */,
 				3D3323ED2660B4E50043C0FA /* ManageGroupViewController.swift in Sources */,
 				3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */,
@@ -950,6 +975,7 @@
 				3D56C540264E5112008410B8 /* PageViewController.swift in Sources */,
 				B4E6F16426089CB1007AE4FC /* LoadingOverlay.swift in Sources */,
 				3D56C52F2649250B008410B8 /* OnboardingViewController.swift in Sources */,
+				3DDD8522266A659600347331 /* KeyboardLayoutConstraint.swift in Sources */,
 				B4D12BA32636DCFB008D5D8F /* NotificationModel.swift in Sources */,
 				3D54617D261C9D160053FA57 /* DatabaseManager.swift in Sources */,
 			);
@@ -960,6 +986,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4F9B8F8261F0AB000EC2983 /* DatabaseManager.swift in Sources */,
+				3DE7811F266A0DC700BF5328 /* PlaceModel.swift in Sources */,
 				B4F9B90D261F11CF00EC2983 /* ImageTools.swift in Sources */,
 				B4DDA21825EF66D000B5F992 /* WKInterfaceController+Extension.swift in Sources */,
 				B4DDA16F25EE46AF00B5F992 /* NotificationController.swift in Sources */,
@@ -1134,6 +1161,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -1221,6 +1249,7 @@
 				DEVELOPMENT_TEAM = CHN43HYQZM;
 				IBSC_MODULE = FamilyTracker_WatchKit_Extension;
 				INFOPLIST_FILE = "FamilyTracker WatchKit App/Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshsoftware.app.reached.watchkitapp;
 				PRODUCT_NAME = Reached;
 				PROVISIONING_PROFILE_SPECIFIER = Reached_watchkitApp_dev;

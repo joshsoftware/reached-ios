@@ -12,6 +12,8 @@ class AddressCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var radiusLabel: UILabel!
 
+    var onClickRemoveAddressHandler: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -27,7 +29,12 @@ class AddressCollectionViewCell: UICollectionViewCell {
     func setupCell(place: Place) {
         nameLabel.text = place.name
         addressLabel.text = place.address
-        radiusLabel.text = "\(String(describing: place.radius ?? 3)) Km"
+        let distanceInKilometer = (place.radius ?? 200) / 1000
+        radiusLabel.text = "\(String(describing: distanceInKilometer)) Km"
+    }
+    
+    @IBAction func crossBtnAction(_ sender: Any) {
+        onClickRemoveAddressHandler?()
     }
 
 }

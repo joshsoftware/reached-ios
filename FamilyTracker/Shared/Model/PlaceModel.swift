@@ -8,6 +8,7 @@
 import Foundation
 
 struct Place : Codable {
+    var id : String?
     var lat : Double?
     var long : Double?
     var address : String?
@@ -19,6 +20,7 @@ struct Place : Codable {
     
     enum CodingKeys: String, CodingKey {
 
+        case id = "id"
         case lat = "lat"
         case long = "long"
         case address = "address"
@@ -29,6 +31,7 @@ struct Place : Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decodeIfPresent(String.self, forKey: .id)
         lat = try values.decodeIfPresent(Double.self, forKey: .lat)
         long = try values.decodeIfPresent(Double.self, forKey: .long)
         address = try values.decodeIfPresent(String.self, forKey: .address)

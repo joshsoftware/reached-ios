@@ -98,20 +98,20 @@ extension LoginViewController: GIDSignInDelegate {
                 if let user = authResult?.user {
                     UserDefaults.standard.setValue(true, forKey: "loginStatus")
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
-                    UserDefaults.standard.setValue(user.displayName ?? "", forKey: "userName")
-                    UserDefaults.standard.setValue(user.photoURL?.description ?? "", forKey: "userProfileUrl")
+                    UserDefaults.standard.setValue(user.displayName ?? "Mahesh Nagpure", forKey: "userName")
+                    UserDefaults.standard.setValue(user.photoURL?.description ?? "https://lh6.googleusercontent.com/-QfO37tyTDL0/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnWQWmDWdCnDpyhjy4kQFlUHWKEgA/s96-c/photo.jpg", forKey: "userProfileUrl")
                     self.sendLoginStatusToWatch()
                     self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
                         SVProgressHUD.dismiss()
                         if groups?.allKeys.count ?? 0 > 0 {
                             self.ref = Database.database().reference()
-                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": groups!])
+                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://lh6.googleusercontent.com/-QfO37tyTDL0/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnWQWmDWdCnDpyhjy4kQFlUHWKEgA/s96-c/photo.jpg", "groups": groups!])
                             UserDefaults.standard.setValue(groups, forKey: "groups")
                             self.navigateToGroupListVC()
                         } else {
                             self.ref = Database.database().reference()
-                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": nil])
+                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://lh6.googleusercontent.com/-QfO37tyTDL0/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnWQWmDWdCnDpyhjy4kQFlUHWKEgA/s96-c/photo.jpg", "groups": nil])
                             self.navigateToHomeVC()
                         }
                         DatabaseManager.shared.setDeviceTokenOnServer(userId: user.uid)
