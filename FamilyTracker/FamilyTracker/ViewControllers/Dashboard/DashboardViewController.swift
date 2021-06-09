@@ -8,7 +8,6 @@
 import UIKit
 import Firebase
 import CoreLocation
-import SVProgressHUD
 import Panels
 import MSPeekCollectionViewDelegateImplementation
 
@@ -96,9 +95,9 @@ class DashboardViewController: UIViewController {
     private func fetchGroups() {
         self.groupList.removeAll()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
-            SVProgressHUD.show()
+            ProgressHUD.sharedInstance.show()
             DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                SVProgressHUD.dismiss()
+                ProgressHUD.sharedInstance.hide()
                 if let groups = groups {
                     DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
                         if let data = data {
@@ -112,7 +111,7 @@ class DashboardViewController: UIViewController {
     }
     
     func createGroup(groupName: String) {
-        SVProgressHUD.show()
+        ProgressHUD.sharedInstance.show()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
             let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "name", "lastUpdated": Date().currentUTCDate(), "profileUrl": "profileUrl"] as [String : Any]
             var memberArray : Array = Array<Any>()
@@ -130,7 +129,7 @@ class DashboardViewController: UIViewController {
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
-            SVProgressHUD.dismiss()
+            ProgressHUD.sharedInstance.hide()
             fetchGroups()
         }
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SVProgressHUD
 import SDWebImage
 
 class ProfileViewController: UIViewController {
@@ -53,9 +52,9 @@ class ProfileViewController: UIViewController {
     
     func fetchAddress() {
         self.addressList.removeAll()
-        SVProgressHUD.show()
+        ProgressHUD.sharedInstance.show()
         DatabaseManager.shared.fetchAddressFor(userWith: member.id ?? "", groupId: self.groupId) { (response) in
-            SVProgressHUD.dismiss()
+            ProgressHUD.sharedInstance.hide()
             if let address = response {
                 for (key, value) in address {
                     if let data = value as? NSDictionary {

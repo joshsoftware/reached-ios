@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 import CoreLocation
 import Panels
-import SVProgressHUD
 
 class HomeViewController: UIViewController {
     @IBOutlet var topView: UIView!
@@ -98,7 +97,7 @@ class HomeViewController: UIViewController {
     }
     
     func createGroup(groupName: String) {
-        SVProgressHUD.show()
+        ProgressHUD.sharedInstance.show()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
             let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "name", "lastUpdated": Date().currentUTCDate(), "profileUrl": "profileUrl"] as [String : Any]
             var memberArray : Array = Array<Any>()
@@ -116,7 +115,7 @@ class HomeViewController: UIViewController {
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
-            SVProgressHUD.dismiss()
+            ProgressHUD.sharedInstance.hide()
             self.navigateToShowQRCodeVC(groupId: self.groupId, groupName: groupName)
         }
     }

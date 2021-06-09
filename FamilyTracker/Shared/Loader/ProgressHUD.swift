@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Foundation
+import Lottie
 
 let SCREEN_WIDTH = UIScreen.main.bounds.size.width
 let SIZE_CONSTANT = 375.0
@@ -14,101 +14,71 @@ let SCREEN_HEIGHT = UIScreen.main.bounds.size.height
 
 class ProgressHUD: NSObject {
     static let sharedInstance = ProgressHUD()
-    
+    private var animationView: AnimationView?
+
     var container = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT))
-    var subContainer = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH / 3.0, height: SCREEN_WIDTH / 4.0))
-    var textLabel = UILabel()
-    var activityIndicatorView = UIActivityIndicatorView()
-    var blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    var subContainer = UIView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH * 0.4, height: SCREEN_WIDTH * 0.4))
     
     override init() {
         //Main Container
         container.backgroundColor = UIColor.clear
         
         //Sub Container
-        subContainer.layer.cornerRadius = 5.0
+        subContainer.layer.cornerRadius = 10.0
         subContainer.layer.masksToBounds = true
-        subContainer.backgroundColor = UIColor.clear
+        subContainer.backgroundColor = UIColor.white
+    }
+    
+    func addAnimationView(view: UIView) {
+        animationView = .init(name: "Reached_Loader")
+        animationView?.frame = CGRect(x: 0, y: 0, width: SCREEN_WIDTH * 0.4, height: SCREEN_WIDTH * 0.4)
+        animationView?.contentMode = .scaleAspectFit
+        animationView?.loopMode = .loop
+        animationView?.animationSpeed = 0.5
+        if view == container {
+            animationView?.center = CGPoint(x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2)
+        }
+        view.addSubview(animationView ?? UIView())
+        animationView?.play()
         
-        //Activity Indicator
-        activityIndicatorView.hidesWhenStopped = true
-        
-        //Text Label
-        textLabel.textAlignment = .center
-        textLabel.numberOfLines = 0
-        textLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
-        textLabel.textColor = UIColor.darkGray
-        
-        //Blur Effect
-        //always fill the view
-        blurEffectView.frame = container.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.sendSubviewToBack(animationView ?? UIView())
     }
     
     func show() -> Void {
-        
-        container.backgroundColor = UIColor.black.withAlphaComponent(0.85)
-        if #available(iOS 13.0, *) {
-            activityIndicatorView.style = UIActivityIndicatorView.Style.large
-        } else {
-            // Fallback on earlier versions
-        }
-        activityIndicatorView.center = CGPoint(x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2)
-        activityIndicatorView.color = UIColor.white
-        
-        activityIndicatorView.startAnimating()
-        container.addSubview(activityIndicatorView)
+        container.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        addAnimationView(view: container)
         if let window = getKeyWindow() {
             window.addSubview(container)
         }
-        container.alpha = 0.0
-        UIView.animate(withDuration: 0.5, animations: {
-            self.container.alpha = 1.0
-        })
+        self.container.alpha = 1.0
     }
     
-    func showWithBlurView() {
-        
-        //only apply the blur if the user hasn't disabled transparency effects
-        if !UIAccessibility.isReduceTransparencyEnabled {
-            container.backgroundColor = UIColor.clear
-            container.addSubview(blurEffectView)
-        } else {
-            container.backgroundColor = UIColor.black.withAlphaComponent(0.85)
-        }
-        
-        if #available(iOS 13.0, *) {
-            activityIndicatorView.style = UIActivityIndicatorView.Style.large
-        } else {
-            // Fallback on earlier versions
-        }
-        activityIndicatorView.center = CGPoint(x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2)
-        activityIndicatorView.color = UIColor.white
-        
-        activityIndicatorView.startAnimating()
-        container.addSubview(activityIndicatorView)
+    func showWithBackgroundView() {
+        addAnimationView(view: container)
         if let window = getKeyWindow() {
             window.addSubview(container)
         }
-        container.alpha = 0.0
-        UIView.animate(withDuration: 0.5, animations: {
-            self.container.alpha = 1.0
-        })
+        self.container.alpha = 1.0
+    }
+    
+    func showWithLoader() -> Void {
+        container.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        subContainer.center = CGPoint(x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2)
+        container.addSubview(subContainer)
+        container.sendSubviewToBack(subContainer)
+        addAnimationView(view: subContainer)
+        if let window = getKeyWindow() {
+            window.addSubview(container)
+        }
+        self.container.alpha = 1.0
     }
     
     func hide() {
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.container.alpha = 0.0
-        }) { finished in
-            self.activityIndicatorView.stopAnimating()
-            
-            self.activityIndicatorView.removeFromSuperview()
-            self.textLabel.removeFromSuperview()
-            self.subContainer.removeFromSuperview()
-            self.blurEffectView.removeFromSuperview()
-            self.container.removeFromSuperview()
-        }
+        self.container.alpha = 0.0
+        self.animationView?.stop()
+        self.animationView?.removeFromSuperview()
+        self.subContainer.removeFromSuperview()
+        self.container.removeFromSuperview()
     }
     
     private func getKeyWindow() -> UIWindow? {

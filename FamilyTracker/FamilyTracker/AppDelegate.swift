@@ -14,7 +14,6 @@ import CoreLocation
 import FirebaseDynamicLinks
 import UserNotifications
 import FirebaseMessaging
-import SVProgressHUD
 import GooglePlaces
 
 @UIApplicationMain

@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 import MapKit
 import Contacts
-import SVProgressHUD
 import SDWebImage
 
 class MapViewController: UIViewController {
@@ -88,9 +87,9 @@ class MapViewController: UIViewController {
     }
     
     func fetchAddress() {
-        SVProgressHUD.show()
+        ProgressHUD.sharedInstance.show()
         DatabaseManager.shared.fetchAddressFor(userWith: self.memberList.first?.id ?? "", groupId: self.groupId) { (response) in
-            SVProgressHUD.dismiss()
+            ProgressHUD.sharedInstance.hide()
             for address in response?.allValues ?? [Any]() {
                 if let data = address as? NSDictionary {
                     var place = Place()
