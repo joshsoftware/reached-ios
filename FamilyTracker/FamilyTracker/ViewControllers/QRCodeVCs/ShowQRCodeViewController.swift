@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SVProgressHUD
 
 class ShowQRCodeViewController: UIViewController {
     
@@ -60,9 +59,9 @@ class ShowQRCodeViewController: UIViewController {
     }
     
     @IBAction func shareJoinLinkBtnAction(_ sender: UIButton) {
-        SVProgressHUD.show()
+        ProgressHUD.sharedInstance.show()
         JoinLinkManager.shared.createJoinLinkFor(groupId: self.groupId, groupName: self.groupName, completion: { url in
-            SVProgressHUD.dismiss()
+            ProgressHUD.sharedInstance.hide()
             self.showShareActivity(msg: "Join group", image: nil, url: url.absoluteString, sourceRect: nil)
         })
     }

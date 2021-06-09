@@ -15,9 +15,11 @@ class SaveAddressViewController: UIViewController {
     @IBOutlet weak var mapViewbg: UIView!
     @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var workButton: UIButton!
+    @IBOutlet weak var otherTextField: UITextField!
 
     var selectedPlace = Place()
     var groupId: String = ""
+    var userId: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +42,11 @@ class SaveAddressViewController: UIViewController {
     }
     
     @IBAction func saveBtnAction(_ sender: Any) {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": self.selectedPlace.radius ?? 0] as [String : Any]
-            DatabaseManager.shared.addAddress(userId: userId, groupId: self.groupId, placeData: value)
-        }
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200] as [String : Any]
+        DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
+
         self.navigationController?.popToViewController(ofClass: ProfileViewController.self)
     }
     
@@ -57,6 +60,19 @@ class SaveAddressViewController: UIViewController {
         self.homeButton.isSelected = false
         self.workButton.isSelected = true
         self.selectedPlace.name = "Work"
+    }
+    
+    @IBAction func otherBtnAction(_ sender: Any) {
+        self.homeButton.isSelected = false
+        self.workButton.isSelected = false
+        self.selectedPlace.name = self.otherTextField.text
+        
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200] as [String : Any]
+        DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
+
+        self.navigationController?.popToViewController(ofClass: ProfileViewController.self)
     }
     
     @IBAction func backBtnAction(_ sender: Any) {
@@ -94,4 +110,10 @@ extension SaveAddressViewController : MKMapViewDelegate {
         return annotationView
     }
     
+}
+
+extension SaveAddressViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
 }

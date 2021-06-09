@@ -17,12 +17,14 @@ class SearchAddressViewController: UIViewController {
     var resultView: UITextView?
     var selectedPlace = Place()
     var groupId: String = ""
+    var userId: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
+        resultsViewController?.placeFields = [.name, .formattedAddress, .coordinate]
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
@@ -46,6 +48,7 @@ class SearchAddressViewController: UIViewController {
     @IBAction func nextBtnAction(_ sender: Any) {
         if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SaveAddressViewController") as? SaveAddressViewController {
             vc.selectedPlace = self.selectedPlace
+            vc.userId = self.userId
             vc.groupId = self.groupId
             self.navigationController?.pushViewController(vc, animated: true)
         }

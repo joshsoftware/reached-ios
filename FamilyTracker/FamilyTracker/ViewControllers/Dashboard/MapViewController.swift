@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import MapKit
 import Contacts
+import SDWebImage
 
 class MapViewController: UIViewController {
     
@@ -26,11 +27,13 @@ class MapViewController: UIViewController {
     private var ref: DatabaseReference!
     var memberList: [Members] = []
     var groupId: String = ""
+    var userId: String = ""
     var groupName: String = ""
     var showAllGroupMembers = false
     var index: Int = 0
     var groupsCount: Int = 0
     var groupListHandler: ((_ index: Int) -> Void)?
+    var addressList = [Place]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +56,53 @@ class MapViewController: UIViewController {
             backButton.setTitle("Back", for: .normal)
             nameLbl.text = memberList[0].name
             showPinForMembersLocation()
+            fetchAddress()
         }
         observeFirebaseRealtimeDBChanges()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.eventForEnterRegion(_:)), name: NSNotification.Name(rawValue: "eventForEnterRegion"), object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.eventForExitRegion(_:)), name: NSNotification.Name(rawValue: "eventForExitRegion"), object: nil)
+
+    }
+    
+    @objc func eventForEnterRegion(_ notification: NSNotification) {
+        if let dict = notification.userInfo as NSDictionary? {
+            if let region = dict["region"] as? String{
+                self.presentAlert(withTitle: "Alert", message: "User enter region: \(region)") {
+                    
+                }
+            }
+        }
+    }
+    
+    @objc func eventForExitRegion(_ notification: NSNotification) {
+        if let dict = notification.userInfo as NSDictionary? {
+            if let region = dict["region"] as? String{
+                self.presentAlert(withTitle: "Alert", message: "User leave region: \(region)") {
+                    
+                }
+            }
+        }
+    }
+    
+    func fetchAddress() {
+        ProgressHUD.sharedInstance.show()
+        DatabaseManager.shared.fetchAddressFor(userWith: self.memberList.first?.id ?? "", groupId: self.groupId) { (response) in
+            ProgressHUD.sharedInstance.hide()
+            for address in response?.allValues ?? [Any]() {
+                if let data = address as? NSDictionary {
+                    var place = Place()
+                    place.lat = data["lat"] as? Double
+                    place.long = data["long"] as? Double
+                    place.address = data["address"] as? String
+                    place.name = data["name"] as? String
+                    place.radius = data["radius"] as? Double
+                    self.addressList.append(place)
+                }
+            }
+            self.getGeoFencing()
+        }
     }
     
     private func observeFirebaseRealtimeDBChanges() {
@@ -94,10 +142,21 @@ class MapViewController: UIViewController {
         member.lastUpdated = value["lastUpdated"] as? String
         member.sosState = value["sosState"] as? Bool
 
-        if let index = self.memberList.firstIndex(where: {
-                                                    $0.id == member.id }) {
-            self.memberList[index] = member
-            self.showPinForMembersLocation()
+        if showAllGroupMembers {
+            if let index = self.memberList.firstIndex(where: {
+                                                        $0.id == member.id }) {
+                self.memberList[index] = member
+                self.showPinForMembersLocation()
+            }
+        } else {
+            if let index = self.memberList.firstIndex(where: {
+            $0.id == member.id }) {
+                self.memberList[index] = member
+                self.showPinForMembersLocation()
+            } else {
+                self.memberList.append(member)
+                self.showPinForMembersLocation()
+            }
         }
     }
     
@@ -139,7 +198,8 @@ class MapViewController: UIViewController {
                 
                 let pin = MKPointAnnotation()
                 pin.title = item.name ?? ""
-                
+                pin.subtitle = item.profileUrl ?? ""
+
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 location.fetchCityAndCountry { (name, city, error) in
                     if error == nil {
@@ -150,7 +210,7 @@ class MapViewController: UIViewController {
                 pin.coordinate = coordinate
                 self.mapView.addAnnotation(pin)
 
-                if let latitudinalMeters = CLLocationDistance(exactly: 500), let longitudinalMeters = CLLocationDistance(exactly: 500) {
+                if let latitudinalMeters = CLLocationDistance(exactly: 1000), let longitudinalMeters = CLLocationDistance(exactly: 1000) {
                     let region = MKCoordinateRegion( center: coordinate, latitudinalMeters: latitudinalMeters, longitudinalMeters: longitudinalMeters)
                     self.mapView.setRegion(self.mapView.regionThatFits(region), animated: true)
                 }
@@ -194,19 +254,81 @@ extension MapViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is MKPointAnnotation else { return nil }
 
-        let identifier = "Annotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        let identifier = "AnnotationIdentifier"
 
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-        } else {
-            annotationView?.annotation = annotation
+        var view: CustomAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView
+        if view == nil {
+            view = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
-        annotationView?.centerOffset = CGPoint(x: 0, y: -40)
-        annotationView?.image = UIImage(named: "pin_with_profile_pic")
-
-        return annotationView
+        
+        if let url = URL(string: (annotation.subtitle ?? "") ?? "") {
+            SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
+                view?.image = image
+            }
+        }
+        view?.centerOffset = CGPoint(x: 0, y: -35)
+        
+        return view
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        guard let circleOverlay = overlay as? MKCircle else {
+            return MKOverlayRenderer()
+        }
+        let circleRender = MKCircleRenderer(circle: circleOverlay)
+        circleRender.strokeColor = .green
+        circleRender.fillColor = .green
+        circleRender.alpha = 0.1
+        return circleRender
+    }
+    
+}
+
+extension MapViewController {
+    
+    func showNotification(title:String, message:String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+        content.badge = 1
+        content.sound = .default
+        let request = UNNotificationRequest(identifier: "notifi", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    func monitorRegionAtLocation(center: CLLocationCoordinate2D, identifier: String, radius: Double ) {
+        // Make sure the devices supports region monitoring.
+        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            // Register the region.
+            let maxDistance = CLLocationDistance(radius)
+            let region = CLCircularRegion(center: center,
+                                          radius: maxDistance, identifier: identifier)
+            region.notifyOnEntry = true
+            region.notifyOnExit = true
+            let circle = MKCircle(center: center, radius: maxDistance)
+            mapView.addOverlay(circle)
+        }
+    }
+    
+    
+    private func getGeoFencing() {
+        let locationManager = UserLocationManager.shared
+        locationManager.generateGeofenceRegion(geotificationDataList: self.addressList)
+        
+        for item in self.addressList {
+            if let lat = item.lat, let long = item.long, let radius = item.radius {
+                print("Your location with lat and long :- \(item)")
+                let cordi = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                monitorRegionAtLocation(center: cordi, identifier: item.name ?? "Geofence", radius: radius)
+            }
+        }
+    }
+    
+    private func render(_ location: CLLocation) {
+        let coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        mapView.showsUserLocation = true
+    }
 }

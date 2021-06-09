@@ -29,18 +29,22 @@
                                 <color key="textColor" red="0.93725490199999995" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hb0-JQ-6xq">
+                                <rect key="frame" x="158" y="20.5" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="heS-pp-l03"/>
+                                    <constraint firstAttribute="height" constant="20" id="wQ9-l9-0yZ"/>
+                                </constraints>
+                                <state key="normal" image="cross"/>
+                                <connections>
+                                    <action selector="crossBtnAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cxt-mM-SaX"/>
+                                </connections>
+                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_pin" translatesAutoresizingMaskIntoConstraints="NO" id="Paq-bR-J5z">
                                 <rect key="frame" x="71.5" y="18" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="8ck-gG-fV7"/>
                                     <constraint firstAttribute="width" constant="25" id="UnH-X9-WMe"/>
-                                </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="YbG-zg-fNW">
-                                <rect key="frame" x="158" y="20.5" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="0OW-UV-hOd"/>
-                                    <constraint firstAttribute="height" constant="20" id="DfJ-YD-Bbi"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1102 Amrutwel, Kuthrud, Pune" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGc-dF-arq">
@@ -155,12 +159,12 @@
                             <constraint firstItem="Stb-rk-F0Z" firstAttribute="top" secondItem="4p3-Ti-9Dh" secondAttribute="top" constant="20" id="K1y-49-Dso"/>
                             <constraint firstItem="Paq-bR-J5z" firstAttribute="centerY" secondItem="Stb-rk-F0Z" secondAttribute="centerY" id="Meb-DR-ASV"/>
                             <constraint firstItem="aaE-J8-0sn" firstAttribute="leading" secondItem="4p3-Ti-9Dh" secondAttribute="leading" constant="22" id="TgM-wo-zfw"/>
-                            <constraint firstItem="YbG-zg-fNW" firstAttribute="centerY" secondItem="Stb-rk-F0Z" secondAttribute="centerY" id="Ti4-0D-FyH"/>
                             <constraint firstItem="YGc-dF-arq" firstAttribute="leading" secondItem="4p3-Ti-9Dh" secondAttribute="leading" constant="22" id="Uje-ou-4s3"/>
+                            <constraint firstAttribute="trailing" secondItem="hb0-JQ-6xq" secondAttribute="trailing" constant="22" id="bgc-au-5u1"/>
                             <constraint firstAttribute="trailing" secondItem="IJl-VT-29V" secondAttribute="trailing" id="c7q-sB-lKQ"/>
                             <constraint firstItem="Paq-bR-J5z" firstAttribute="leading" secondItem="Stb-rk-F0Z" secondAttribute="trailing" constant="5" id="epb-Yb-eio"/>
-                            <constraint firstAttribute="trailing" secondItem="YbG-zg-fNW" secondAttribute="trailing" constant="22" id="esA-WM-bAy"/>
                             <constraint firstItem="YGc-dF-arq" firstAttribute="top" secondItem="Paq-bR-J5z" secondAttribute="bottom" constant="15" id="g5j-8C-JCx"/>
+                            <constraint firstItem="hb0-JQ-6xq" firstAttribute="centerY" secondItem="Stb-rk-F0Z" secondAttribute="centerY" id="hKz-yz-0SG"/>
                             <constraint firstItem="lPt-pE-UEf" firstAttribute="top" secondItem="aaE-J8-0sn" secondAttribute="bottom" constant="10" id="jgF-5j-nPf"/>
                             <constraint firstItem="Stb-rk-F0Z" firstAttribute="leading" secondItem="4p3-Ti-9Dh" secondAttribute="leading" constant="22" id="nuo-KJ-i78"/>
                             <constraint firstItem="bBJ-TA-Aps" firstAttribute="leading" secondItem="4p3-Ti-9Dh" secondAttribute="leading" constant="22" id="ypX-tg-8Uv"/>
@@ -186,7 +190,7 @@
     </objects>
     <resources>
         <image name="clock" width="21" height="21"/>
+        <image name="cross" width="10.5" height="10.5"/>
         <image name="location_pin" width="69.5" height="93"/>
-        <image name="orange_arrow" width="17" height="17"/>
     </resources>
 </document>

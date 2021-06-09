@@ -18,7 +18,7 @@ class DatabaseManager: NSObject {
     static let shared = DatabaseManager()
     private var ref: DatabaseReference!
     let group = DispatchGroup()
-
+    
     func fetchGroupsFor(userWith id: String, completion: @escaping (_ result: NSDictionary?) -> Void) {
         self.ref = Database.database().reference().child("users").child(id).child("groups")
         self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -73,7 +73,7 @@ class DatabaseManager: NSObject {
                                     member.name = data["name"] as? String
                                     member.lastUpdated = data["lastUpdated"] as? String
                                     member.sosState = data["sosState"] as? Bool
-
+                                    
                                     memberList.append(member)
                                 }
                             }
@@ -115,7 +115,7 @@ class DatabaseManager: NSObject {
     }
     
     func updateSOSFor(userWith id: String, groups: NSDictionary, sosState: Bool) {
-       
+        
         for groupId in groups.allKeys {
             self.ref = Database.database().reference(withPath: "groups/\(groupId)")
             self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
@@ -217,4 +217,16 @@ class DatabaseManager: NSObject {
             }
         })
     }
+    
+    func removeAddresFor(userWith id: String, groupId: String, addressId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
+        ref = Database.database().reference().child("groups/\(groupId)").child("members").child(id).child("address").child(addressId)
+        self.ref.removeValue { (error, reference) in
+            if (error != nil) {
+                completion(nil, "Error while removing address")
+            } else {
+                completion("Address removed sucessfully", nil)
+            }
+        }
+    }
 }
+
