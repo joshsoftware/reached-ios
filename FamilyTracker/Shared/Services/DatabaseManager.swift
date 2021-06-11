@@ -114,13 +114,15 @@ class DatabaseManager: NSObject {
         }
     }
     
-    func updateSOSFor(userWith id: String, groups: NSDictionary, sosState: Bool) {
-        
-        for groupId in groups.allKeys {
-            self.ref = Database.database().reference(withPath: "groups/\(groupId)")
-            self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
+    func updateSOSFor(userWith id: String, sosState: Bool) {
+        self.ref = Database.database().reference()
+        self.ref.child("users").child("\(id)/sosState").setValue(sosState) { (error, reference) in
+            if (error != nil) {
+                print(error!)
+            } else {
+                print("SOS updated...")
+            }
         }
-        print("SOS updated...")
     }
     
     func leaveGroup(userWith id: String, groupId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
@@ -163,7 +165,7 @@ class DatabaseManager: NSObject {
                         if (error != nil) {
                             completion(nil, "Error while deleting group")
                         } else {
-                            completion("Leave group sucessfully", nil)
+                            completion("Delete group sucessfully", nil)
                         }
                     }
                 }

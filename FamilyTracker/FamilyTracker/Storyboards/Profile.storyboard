@@ -357,6 +357,9 @@
                                         <state key="normal" title="SOS">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="sosBtnAction:" destination="9aU-HP-0Sf" eventType="touchUpInside" id="KcI-Zu-HSe"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hT5-iH-ngi">
                                         <rect key="frame" x="0.0" y="0.0" width="75" height="65"/>
@@ -454,6 +457,9 @@
                                         <state key="normal" title="SOS">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="sosBtnAction:" destination="fL4-0N-las" eventType="touchUpInside" id="3Fc-wo-MF4"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1PS-y8-yhf">
                                         <rect key="frame" x="0.0" y="0.0" width="75" height="65"/>

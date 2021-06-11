@@ -21,21 +21,30 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var trackingLocationLbl: UILabel!
     @IBOutlet weak var allMembersLbl: UILabel!
     @IBOutlet weak var safeUnsafeLbl: UILabel!
-    
+    @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var firstMenuButton: UIButton!
+    @IBOutlet weak var secondMenuButton: UIButton!
+    @IBOutlet weak var seperatorView: UIView!
+
     var memberList = [Members]()
     private var ref: DatabaseReference!
     private var isAllMemberSafe = true
-    
+    var isCreatorOfGroup = false
+
     var connectivityHandler = WatchSessionManager.shared
     var groupId: String = ""
     var addMemberHandler: ((_ groupId: String, _ groupName: String) -> Void)?
     var menuHandler: (() -> Void)?
+    var deleteGroupHandler: (() -> Void)?
+    var leaveGroupHandler: (() -> Void)?
     var onClickMemberHandler: ((_ members: [Members]) -> Void)?
     var onClickMemberProfileHandler: ((_ member: Members) -> Void)?
 
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        menuView.addGestureRecognizer(tap)
         // Initialization code
     }
     
@@ -51,13 +60,23 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         containerView.layer.cornerRadius = 12.0
+        menuView.layer.cornerRadius = 12.0
         containerView.setShadowToAllSides()
     }
     
     private func setUp() {
         setUpTableView()
+        handleMenu()
         observeFirebaseRealtimeDBChanges()
         updateSafeUnsafeText()
+    }
+    
+    func handleMenu() {
+        if !isCreatorOfGroup {
+            firstMenuButton.tag = 2
+            seperatorView.isHidden = true
+            secondMenuButton.isHidden = true
+        }
     }
     
     private func updateSafeUnsafeText() {
@@ -74,6 +93,12 @@ class GroupListCollectionViewCell: UICollectionViewCell {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: "GroupMemberTableViewCell", bundle: nil), forCellReuseIdentifier: "GroupMemberTableViewCell")
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        UIView.animate(withDuration: 0.2) {
+            self.menuView.alpha = 0
+        }
     }
     
     private func observeFirebaseRealtimeDBChanges() {
@@ -96,18 +121,6 @@ class GroupListCollectionViewCell: UICollectionViewCell {
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMemberRemoved(value: value)
             }
-        }
-    }
-    
-    private func updateCurrentUsersSOSOnServer(sosState: Bool) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.updateSOSFor(userWith: userId, groups: groups, sosState: sosState)
-                }
-            }
-        } else {
-            print("User is not logged in")
         }
     }
     
@@ -167,7 +180,28 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func menuButtonPressed(_ sender: Any) {
-        menuHandler?()
+        UIView.animate(withDuration: 0.2) {
+            self.menuView.alpha = 1.0
+        }
+    }
+    
+    @IBAction func menuOptionButtonPressed(_ sender: UIButton) {
+        if sender.tag == 0 {
+            UIView.animate(withDuration: 0.2) {
+                self.menuView.alpha = 0
+                self.menuHandler?()
+            }
+        } else if sender.tag == 1 {
+            UIView.animate(withDuration: 0.2) {
+                self.menuView.alpha = 0
+                self.deleteGroupHandler?()
+            }
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                self.menuView.alpha = 0
+                self.leaveGroupHandler?()
+            }
+        }
     }
 
 }

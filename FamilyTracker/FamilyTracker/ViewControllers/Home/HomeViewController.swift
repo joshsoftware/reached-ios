@@ -8,33 +8,20 @@
 import UIKit
 import Firebase
 import CoreLocation
-import Panels
 
 class HomeViewController: UIViewController {
     @IBOutlet var topView: UIView!
+    @IBOutlet var textField: UITextField!
+    @IBOutlet var groupNameView: UIView!
+
     
     private var ref: DatabaseReference!
     var currentLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     let groupId = UUID().uuidString
     let locationManager = CLLocationManager()
-
-    lazy var panelManager = Panels(target: self)
-    let panel = UIStoryboard.instantiatePanel(identifier: "Home")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var panelConfiguration = PanelConfiguration(size: .custom(100.0))
-        panelConfiguration.enclosedNavigationBar = false
-        panelManager.delegate = self
-        panelManager.show(panel: panel, config: panelConfiguration)
-        
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.endEditingHandler = { groupName in
-                self.panelManager.collapsePanel()
-                self.createGroup(groupName: groupName)
-            }
-        }
-        
         ref = Database.database().reference()
         setUpLocationManager()
         self.navigationItem.setHidesBackButton(true, animated: true)
@@ -45,15 +32,20 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
- 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         topView.roundBottom(radius: 10)
+    }
+    
+    func showCreateGroupView(flag: Bool) {
+        if flag {
+            self.textField.text = ""
+            self.textField.becomeFirstResponder()
+        } else {
+            self.textField.endEditing(true)
+        }
+        self.groupNameView.isHidden = !flag
     }
     
     private func setUpLocationManager() {
@@ -71,9 +63,13 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func createGroupButtonPressed(_ sender: Any) {
-        self.panelManager.expandPanel()
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.textField.becomeFirstResponder()
+        self.showCreateGroupView(flag: true)
+    }
+    
+    @IBAction func createGroupButtonDonePressed(_ sender: Any) {
+        if self.textField.text!.count > 0 {
+            self.showCreateGroupView(flag: false)
+            self.createGroup(groupName: textField.text ?? "My Group")
         }
     }
     
@@ -129,22 +125,9 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
 }
 
-extension HomeViewController: PanelNotifications {
-    func panelDidPresented() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDidPresented()
-        }
-    }
-    
-    func panelDidCollapse() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDidCollapse()
-        }
-    }
-    
-    func panelDidOpen() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDidOpen()
-        }
+extension HomeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.showCreateGroupView(flag: false)
+        return true
     }
 }

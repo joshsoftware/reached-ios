@@ -129,7 +129,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_bg_1" translatesAutoresizingMaskIntoConstraints="NO" id="UY0-vQ-Gtw">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_bg_1" translatesAutoresizingMaskIntoConstraints="NO" id="UY0-vQ-Gtw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Locating your all family members is now easy." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dO5-dY-n9M">
@@ -206,7 +206,7 @@
         <image name="down" width="25.5" height="25.5"/>
         <image name="intro_bg" width="376" height="42"/>
         <image name="onboarding_1" width="314" height="312.5"/>
-        <image name="onboarding_bg_1" width="375" height="419"/>
+        <image name="onboarding_bg_1" width="375" height="420"/>
         <image name="shadow" width="182.5" height="112"/>
         <image name="skip_button" width="64" height="60"/>
     </resources>

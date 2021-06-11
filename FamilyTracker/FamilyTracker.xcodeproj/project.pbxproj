@@ -35,7 +35,6 @@
 		3DA1722626009B5600A7E9F6 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */; };
 		3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA1722726009CC600A7E9F6 /* HomeViewController.swift */; };
 		3DBE0CA22653CE7C00B713B1 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA12653CE7C00B713B1 /* Home.storyboard */; };
-		3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */; };
 		3DD019BA266E675400DDCDF8 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD019B9266E675400DDCDF8 /* ProgressHUD.swift */; };
 		3DD019BC266F280200DDCDF8 /* Reached_Loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 3DD019BB266F280100DDCDF8 /* Reached_Loader.json */; };
 		3DDD8522266A659600347331 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDD8521266A659600347331 /* KeyboardLayoutConstraint.swift */; };
@@ -187,7 +186,6 @@
 		3DA1722526009B5600A7E9F6 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		3DA1722726009CC600A7E9F6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3DBE0CA12653CE7C00B713B1 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
-		3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		3DD019B9266E675400DDCDF8 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		3DD019BB266F280100DDCDF8 /* Reached_Loader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Reached_Loader.json; sourceTree = "<group>"; };
 		3DDD8521266A659600347331 /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 			isa = PBXGroup;
 			children = (
 				3DA1722726009CC600A7E9F6 /* HomeViewController.swift */,
-				3DBE0CA42653CF6400B713B1 /* CreateGroupViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -943,7 +940,6 @@
 				B455BE01264D4E0F00AAE677 /* GroupMemberTableViewCell.swift in Sources */,
 				3DA1722826009CC600A7E9F6 /* HomeViewController.swift in Sources */,
 				3DE78128266A488000BF5328 /* CustomAnnotationView.swift in Sources */,
-				3DBE0CA52653CF6400B713B1 /* CreateGroupViewController.swift in Sources */,
 				B4C76AEA262819070024B2C2 /* GroupTableViewCell.swift in Sources */,
 				B4DDA20125EE738700B5F992 /* WatchSessionManager.swift in Sources */,
 				B4DDA29525EFAA0900B5F992 /* MemberTableViewCell.swift in Sources */,

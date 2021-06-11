@@ -27,7 +27,17 @@ import UIKit
 public class KeyboardLayoutConstraint: NSLayoutConstraint {
     
     private var offset : CGFloat = 0
+    private var offsetMargin : CGFloat = 0
     private var keyboardVisibleHeight : CGFloat = 0
+    
+    @IBInspectable var margin: CGFloat {
+        set {
+            offsetMargin = newValue
+        }
+        get {
+            return offsetMargin
+        }
+    }
     
     @available(tvOS, unavailable)
     override public func awakeFromNib() {
@@ -103,7 +113,7 @@ public class KeyboardLayoutConstraint: NSLayoutConstraint {
     }
     
     func updateConstant() {
-        self.constant = offset + keyboardVisibleHeight
+        self.constant = ((offset > 0) ? offset : 0) + ((keyboardVisibleHeight > 0) ? keyboardVisibleHeight : offset) + offsetMargin
     }
     
 }

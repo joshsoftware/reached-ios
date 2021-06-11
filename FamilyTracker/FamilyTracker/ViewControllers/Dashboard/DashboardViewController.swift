@@ -8,7 +8,6 @@
 import UIKit
 import Firebase
 import CoreLocation
-import Panels
 import MSPeekCollectionViewDelegateImplementation
 
 class DashboardViewController: UIViewController {
@@ -21,6 +20,8 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var sosView: UIView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var menuBtn: UIButton!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var groupNameView: UIView!
     
     private let spacing: CGFloat = 20.0
     
@@ -31,22 +32,13 @@ class DashboardViewController: UIViewController {
     private var connectivityHandler = WatchSessionManager.shared
     private var groups : NSDictionary = NSDictionary()
     private let groupId = UUID().uuidString
-    
-    lazy var panelManager = Panels(target: self)
-    let panel = UIStoryboard.instantiatePanel(identifier: "Home")
+
     var behavior: MSCollectionViewPeekingBehavior!
         
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
         setUp()
-        
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.endEditingHandler = { groupName in
-                self.panelManager.dismiss()
-                self.createGroup(groupName: groupName)
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +70,16 @@ class DashboardViewController: UIViewController {
         reloadDelegate()
     }
     
+    func showCreateGroupView(flag: Bool) {
+        if flag {
+            self.textField.text = ""
+            self.textField.becomeFirstResponder()
+        } else {
+            self.textField.endEditing(true)
+        }
+        self.groupNameView.isHidden = !flag
+    }
+    
     private func setUpLocationManager() {
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
@@ -104,6 +106,11 @@ class DashboardViewController: UIViewController {
                             self.groupList.append(data)
                             self.collectionView.reloadData()
                         }
+                    }
+                } else {
+                    self.collectionView.reloadData()
+                    if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+                        self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
             }
@@ -134,29 +141,78 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    func deleteGroup(groupName: String, groupId: String) {
+        self.presentConfirmationAlert(withTitle: "Delete Group", message: "Are you want to delete \(groupName) group?") { (flag) in
+            if flag {
+                DatabaseManager.shared.deleteGroup(groupId: groupId) { response, error in
+                    if let err = error {
+                        self.presentAlert(withTitle: "Error", message: err) {
+                            
+                        }
+                    } else {
+                        self.presentAlert(withTitle: "Alert", message: response ?? "") {
+                            if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                                dict.removeValue(forKey: groupId)
+                                UserDefaults.standard.synchronize()
+                                UserDefaults.standard.setValue(dict, forKey: "groups")
+                            }
+                            self.fetchGroups()
+                        }
+                    }
+                }
+            } else {
+                //Do nothing
+            }
+        }
+    }
+    
+    func leaveGroup(groupName: String, groupId: String, createdBy: String) {
+        self.presentConfirmationAlert(withTitle: "Leave Group", message: "Are you want to exit \(groupName) group?") { (flag) in
+            if flag {
+                DatabaseManager.shared.requestForLeaveGroup(groupId: groupId, groupName: groupName, createBy: createdBy) { (response, error) in
+                    if let err = error {
+                        self.presentAlert(withTitle: "Error", message: err) {
+                            
+                        }
+                    } else {
+                        
+                    }
+                }
+            } else {
+                //Do nothing
+            }
+        }
+    }
+    
     @IBAction func menuBtnAction(_ sender: Any) {
         revealViewController()?.revealSideMenu()
     }
     
     @IBAction func addGroupBtnAction(_ sender: Any) {
-        var panelConfiguration = PanelConfiguration(size: .custom(100.0))
-        panelConfiguration.enclosedNavigationBar = false
-        panelManager.delegate = self
-        panelManager.show(panel: panel, config: panelConfiguration)
-        panelManager.expandPanel()
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.textField.becomeFirstResponder()
-        }
+        self.showCreateGroupView(flag: true)
     }
     
+    @IBAction func createGroupButtonDonePressed(_ sender: Any) {
+        if self.textField.text!.count > 0 {
+            self.showCreateGroupView(flag: false)
+            self.createGroup(groupName: textField.text ?? "My Group")
+        }
+    }
     
     @IBAction func showOnMapBtnAction(_ sender: Any) {
         navigateToMap()
     }
     
-    
     @IBAction func infoBtnAction(_ sender: Any) {
         
+    }
+    
+    @IBAction func sosBtnAction(_ sender: Any) {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true)
+        } else {
+            print("User is not logged in")
+        }
     }
     
     private func navigateToMap() {
@@ -208,6 +264,9 @@ extension DashboardViewController: UICollectionViewDataSource {
         if isIndexValid {
             let group = groupList[indexPath.row]
             cell?.groupNameLbl.text = group.name
+            if let userId = UserDefaults.standard.string(forKey: "userId") {
+                cell?.isCreatorOfGroup = (userId == group.createdBy)
+            }
             cell?.initiateCell(groupId: group.id ?? "")
         }
         
@@ -256,6 +315,16 @@ extension DashboardViewController: UICollectionViewDataSource {
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
+        
+        cell?.deleteGroupHandler = {
+            let group = self.groupList[indexPath.row]
+            self.deleteGroup(groupName: group.name ?? "", groupId: group.id ?? "")
+        }
+        
+        cell?.leaveGroupHandler = {
+            let group = self.groupList[indexPath.row]
+            self.leaveGroup(groupName: group.name ?? "", groupId: group.id ?? "", createdBy: group.createdBy ?? "")
+        }
         return cell ?? UICollectionViewCell()
     }
 }
@@ -279,22 +348,9 @@ extension DashboardViewController: CLLocationManagerDelegate {
     }
 }
 
-extension DashboardViewController: PanelNotifications {
-    func panelDidPresented() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDidPresented()
-        }
-    }
-    
-    func panelDidCollapse() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDismiss()
-        }
-    }
-    
-    func panelDidOpen() {
-        if let vc = panel as? Panelable & CreateGroupViewController {
-            vc.panelDidOpen()
-        }
+extension DashboardViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.showCreateGroupView(flag: false)
+        return true
     }
 }

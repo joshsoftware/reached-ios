@@ -229,7 +229,11 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func sosBtnAction(_ sender: Any) {
-
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true)
+        } else {
+            print("User is not logged in")
+        }
     }
     
     @IBAction func nextBtnAction(_ sender: Any) {
