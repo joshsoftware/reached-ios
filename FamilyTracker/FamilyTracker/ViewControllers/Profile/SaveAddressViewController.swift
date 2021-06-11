@@ -42,7 +42,7 @@ class SaveAddressViewController: UIViewController {
     }
     
     @IBAction func saveBtnAction(_ sender: Any) {
-        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200] as [String : Any]
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200, "transition": "exit"] as [String : Any]
         DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
@@ -67,7 +67,7 @@ class SaveAddressViewController: UIViewController {
         self.workButton.isSelected = false
         self.selectedPlace.name = self.otherTextField.text
         
-        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200] as [String : Any]
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200, "transition": "exit"] as [String : Any]
         DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)

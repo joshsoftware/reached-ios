@@ -110,6 +110,7 @@ class DatabaseManager: NSObject {
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
+            print("Joined Group with id: \(groupId)")
             completion()
         }
     }
@@ -229,6 +230,11 @@ class DatabaseManager: NSObject {
                 completion("Address removed sucessfully", nil)
             }
         }
+    }
+    
+    func updateTransitionFor(userWith id: String, groupId: String, addressId: String, transition: String) {
+        ref = Database.database().reference()
+        ref.child("groups/\(groupId)").child("members").child(id).child("address").child(addressId).child("transition").setValue(transition)
     }
 }
 

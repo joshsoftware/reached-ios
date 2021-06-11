@@ -29,7 +29,9 @@ class MapViewController: UIViewController {
     var groupId: String = ""
     var userId: String = ""
     var groupName: String = ""
+    var memberId: String = ""
     var showAllGroupMembers = false
+    var isFromSOSNotification = false
     var index: Int = 0
     var groupsCount: Int = 0
     var groupListHandler: ((_ index: Int) -> Void)?
@@ -54,9 +56,24 @@ class MapViewController: UIViewController {
         } else {
             memberDetailsView.addTopShadow(shadowColor: UIColor.gray, shadowOpacity: 0.5, shadowRadius: 3, offset: CGSize(width: 0.0, height : -5.0))
             backButton.setTitle("Back", for: .normal)
-            nameLbl.text = memberList[0].name
-            showPinForMembersLocation()
-            fetchAddress()
+            if isFromSOSNotification {
+                ProgressHUD.sharedInstance.show()
+                DatabaseManager.shared.fetchGroupData(groups: [memberId:""]) { (groupData) in
+                    ProgressHUD.sharedInstance.hide()
+                    if let group = groupData {
+                        let filterdMembers = (group.members?.filter { $0.id!.contains(self.memberId) } )! as [Members]
+                        self.memberList.append(filterdMembers.first ?? Members())
+                        self.nameLbl.text = self.memberList[0].name
+                        self.isSafe(flag: false)
+                        self.showPinForMembersLocation()
+                    }
+                }
+            } else {
+                self.nameLbl.text = memberList[0].name
+                self.isSafe(flag: true)
+                showPinForMembersLocation()
+                fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
+            }
         }
         observeFirebaseRealtimeDBChanges()
         
@@ -64,6 +81,11 @@ class MapViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.eventForExitRegion(_:)), name: NSNotification.Name(rawValue: "eventForExitRegion"), object: nil)
 
+    }
+    
+    func isSafe(flag: Bool) {
+        self.safetyStatusLbl.text = (flag) ? "SAFE" : "UNSAFE"
+        self.safetyStatusLbl.textColor = (flag) ? UIColor.init(hexString: "#15CF00") : UIColor.red
     }
     
     @objc func eventForEnterRegion(_ notification: NSNotification) {
@@ -86,19 +108,23 @@ class MapViewController: UIViewController {
         }
     }
     
-    func fetchAddress() {
+    func fetchAddress(memberId: String, groupId: String) {
         ProgressHUD.sharedInstance.show()
-        DatabaseManager.shared.fetchAddressFor(userWith: self.memberList.first?.id ?? "", groupId: self.groupId) { (response) in
+        DatabaseManager.shared.fetchAddressFor(userWith: memberId, groupId: groupId) { (response) in
             ProgressHUD.sharedInstance.hide()
-            for address in response?.allValues ?? [Any]() {
-                if let data = address as? NSDictionary {
-                    var place = Place()
-                    place.lat = data["lat"] as? Double
-                    place.long = data["long"] as? Double
-                    place.address = data["address"] as? String
-                    place.name = data["name"] as? String
-                    place.radius = data["radius"] as? Double
-                    self.addressList.append(place)
+            if let address = response {
+                for (key, value) in address {
+                    if let data = value as? NSDictionary {
+                        var place = Place()
+                        place.id = key as? String
+                        place.groupId = self.groupId
+                        place.lat = data["lat"] as? Double
+                        place.long = data["long"] as? Double
+                        place.address = data["address"] as? String
+                        place.name = data["name"] as? String
+                        place.radius = data["radius"] as? Double
+                        self.addressList.append(place)
+                    }
                 }
             }
             self.getGeoFencing()
@@ -280,8 +306,8 @@ extension MapViewController : MKMapViewDelegate {
             return MKOverlayRenderer()
         }
         let circleRender = MKCircleRenderer(circle: circleOverlay)
-        circleRender.strokeColor = .green
-        circleRender.fillColor = .green
+        circleRender.strokeColor = UIColor.init(hexString: "#15CF00")
+        circleRender.fillColor = UIColor.init(hexString: "#15CF00")
         circleRender.alpha = 0.1
         return circleRender
     }

@@ -94,7 +94,7 @@ class DashboardViewController: UIViewController {
         }
     }
     
-    private func fetchGroups() {
+    func fetchGroups() {
         self.groupList.removeAll()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
             ProgressHUD.sharedInstance.show()

@@ -74,6 +74,7 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     func handleMenu() {
         if !isCreatorOfGroup {
             firstMenuButton.tag = 2
+            firstMenuButton.setTitle("Exit Group", for: .normal)
             seperatorView.isHidden = true
             secondMenuButton.isHidden = true
         }

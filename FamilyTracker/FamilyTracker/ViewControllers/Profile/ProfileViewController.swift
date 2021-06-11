@@ -60,6 +60,7 @@ class ProfileViewController: UIViewController {
                     if let data = value as? NSDictionary {
                         var place = Place()
                         place.id = key as? String
+                        place.groupId = self.groupId
                         place.lat = data["lat"] as? Double
                         place.long = data["long"] as? Double
                         place.address = data["address"] as? String

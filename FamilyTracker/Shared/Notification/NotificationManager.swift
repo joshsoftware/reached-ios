@@ -20,8 +20,9 @@ class NotificationManager: NSObject {
         UIApplication.shared.windows.first?.rootViewController = navigationController
         UIApplication.shared.windows.first?.makeKeyAndVisible()
 
-        let groupListViewController = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController")
-        navigationController.pushViewController(groupListViewController, animated: false)
+        if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+            navigationController.pushViewController(vc, animated: false)
+        }
         
         var payload: NotificationPayload?
         
@@ -38,19 +39,17 @@ class NotificationManager: NSObject {
         
         switch type {
         case Constant.NotificationType.joinGroup.rawValue:
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
-                vc.groupId = payload?.groupId ?? ""
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+//                vc.groupId = payload?.groupId ?? ""
                 navigationController.pushViewController(vc, animated: true)
-
             }
         case Constant.NotificationType.sos.rawValue:
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "MemberListViewController") as? MemberListViewController {
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
                 vc.groupId = payload?.groupId ?? ""
-                vc.sosRecievedMemberId = payload?.memberId ?? ""
-                navigationController.pushViewController(vc, animated: true)
+                vc.memberId = payload?.memberId ?? ""
+                vc.isFromSOSNotification = true
+                navigationController.pushViewController(vc, animated: false)
             }
-
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GoToMapOnSOSRemoteNotification"), object: nil, userInfo: nil)
         default:
             break
         }
