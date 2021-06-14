@@ -22,11 +22,8 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setUpCollectionView()
         nameLabel.text = member.name
-        if let url = URL(string: member.profileUrl ?? "") {
-            SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
-                self.profileImageView.image = image
-            }
-        }
+        
+        self.profileImageView.sd_setImage(with: URL(string: member.profileUrl ?? ""), placeholderImage: UIImage(named: "userPlaceholder"))
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.fetchAddressHandler), name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
 
@@ -78,6 +75,7 @@ class ProfileViewController: UIViewController {
         if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SearchAddressViewController") as? SearchAddressViewController {
             vc.userId = member.id ?? ""
             vc.groupId = self.groupId
+            vc.profileUrl = member.profileUrl ?? ""
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

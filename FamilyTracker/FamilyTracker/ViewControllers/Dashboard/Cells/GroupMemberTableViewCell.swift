@@ -62,11 +62,7 @@ class GroupMemberTableViewCell: UITableViewCell {
             memberNameLbl.text = member.name
         }
         
-        if let url = URL(string: member.profileUrl ?? "") {
-            SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
-                self.memberProfileImgView.image = image
-            }
-        }
+        self.memberProfileImgView.sd_setImage(with: URL(string: member.profileUrl ?? ""), placeholderImage: UIImage(named: "userPlaceholder"))
         
         if let lat = member.lat, let long =  member.long {
             let location = CLLocation(latitude: lat, longitude: long)

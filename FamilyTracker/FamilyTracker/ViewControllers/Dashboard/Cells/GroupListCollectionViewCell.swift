@@ -10,7 +10,6 @@ import CoreLocation
 import Firebase
 import WatchConnectivity
 import Floaty
-import SDWebImage
 import Contacts
 
 class GroupListCollectionViewCell: UICollectionViewCell {

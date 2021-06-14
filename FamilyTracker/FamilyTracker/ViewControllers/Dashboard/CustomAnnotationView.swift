@@ -9,8 +9,8 @@ import UIKit
 import MapKit
 
 class CustomAnnotationView: MKAnnotationView {
-    private var imageView: UIImageView!
-    private var profileImageView: UIImageView!
+    var imageView: UIImageView!
+    var profileImageView: UIImageView!
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)

@@ -8,39 +8,26 @@
 import UIKit
 import GooglePlaces
 import MapKit
+import SDWebImage
 
 class SearchAddressViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
-
-    var resultsViewController: GMSAutocompleteResultsViewController?
-    var searchController: UISearchController?
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var tableDataSource: GMSAutocompleteTableDataSource!
     var resultView: UITextView?
     var selectedPlace = Place()
     var groupId: String = ""
     var userId: String = ""
-
+    var profileUrl: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        resultsViewController = GMSAutocompleteResultsViewController()
-        resultsViewController?.delegate = self
-        resultsViewController?.placeFields = [.name, .formattedAddress, .coordinate]
-        
-        searchController = UISearchController(searchResultsController: resultsViewController)
-        searchController?.searchResultsUpdater = resultsViewController
-        
-        let subView = UIView(frame: CGRect(x: 0, y: 110.0, width: UIScreen.main.bounds.width, height: 50.0))
-        
-        subView.addSubview((searchController?.searchBar)!)
-        view.addSubview(subView)
-        searchController?.searchBar.sizeToFit()
-        searchController?.hidesNavigationBarDuringPresentation = false
-        searchController?.obscuresBackgroundDuringPresentation = false
-        
-        // When UISearchController presents the results view, present it in
-        // this view controller, not one further up the chain.
-        definesPresentationContext = true
-        
+        tableDataSource = GMSAutocompleteTableDataSource()
+        tableDataSource.delegate = self
+        tableView.delegate = tableDataSource
+        tableView.dataSource = tableDataSource
         mapView.delegate = self
         mapView.mapType = .standard
     }
@@ -50,6 +37,7 @@ class SearchAddressViewController: UIViewController {
             vc.selectedPlace = self.selectedPlace
             vc.userId = self.userId
             vc.groupId = self.groupId
+            vc.profileUrl = self.profileUrl
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -67,16 +55,37 @@ class SearchAddressViewController: UIViewController {
     }
 }
 
-// Handle the user's selection.
-extension SearchAddressViewController: GMSAutocompleteResultsViewControllerDelegate {
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
-        searchController?.isActive = false
+extension SearchAddressViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Update the GMSAutocompleteTableDataSource with the search text.
+        tableView.isHidden = !(searchText.count > 0)
+        tableDataSource.sourceTextHasChanged(searchText)
+    }
+}
+
+extension SearchAddressViewController: GMSAutocompleteTableDataSourceDelegate {
+    func didUpdateAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
+        // Turn the network activity indicator off.
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        // Reload table data.
+        tableView.reloadData()
+    }
+    
+    func didRequestAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
+        // Turn the network activity indicator on.
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        // Reload table data.
+        tableView.reloadData()
+    }
+    
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         // Do something with the selected place.
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         
+        self.tableView.isHidden = true
+
         let allAnnotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnnotations)
         
@@ -88,46 +97,39 @@ extension SearchAddressViewController: GMSAutocompleteResultsViewControllerDeleg
         self.selectedPlace.address = place.formattedAddress
         self.selectedPlace.lat = place.coordinate.latitude
         self.selectedPlace.long = place.coordinate.longitude
-
+        
         if let latitudinalMeters = CLLocationDistance(exactly: 500), let longitudinalMeters = CLLocationDistance(exactly: 500) {
             let region = MKCoordinateRegion( center: place.coordinate, latitudinalMeters: latitudinalMeters, longitudinalMeters: longitudinalMeters)
             self.mapView.setRegion(self.mapView.regionThatFits(region), animated: true)
         }
+        
     }
     
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
-        // TODO: handle the error.
-        print("Error: ", error.localizedDescription)
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {
+        // Handle the error.
+        print("Error: \(error.localizedDescription)")
     }
     
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didSelect prediction: GMSAutocompletePrediction) -> Bool {
+        return true
     }
 }
 
 extension SearchAddressViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is MKPointAnnotation else { return nil }
-
-        let identifier = "Annotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-        } else {
-            annotationView?.annotation = annotation
+        
+        let identifier = "AnnotationIdentifier"
+        
+        var view: CustomAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView
+        if view == nil {
+            view = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
-        annotationView?.centerOffset = CGPoint(x: 0, y: -40)
-        annotationView?.image = UIImage(named: "pin_with_profile_pic")
-
-        return annotationView
+        
+        view?.profileImageView.sd_setImage(with: URL(string: self.profileUrl), placeholderImage: UIImage(named: "userPlaceholder"))
+        
+        view?.centerOffset = CGPoint(x: 0, y: -35)
+        return view
     }
     
 }

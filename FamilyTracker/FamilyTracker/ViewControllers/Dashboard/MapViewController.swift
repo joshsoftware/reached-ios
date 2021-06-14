@@ -291,11 +291,8 @@ extension MapViewController : MKMapViewDelegate {
             view = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
         
-        if let url = URL(string: (annotation.subtitle ?? "") ?? "") {
-            SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
-                view?.image = image
-            }
-        }
+        view?.profileImageView.sd_setImage(with: URL(string: (annotation.subtitle ?? "") ?? ""), placeholderImage: UIImage(named: "userPlaceholder"))
+
         view?.centerOffset = CGPoint(x: 0, y: -35)
         
         return view

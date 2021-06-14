@@ -8,6 +8,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import SDWebImage
 
 class SaveAddressViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
@@ -20,6 +21,7 @@ class SaveAddressViewController: UIViewController {
     var selectedPlace = Place()
     var groupId: String = ""
     var userId: String = ""
+    var profileUrl: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,19 +105,17 @@ extension SaveAddressViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is MKPointAnnotation else { return nil }
 
-        let identifier = "Annotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        let identifier = "AnnotationIdentifier"
 
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-        } else {
-            annotationView?.annotation = annotation
+        var view: CustomAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView
+        if view == nil {
+            view = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         }
-        annotationView?.centerOffset = CGPoint(x: 0, y: -40)
-        annotationView?.image = UIImage(named: "pin_with_profile_pic")
+        
+        view?.profileImageView.sd_setImage(with: URL(string: self.profileUrl), placeholderImage: UIImage(named: "userPlaceholder"))
 
-        return annotationView
+        view?.centerOffset = CGPoint(x: 0, y: -35)
+        return view
     }
     
 }

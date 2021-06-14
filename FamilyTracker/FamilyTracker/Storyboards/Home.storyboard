@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -42,7 +43,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ge-Yt-cuS">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ge-Yt-cuS">
                                 <rect key="frame" x="92.5" y="333" width="229" height="35"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -61,7 +62,7 @@
                                     <action selector="createGroupButtonPressed:" destination="0gR-lo-VSy" eventType="touchUpInside" id="leI-ux-02T"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwc-Tz-Qaq">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwc-Tz-Qaq">
                                 <rect key="frame" x="92.5" y="383" width="229" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="NXJ-zH-XPb"/>
@@ -167,7 +168,8 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="4Am-c2-Tyb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="4Am-c2-Tyb" firstAttribute="bottom" secondItem="kJ2-pL-o3c" secondAttribute="bottom" constant="-150" id="1vb-bB-lT7" customClass="KeyboardLayoutConstraint" customModule="Reached" customModuleProvider="target">
                                 <userDefinedRuntimeAttributes>
@@ -193,7 +195,6 @@
                             <constraint firstItem="Vwc-Tz-Qaq" firstAttribute="width" secondItem="9Ge-Yt-cuS" secondAttribute="width" id="wNC-Gq-uDV"/>
                             <constraint firstItem="8in-pl-dAp" firstAttribute="centerX" secondItem="iQO-1M-cE0" secondAttribute="centerX" id="xsA-sV-LTf"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="4Am-c2-Tyb"/>
                     </view>
                     <navigationItem key="navigationItem" id="4xv-0V-m1D"/>
                     <connections>
@@ -283,7 +284,7 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvO-yZ-NhS">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvO-yZ-NhS">
                                         <rect key="frame" x="92.5" y="289.5" width="229" height="35"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -302,7 +303,7 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
                                             <action selector="shareJoinLinkBtnAction:" destination="reJ-W0-AAv" eventType="touchUpInside" id="yh6-Xh-TDb"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7h-1W-PRp">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7h-1W-PRp">
                                         <rect key="frame" x="92.5" y="344.5" width="229" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -368,6 +369,7 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="awE-pe-wa0"/>
                         <color key="backgroundColor" red="0.53725490196078429" green="0.53725490196078429" blue="0.53725490196078429" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="OXS-CV-WzE" firstAttribute="height" secondItem="ZQK-SS-Ygl" secondAttribute="height" multiplier="0.5" id="7rn-By-XdX"/>
@@ -380,7 +382,6 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
                             <constraint firstAttribute="bottom" secondItem="ZZm-Qb-d5b" secondAttribute="bottom" id="sLr-tm-Ifm"/>
                             <constraint firstItem="OXS-CV-WzE" firstAttribute="centerX" secondItem="ZQK-SS-Ygl" secondAttribute="centerX" id="zIq-vd-s9Y"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="awE-pe-wa0"/>
                     </view>
                     <navigationItem key="navigationItem" id="LFO-Up-03B"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -403,5 +404,8 @@ U2hvdyB0aGlzIFFSIGNvZGUgdG8geW91ciALRmFtaWx5IE1lbWJlcg
         <image name="line" width="132" height="1"/>
         <image name="location_pin" width="69.5" height="93"/>
         <image name="orange_btn" width="49" height="26"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
