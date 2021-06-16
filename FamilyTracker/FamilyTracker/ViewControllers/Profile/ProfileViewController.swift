@@ -13,15 +13,23 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var addAddressButton: UIButton!
 
     var groupId: String = ""
     var addressList = [Place]()
     var member = Members()
+    var createdBy: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
         nameLabel.text = member.name
+        
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            if userId == self.createdBy {
+                self.addAddressButton.isHidden = false
+            }
+        }
         
         self.profileImageView.sd_setImage(with: URL(string: member.profileUrl ?? ""), placeholderImage: UIImage(named: "userPlaceholder"))
         
@@ -135,6 +143,6 @@ extension ProfileViewController: UICollectionViewDataSource {
 
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.height * 0.8, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.height * 0.8, height: collectionView.frame.height * 0.9)
     }
 }

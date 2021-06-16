@@ -49,8 +49,7 @@ class GroupMemberTableViewCell: UITableViewCell {
 
         currentLocationContainerView.layer.cornerRadius = currentLocationContainerView.frame.height / 2
         containerView.layer.cornerRadius = 5.0
-        containerView.layer.borderWidth = 0.4
-        containerView.layer.borderColor = UIColor.lightGray.cgColor
+        containerView.layer.borderWidth = 2.0
     }
     
     func updateCell(member: Members) {
@@ -71,6 +70,10 @@ class GroupMemberTableViewCell: UITableViewCell {
                     self.currentLocationLbl.text = (name ?? "") + ", " + (city ?? "")
                 }
             }
+        }
+        
+        if let sosState = member.sosState {
+            containerView.layer.borderColor = (sosState) ? UIColor.red.cgColor : UIColor.lightGray.cgColor
         }
     }
     

@@ -82,8 +82,8 @@ class JoinLinkManager: NSObject {
                             self.joinGroupWith(groupId: groupId, completion: {
                                 if let vc = topVC as? DashboardViewController {
                                     vc.fetchGroups()
-                                } else if let vc = topVC as? MainViewController {
-                                    
+                                } else if topVC is MainViewController {
+                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
                                 }
                             })
                         } else if topVC.isKind(of: MapViewController.self) || topVC.isKind(of: ProfileViewController.self) || topVC.isKind(of: SearchAddressViewController.self) || topVC.isKind(of: SaveAddressViewController.self) || topVC.isKind(of: ScanQRCodeViewController.self) || topVC.isKind(of: ShowQRCodeViewController.self) || topVC.isKind(of: ManageGroupViewController.self) {

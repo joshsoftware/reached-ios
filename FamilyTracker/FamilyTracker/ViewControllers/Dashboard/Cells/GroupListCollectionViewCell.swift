@@ -17,9 +17,6 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var groupNameLbl: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var trackingLocationLbl: UILabel!
-    @IBOutlet weak var allMembersLbl: UILabel!
-    @IBOutlet weak var safeUnsafeLbl: UILabel!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var firstMenuButton: UIButton!
     @IBOutlet weak var secondMenuButton: UIButton!
@@ -49,11 +46,10 @@ class GroupListCollectionViewCell: UICollectionViewCell {
     
     func initiateCell(groupId: String) {
         self.memberList.removeAll()
+        self.tableView.reloadData()
         self.groupId = groupId
-        if ref == nil {
-            ref = Database.database().reference(withPath: "groups/\(self.groupId)")
-            setUp()
-        }
+        ref = Database.database().reference(withPath: "groups/\(self.groupId)")
+        setUp()
     }
     
     override func layoutSubviews() {
@@ -67,7 +63,6 @@ class GroupListCollectionViewCell: UICollectionViewCell {
         setUpTableView()
         handleMenu()
         observeFirebaseRealtimeDBChanges()
-        updateSafeUnsafeText()
     }
     
     func handleMenu() {
@@ -76,16 +71,6 @@ class GroupListCollectionViewCell: UICollectionViewCell {
             firstMenuButton.setTitle("Exit Group", for: .normal)
             seperatorView.isHidden = true
             secondMenuButton.isHidden = true
-        }
-    }
-    
-    private func updateSafeUnsafeText() {
-        if isAllMemberSafe {
-            safeUnsafeLbl.text = "SAFE"
-            safeUnsafeLbl.textColor = Constant.kColor.KAppGreen
-        } else {
-            safeUnsafeLbl.text = "UNSAFE"
-            safeUnsafeLbl.textColor = .red
         }
     }
     
@@ -152,9 +137,11 @@ class GroupListCollectionViewCell: UICollectionViewCell {
         member.lastUpdated = value["lastUpdated"] as? String
         member.sosState = value["sosState"] as? Bool
         
-        self.memberList.append(member)
-        self.tableView.reloadData()
-        
+        let filterMemberList = self.memberList.filter({ $0.id == member.id })
+        if filterMemberList.count == 0 {
+            self.memberList.append(member)
+            self.tableView.reloadData()
+        }
     }
     
     private func familyMemberRemoved(value: NSMutableDictionary) {

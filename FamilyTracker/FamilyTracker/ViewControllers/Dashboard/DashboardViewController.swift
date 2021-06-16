@@ -31,14 +31,18 @@ class DashboardViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var connectivityHandler = WatchSessionManager.shared
     private var groups : NSDictionary = NSDictionary()
-    private let groupId = UUID().uuidString
 
     var behavior: MSCollectionViewPeekingBehavior!
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
+        self.ref = Database.database().reference()
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            self.ref = Database.database().reference().child("users").child(userId).child("groups")
+            self.observeFirebaseRealtimeDBChanges()
+        }
         setUp()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.fetchGroups), name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,7 +98,19 @@ class DashboardViewController: UIViewController {
         }
     }
     
-    func fetchGroups() {
+    private func observeFirebaseRealtimeDBChanges() {
+        //Observe updated value for member
+        self.ref.observe(.childChanged) { (snapshot) in
+            self.fetchGroups()
+        }
+        
+        //Observe family member removed
+        self.ref.observe(.childRemoved) { (snapshot) in
+            self.fetchGroups()
+        }
+    }
+    
+    @objc func fetchGroups() {
         self.groupList.removeAll()
         if let userId = UserDefaults.standard.string(forKey: "userId") {
             ProgressHUD.sharedInstance.show()
@@ -118,21 +134,24 @@ class DashboardViewController: UIViewController {
     }
     
     func createGroup(groupName: String) {
+        let groupId = UUID().uuidString
+        self.ref = Database.database().reference()
         ProgressHUD.sharedInstance.show()
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "Mahesh Nagpure", "lastUpdated": Date().currentUTCDate(), "profileUrl": "https://homepages.cae.wisc.edu/~ece533/images/airplane.png"] as [String : Any]
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let userProfileUrl = UserDefaults.standard.string(forKey: "userProfileUrl"), let userName = UserDefaults.standard.string(forKey: "userName") {
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": userName, "lastUpdated": Date().currentUTCDate(), "profileUrl": userProfileUrl, "sosState": false] as [String : Any]
+            //TODO - Change
             var memberArray : Array = Array<Any>()
             memberArray.append(data)
 
-            self.ref.child("groups").child(self.groupId).setValue(["created_by": userId, "name": groupName])
-            self.ref.child("groups").child(self.groupId).child("members").child(userId).setValue(data)
+            self.ref.child("groups").child(groupId).setValue(["created_by": userId, "name": groupName])
+            self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
             
             if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
-                dict[self.groupId] = true
+                dict[groupId] = true
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             } else {
-                let dict = [self.groupId: true]
+                let dict = [groupId: true]
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
@@ -209,7 +228,15 @@ class DashboardViewController: UIViewController {
     
     @IBAction func sosBtnAction(_ sender: Any) {
         if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true)
+            ProgressHUD.sharedInstance.show()
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true, completion: { response, error in
+                ProgressHUD.sharedInstance.hide()
+                if let err = error {
+                    print(err)
+                } else {
+                    print("SOS updated....")
+                }
+            })
         } else {
             print("User is not logged in")
         }
@@ -288,6 +315,7 @@ extension DashboardViewController: UICollectionViewDataSource {
                     vc.groupId = group.id ?? ""
                     vc.showAllGroupMembers = false
                     vc.memberList = members
+                    vc.createdBy = group.createdBy ?? ""
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -312,6 +340,7 @@ extension DashboardViewController: UICollectionViewDataSource {
                 let group = self.groupList[indexPath.row]
                 vc.groupId = group.id ?? ""
                 vc.member = member
+                vc.createdBy = group.createdBy ?? ""
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

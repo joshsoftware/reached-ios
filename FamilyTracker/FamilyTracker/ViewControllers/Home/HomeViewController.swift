@@ -94,8 +94,9 @@ class HomeViewController: UIViewController {
     
     func createGroup(groupName: String) {
         ProgressHUD.sharedInstance.show()
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": "Mahesh Nagpure", "lastUpdated": Date().currentUTCDate(), "profileUrl": "https://homepages.cae.wisc.edu/~ece533/images/airplane.png"] as [String : Any]
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let userProfileUrl = UserDefaults.standard.string(forKey: "userProfileUrl"), let userName = UserDefaults.standard.string(forKey: "userName") {
+            let data = ["lat": self.currentLocation.latitude, "long": self.currentLocation.longitude, "name": userName, "lastUpdated": Date().currentUTCDate(), "profileUrl": userProfileUrl, "sosState": false] as [String : Any]
+            //TODO - Change
             var memberArray : Array = Array<Any>()
             memberArray.append(data)
 

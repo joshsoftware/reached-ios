@@ -83,7 +83,15 @@ class SaveAddressViewController: UIViewController {
     
     @IBAction func sosBtnAction(_ sender: Any) {
         if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true)
+            ProgressHUD.sharedInstance.show()
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true, completion: { response, error in
+                ProgressHUD.sharedInstance.hide()
+                if let err = error {
+                    print(err)
+                } else {
+                    print("SOS updated....")
+                }
+            })
         } else {
             print("User is not logged in")
         }

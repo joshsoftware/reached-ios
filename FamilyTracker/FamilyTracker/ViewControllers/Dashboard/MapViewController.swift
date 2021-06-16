@@ -23,13 +23,16 @@ class MapViewController: UIViewController {
     @IBOutlet weak var groupDetailsView: UIView!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var previousButton: UIButton!
+    @IBOutlet weak var safeUnsafeButton: UIButton!
 
     private var ref: DatabaseReference!
     var memberList: [Members] = []
     var groupId: String = ""
     var userId: String = ""
     var groupName: String = ""
+    var memberName: String = ""
     var memberId: String = ""
+    var createdBy: String = ""
     var showAllGroupMembers = false
     var isFromSOSNotification = false
     var index: Int = 0
@@ -63,16 +66,26 @@ class MapViewController: UIViewController {
                     if let group = groupData {
                         let filterdMembers = (group.members?.filter { $0.id!.contains(self.memberId) } )! as [Members]
                         self.memberList.append(filterdMembers.first ?? Members())
-                        self.nameLbl.text = self.memberList[0].name
-                        self.isSafe(flag: false)
+                        self.memberName = self.memberList.first?.name ?? ""
+                        if let userId = UserDefaults.standard.string(forKey: "userId") {
+                            self.safeUnsafeButton.isHidden = (userId == self.memberId)
+                        }
+                        self.nameLbl.text = self.memberName
+                        self.fetchCurrentAddress(member: self.memberList.first)
+                        self.fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
                         self.showPinForMembersLocation()
                     }
                 }
             } else {
-                self.nameLbl.text = memberList[0].name
-                self.isSafe(flag: true)
-                showPinForMembersLocation()
-                fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
+                self.memberName = self.memberList.first?.name ?? ""
+                self.nameLbl.text = self.memberName
+                self.memberId = self.memberList.first?.id ?? ""
+                if let userId = UserDefaults.standard.string(forKey: "userId") {
+                    self.safeUnsafeButton.isHidden = (userId == self.memberId)
+                }
+                self.fetchCurrentAddress(member: self.memberList.first)
+                self.fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
+                self.showPinForMembersLocation()
             }
         }
         observeFirebaseRealtimeDBChanges()
@@ -83,9 +96,35 @@ class MapViewController: UIViewController {
 
     }
     
-    func isSafe(flag: Bool) {
-        self.safetyStatusLbl.text = (flag) ? "SAFE" : "UNSAFE"
-        self.safetyStatusLbl.textColor = (flag) ? UIColor.init(hexString: "#15CF00") : UIColor.red
+    func fetchSafetyStatusFor(memberId: String?) {
+        self.ref = Database.database().reference().child("users").child(memberId ?? "").child("sosState")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let flag = snapshot.value as? Bool {
+                    if flag {
+                        if let userId = UserDefaults.standard.string(forKey: "userId") {
+                            self.nameLbl.text = (userId == memberId) ? "You have send SOS!" : "\(self.memberName) needs help!"
+                        }
+                        self.nameLbl.textColor = UIColor.red
+                        self.safeUnsafeButton.isSelected = true
+                        self.safeUnsafeButton.isUserInteractionEnabled = true
+                    }
+                }
+            }
+        })
+    }
+    
+    func fetchCurrentAddress(member: Members?) {
+        if let lat = member?.lat, let long =  member?.long {
+            let location = CLLocation(latitude: lat, longitude: long)
+            location.fetchAddress { (name, city, country, error) in
+                if error == nil {
+                    let address =  (name ?? "")
+                    let cityCountry =  (city ?? "") + ", " + (country ?? "")
+                    self.safetyStatusLbl.text = address + ", " + cityCountry
+                }
+            }
+        }
     }
     
     @objc func eventForEnterRegion(_ notification: NSNotification) {
@@ -128,6 +167,7 @@ class MapViewController: UIViewController {
                 }
             }
             self.getGeoFencing()
+            self.fetchSafetyStatusFor(memberId: memberId)
         }
     }
     
@@ -235,10 +275,14 @@ class MapViewController: UIViewController {
                 
                 pin.coordinate = coordinate
                 self.mapView.addAnnotation(pin)
-
-                if let latitudinalMeters = CLLocationDistance(exactly: 1000), let longitudinalMeters = CLLocationDistance(exactly: 1000) {
-                    let region = MKCoordinateRegion( center: coordinate, latitudinalMeters: latitudinalMeters, longitudinalMeters: longitudinalMeters)
-                    self.mapView.setRegion(self.mapView.regionThatFits(region), animated: true)
+                
+                if self.memberList.count > 1 {
+                    self.mapView.fitAll()
+                } else {
+                    if let latitudinalMeters = CLLocationDistance(exactly: 1000), let longitudinalMeters = CLLocationDistance(exactly: 1000) {
+                        let region = MKCoordinateRegion( center: coordinate, latitudinalMeters: latitudinalMeters, longitudinalMeters: longitudinalMeters)
+                        self.mapView.setRegion(self.mapView.regionThatFits(region), animated: true)
+                    }
                 }
             }
             
@@ -256,7 +300,19 @@ class MapViewController: UIViewController {
     
     @IBAction func sosBtnAction(_ sender: Any) {
         if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true)
+            ProgressHUD.sharedInstance.show()
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true, completion: { response, error in
+                ProgressHUD.sharedInstance.hide()
+                if let err = error {
+                    print(err)
+                } else {
+                    print("SOS updated....")
+                    self.nameLbl.text = "You have send SOS!"
+                    self.nameLbl.textColor = UIColor.red
+                    self.safeUnsafeButton.isSelected = true
+                    self.safeUnsafeButton.isUserInteractionEnabled = true
+                }
+            })
         } else {
             print("User is not logged in")
         }
@@ -272,6 +328,22 @@ class MapViewController: UIViewController {
         index = index - 1
         groupListHandler?(index)
         handleButtons()
+    }
+    
+    @IBAction func safeUnsafetBtnAction(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        ProgressHUD.sharedInstance.show()
+        DatabaseManager.shared.updateSOSFor(userWith: memberId, sosState: false, completion: { response, error in
+            ProgressHUD.sharedInstance.hide()
+            if let err = error {
+                print(err)
+            } else {
+                print("SOS updated....")
+                self.nameLbl.text = self.memberName
+                self.nameLbl.textColor = UIColor.black
+                self.safeUnsafeButton.isUserInteractionEnabled = false
+            }
+        })
     }
     
     func handleButtons() {

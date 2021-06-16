@@ -98,7 +98,7 @@ class DatabaseManager: NSObject {
             dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let currentDate = dtf.string(from: Date())
             
-            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl] as [String : Any]
+            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl, "sosState": false] as [String : Any]
             self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
             
             if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
@@ -115,13 +115,23 @@ class DatabaseManager: NSObject {
         }
     }
     
-    func updateSOSFor(userWith id: String, sosState: Bool) {
+    func updateSOSFor(userWith id: String, sosState: Bool, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
         self.ref = Database.database().reference()
         self.ref.child("users").child("\(id)/sosState").setValue(sosState) { (error, reference) in
             if (error != nil) {
-                print(error!)
+                completion(nil, error.debugDescription)
             } else {
-                print("SOS updated...")
+                self.fetchGroupsFor(userWith: id) { (groups) in
+                    if let data = groups {
+                        for groupId in data.allKeys {
+                            self.ref = Database.database().reference(withPath: "groups/\(groupId)")
+                            self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
+                        }
+                        completion("SOS updated...", nil)
+                    } else {
+                        completion(nil, "Unable to update SOS...")
+                    }
+                }
             }
         }
     }

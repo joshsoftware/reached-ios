@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vcO-WL-RTk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vcO-WL-RTk">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,7 +45,8 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="fR7-44-96q"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="8er-5w-cmK" secondAttribute="bottom" id="1Sn-B5-RPS"/>
                             <constraint firstItem="8er-5w-cmK" firstAttribute="leading" secondItem="XAV-DD-bTE" secondAttribute="leading" id="D9n-07-xWP"/>
@@ -53,7 +55,6 @@
                             <constraint firstAttribute="trailing" secondItem="8er-5w-cmK" secondAttribute="trailing" id="eXO-Yy-rM8"/>
                             <constraint firstItem="8er-5w-cmK" firstAttribute="top" secondItem="XAV-DD-bTE" secondAttribute="top" id="mTU-0Q-hJX"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="fR7-44-96q"/>
                     </view>
                     <navigationItem key="navigationItem" id="QEm-Zf-2M5"/>
                 </viewController>
@@ -152,7 +153,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="gpK-kj-oif"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="NoQ-bs-dI6" firstAttribute="centerX" secondItem="Pi7-6g-Hea" secondAttribute="centerX" id="2lS-pC-Kgl"/>
                             <constraint firstItem="6X2-N0-qLs" firstAttribute="centerX" secondItem="Pi7-6g-Hea" secondAttribute="centerX" id="3BF-Lu-2rz"/>
@@ -172,7 +174,6 @@
                             <constraint firstItem="44C-zJ-Td4" firstAttribute="top" secondItem="Pi7-6g-Hea" secondAttribute="top" id="y5H-Ow-ApM"/>
                             <constraint firstItem="lOx-MP-tlS" firstAttribute="height" secondItem="Pi7-6g-Hea" secondAttribute="height" multiplier="0.48" id="zW2-9v-Zl4"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="gpK-kj-oif"/>
                     </view>
                     <navigationItem key="navigationItem" id="7Fh-sj-O1Y"/>
                     <connections>
@@ -188,5 +189,8 @@
         <image name="app_logo" width="142" height="161"/>
         <image name="login_with_google" width="181" height="181"/>
         <image name="welcome_bg" width="375" height="811"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

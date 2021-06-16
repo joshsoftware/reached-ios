@@ -102,6 +102,7 @@ extension LoginViewController: GIDSignInDelegate {
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
                     UserDefaults.standard.setValue(user.displayName ?? "Mahesh Nagpure", forKey: "userName")
                     UserDefaults.standard.setValue(user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", forKey: "userProfileUrl")
+                    //TODO - Change
                     self.sendLoginStatusToWatch()
                     self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
@@ -109,11 +110,13 @@ extension LoginViewController: GIDSignInDelegate {
                         if groups?.allKeys.count ?? 0 > 0 {
                             self.ref = Database.database().reference()
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", "groups": groups!])
+                            //TODO - Change
                             UserDefaults.standard.setValue(groups, forKey: "groups")
                             self.navigateToGroupListVC()
                         } else {
                             self.ref = Database.database().reference()
                             self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", "groups": nil])
+                            //TODO - Change
                             self.navigateToHomeVC()
                         }
                         DatabaseManager.shared.setDeviceTokenOnServer(userId: user.uid)

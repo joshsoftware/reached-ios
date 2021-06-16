@@ -64,7 +64,7 @@
                                         <color key="textColor" red="0.93725490196078431" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bv8-ji-m5c">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bv8-ji-m5c">
                                         <rect key="frame" x="289" y="17.5" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="SkO-7a-g0o"/>
@@ -416,25 +416,43 @@
                                 <rect key="frame" x="0.0" y="707" width="414" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Groups" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUl-6H-syZ">
-                                        <rect key="frame" x="40" y="20" width="79.5" height="19.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <rect key="frame" x="40" y="20" width="81" height="19.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAFE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-Cg-2b1">
-                                        <rect key="frame" x="40" y="49.5" width="62" height="30"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                        <color key="textColor" red="0.08235294118" green="0.81176470590000005" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="fetching..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-Cg-2b1">
+                                        <rect key="frame" x="40" y="49.5" width="314" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nI6-n9-Pgp">
+                                        <rect key="frame" x="359" y="30" width="35" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="gwa-Hh-kfe"/>
+                                            <constraint firstAttribute="width" constant="35" id="kWW-sv-3tu"/>
+                                        </constraints>
+                                        <state key="normal" image="safe">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <state key="disabled" image="disabled_right_arrow"/>
+                                        <state key="selected" image="unsafe"/>
+                                        <connections>
+                                            <action selector="safeUnsafetBtnAction:" destination="yZa-hq-pUt" eventType="touchUpInside" id="8kN-By-8Rk"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="0wd-DV-82p"/>
+                                    <constraint firstItem="nI6-n9-Pgp" firstAttribute="centerY" secondItem="ljb-5j-zTT" secondAttribute="centerY" id="AU8-e5-Y4a"/>
                                     <constraint firstItem="qUl-6H-syZ" firstAttribute="leading" secondItem="ljb-5j-zTT" secondAttribute="leading" constant="40" id="DWX-tN-Liw"/>
                                     <constraint firstItem="ELL-Cg-2b1" firstAttribute="top" secondItem="qUl-6H-syZ" secondAttribute="bottom" constant="10" id="EPZ-M0-msi"/>
                                     <constraint firstItem="ELL-Cg-2b1" firstAttribute="leading" secondItem="ljb-5j-zTT" secondAttribute="leading" constant="40" id="GAq-jR-FYh"/>
+                                    <constraint firstItem="nI6-n9-Pgp" firstAttribute="leading" secondItem="ELL-Cg-2b1" secondAttribute="trailing" constant="5" id="N67-Jj-ubf"/>
                                     <constraint firstItem="qUl-6H-syZ" firstAttribute="top" secondItem="ljb-5j-zTT" secondAttribute="top" constant="20" id="qQY-OJ-XOt"/>
+                                    <constraint firstAttribute="trailing" secondItem="nI6-n9-Pgp" secondAttribute="trailing" constant="20" id="vIb-UE-pl1"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0f1-3H-knV">
@@ -491,6 +509,7 @@
                         <outlet property="nameLbl" destination="qUl-6H-syZ" id="GeY-98-FNA"/>
                         <outlet property="nextButton" destination="bA6-F8-0ly" id="QAd-hw-G2N"/>
                         <outlet property="previousButton" destination="V8T-h3-kjc" id="Ltf-bR-DXy"/>
+                        <outlet property="safeUnsafeButton" destination="nI6-n9-Pgp" id="70E-bW-bvk"/>
                         <outlet property="safetyGroupStatusLbl" destination="gJw-gy-eXZ" id="Voo-6f-AWE"/>
                         <outlet property="safetyStatusLbl" destination="ELL-Cg-2b1" id="iaf-DZ-06J"/>
                     </connections>
@@ -659,6 +678,8 @@
         <image name="hamburger" width="22" height="17"/>
         <image name="info" width="24" height="24"/>
         <image name="orange_btn" width="49" height="26"/>
+        <image name="safe" width="437" height="512"/>
+        <image name="unsafe" width="440" height="512"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
