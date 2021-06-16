@@ -76,8 +76,6 @@ class MemberListViewController: UIViewController {
                 let data = ["id":userId, "name": name, "show": !self.sosState] as [String : Any]
                 self.refSOS.child(self.groupId).setValue(data)
             }
-
-            self.updateCurrentUsersSOSOnServer(sosState: !self.sosState)
         }
         
         if let userId = UserDefaults.standard.string(forKey: "userId") {
@@ -183,18 +181,6 @@ class MemberListViewController: UIViewController {
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMemberRemoved(value: value)
             }
-        }
-    }
-    
-    private func updateCurrentUsersSOSOnServer(sosState: Bool) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.updateSOSFor(userWith: userId, groups: groups, sosState: sosState)
-                }
-            }
-        } else {
-            print("User is not logged in")
         }
     }
     
@@ -315,7 +301,6 @@ class MemberListViewController: UIViewController {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupName = self.groupName
             vc.groupId = groupId
-            vc.iIsFromCreateGroupFlow = false
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }
