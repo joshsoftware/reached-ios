@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
 
     
     private var ref: DatabaseReference!
+    private var connectivityHandler = WatchSessionManager.shared
     var currentLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     let groupId = UUID().uuidString
     let locationManager = CLLocationManager()
@@ -85,6 +86,7 @@ class HomeViewController: UIViewController {
     }
 
     private func navigateToShowQRCodeVC(groupId: String, groupName: String) {
+        sendLoginStatusToWatch()
         if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupId = groupId
             vc.groupName = groupName
@@ -114,6 +116,14 @@ class HomeViewController: UIViewController {
             }
             ProgressHUD.sharedInstance.hide()
             self.navigateToShowQRCodeVC(groupId: self.groupId, groupName: groupName)
+        }
+    }
+    
+    private func sendLoginStatusToWatch() {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let userEmailId = UserDefaults.standard.string(forKey: "userEmailId") {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : userId as AnyObject, "userEmailId" : userEmailId as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
         }
     }
 }

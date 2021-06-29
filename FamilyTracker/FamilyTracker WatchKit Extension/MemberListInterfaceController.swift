@@ -11,13 +11,12 @@ import CoreLocation
 import WatchConnectivity
 import FirebaseDatabase
 
-class MemberListInterfaceController: WKInterfaceController, NibLoadableViewController {
+class MemberListInterfaceController: BaseInterfaceController, NibLoadableViewController {
 
     @IBOutlet weak var tableView: WKInterfaceTable!
     @IBOutlet weak var groupNameLbl: WKInterfaceLabel!
     @IBOutlet weak var showonMapBtn: WKInterfaceButton!
-    
-    private var connectivityHandler = WatchSessionManager.shared
+
     private var ref: DatabaseReference!
     private var refSOS: DatabaseReference!
 
@@ -50,20 +49,19 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         }
         self.selectedGroup = selectedGroup
         self.itemList.removeAll()
-        setUp()
-    }
-
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-        setUp()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
-    }
-
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
+        if selectedGroup.name != nil {
+            setUp()
+        } else {
+            if let groupId = selectedGroup.id {
+                DatabaseManager.shared.fetchGroupData(groups: [groupId:""]) { (groupData) in
+                    if let group = groupData {
+                        self.selectedGroup = group
+                        self.itemList.removeAll()
+                        self.setUp()
+                    }
+                }
+            }
+        }
     }
     
     private func setUp() {
@@ -84,6 +82,7 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         self.ref.child("/members").observe(.childChanged) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMembersLocationUpdated(key: snapshot.key, value: value)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
             }
         }
         
@@ -91,6 +90,7 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         self.ref.child("/members").observe(.childAdded) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
                 self.newFamilyMemberAdded(key: snapshot.key, value: value)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
             }
         }
         
@@ -98,6 +98,7 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         self.ref.child("/members").observe(.childRemoved) { (snapshot) in
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMemberRemoved(value: value)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
             }
         }
     }
@@ -195,37 +196,20 @@ class MemberListInterfaceController: WKInterfaceController, NibLoadableViewContr
         self.pushController(withName: MapInterfaceController.name, context: (itemList, selectedGroup))
     }
     
-}
-
-extension MemberListInterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
-    }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                if !loginStatus {
-                    self.pop()
-                }
-            }
-            
-            if let userId = tuple.message["userId"] as? String {
-                UserDefaults.standard.setValue(userId, forKey: "userId")
-            }
-            
-//            if let sosUserId = tuple.message["sosUserId"] as? String {
-//                DispatchQueue.main.async {
-//                    self.showSOSAlert(sosUserId: sosUserId)
-//                }
-//            }
-            
+    @IBAction func swipe(_ sender: WKSwipeGestureRecognizer) {
+        switch sender.direction {
+        case WKSwipeGestureRecognizerDirection.right:
+            print("Swiped right")
+            self.pop()
+        case WKSwipeGestureRecognizerDirection.down:
+            print("Swiped down")
+        case WKSwipeGestureRecognizerDirection.left:
+            print("Swiped left")
+        case WKSwipeGestureRecognizerDirection.up:
+            print("Swiped up")
+        default:
+            break
         }
-    }
-    
-}
 
+    }
+}

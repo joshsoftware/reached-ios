@@ -73,7 +73,7 @@ class DatabaseManager: NSObject {
                                     member.name = data["name"] as? String
                                     member.lastUpdated = data["lastUpdated"] as? String
                                     member.sosState = data["sosState"] as? Bool
-                                    
+                                    member.profileUrl = data["profileUrl"] as? String
                                     memberList.append(member)
                                 }
                             }
@@ -245,6 +245,21 @@ class DatabaseManager: NSObject {
     func updateTransitionFor(userWith id: String, groupId: String, addressId: String, transition: String) {
         ref = Database.database().reference()
         ref.child("groups/\(groupId)").child("members").child(id).child("address").child(addressId).child("transition").setValue(transition)
+    }
+    
+    func getVersion(completion: @escaping (_ result: Bool?) -> Void) {
+        ref = Database.database().reference().child("paidService")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let data = snapshot.value as? Bool {
+                    completion(data)
+                } else {
+                    completion(false)
+                }
+            } else {
+                completion(false)
+            }
+        })
     }
 }
 

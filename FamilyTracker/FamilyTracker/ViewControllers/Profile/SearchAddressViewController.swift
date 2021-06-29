@@ -14,7 +14,8 @@ class SearchAddressViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+    var centerPin: UIImageView!
+
     var tableDataSource: GMSAutocompleteTableDataSource!
     var resultView: UITextView?
     var selectedPlace = Place()
@@ -30,15 +31,54 @@ class SearchAddressViewController: UIViewController {
         tableView.dataSource = tableDataSource
         mapView.delegate = self
         mapView.mapType = .standard
+        mapView.showsUserLocation = true
+        if let userLocation = UserLocationManager.shared.currentLocation?.coordinate {
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapView.setRegion(viewRegion, animated: false)
+        }
+        DatabaseManager.shared.getVersion { (flag) in
+            self.showSearchBar(flag: flag ?? false)
+        }
+    }
+    
+    func setupCenterPin() {
+        self.centerPin = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
+        self.centerPin.image = UIImage(named: "pin_Icon")
+        self.centerPin.center = self.mapView.center
+        self.view.addSubview(self.centerPin)
+        self.centerPin.bringSubviewToFront(self.mapView)
+    }
+    
+    func showSearchBar(flag: Bool) {
+        self.searchBar.isHidden = !flag
+        if !flag {
+            setupCenterPin()
+        }
     }
     
     @IBAction func nextBtnAction(_ sender: Any) {
-        if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SaveAddressViewController") as? SaveAddressViewController {
-            vc.selectedPlace = self.selectedPlace
-            vc.userId = self.userId
-            vc.groupId = self.groupId
-            vc.profileUrl = self.profileUrl
-            self.navigationController?.pushViewController(vc, animated: true)
+        if self.centerPin == nil {
+            if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SaveAddressViewController") as? SaveAddressViewController {
+                vc.selectedPlace = self.selectedPlace
+                vc.userId = self.userId
+                vc.groupId = self.groupId
+                vc.profileUrl = self.profileUrl
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        } else {
+            if let lat = selectedPlace.lat, let long =  selectedPlace.long {
+                let location = CLLocation(latitude: lat, longitude: long)
+                location.getAddress { (address) in
+                    self.selectedPlace.address = address
+                    if let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "SaveAddressViewController") as? SaveAddressViewController {
+                        vc.selectedPlace = self.selectedPlace
+                        vc.userId = self.userId
+                        vc.groupId = self.groupId
+                        vc.profileUrl = self.profileUrl
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
+            }
         }
     }
     
@@ -138,6 +178,13 @@ extension SearchAddressViewController : MKMapViewDelegate {
         
         view?.centerOffset = CGPoint(x: 0, y: -35)
         return view
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        let center = mapView.centerCoordinate
+        self.selectedPlace.lat = center.latitude
+        self.selectedPlace.long = center.longitude
+        print(center)
     }
     
 }

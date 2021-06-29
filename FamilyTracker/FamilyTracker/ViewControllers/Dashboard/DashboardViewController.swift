@@ -125,7 +125,8 @@ class DashboardViewController: UIViewController {
                     }
                 } else {
                     self.collectionView.reloadData()
-                    if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+                    self.sendLoginStatusToWatch()
+                    if let vc = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController, let topVC = UIApplication.getTopViewController(), !topVC.isKind(of: HomeViewController.self) {
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
@@ -169,14 +170,12 @@ class DashboardViewController: UIViewController {
                             
                         }
                     } else {
-                        self.presentAlert(withTitle: "Alert", message: response ?? "") {
-                            if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
-                                dict.removeValue(forKey: groupId)
-                                UserDefaults.standard.synchronize()
-                                UserDefaults.standard.setValue(dict, forKey: "groups")
-                            }
-                            self.fetchGroups()
+                        if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
+                            dict.removeValue(forKey: groupId)
+                            UserDefaults.standard.synchronize()
+                            UserDefaults.standard.setValue(dict, forKey: "groups")
                         }
+                        self.fetchGroups()
                     }
                 }
             } else {
@@ -200,6 +199,14 @@ class DashboardViewController: UIViewController {
             } else {
                 //Do nothing
             }
+        }
+    }
+    
+    private func sendLoginStatusToWatch() {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let userEmailId = UserDefaults.standard.string(forKey: "userEmailId") {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : userId as AnyObject, "userEmailId" : userEmailId as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
         }
     }
     

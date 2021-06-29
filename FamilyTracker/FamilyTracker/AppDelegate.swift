@@ -253,7 +253,6 @@ extension AppDelegate: iOSDelegate {
                 
                 if UserDefaults.standard.bool(forKey: "loginStatus") {
                     self.sendLoginStatusToWatch()
-                    self.sendUserIdToWatch()
                 }
 
             }
@@ -262,17 +261,14 @@ extension AppDelegate: iOSDelegate {
     }
     
     private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    private func sendUserIdToWatch() {
         if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : userId as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
+        } else {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : "" as AnyObject], errorHandler:  { (error) in
                 print("Error sending message: \(error)")
             })
         }
     }
-    
 }

@@ -16,7 +16,8 @@ class NotificationManager: NSObject {
         let initialVC = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
 
         let navigationController = UINavigationController(rootViewController: initialVC)
-
+        navigationController.setNavigationBarHidden(true, animated: true)
+        
         UIApplication.shared.windows.first?.rootViewController = navigationController
         UIApplication.shared.windows.first?.makeKeyAndVisible()
 
@@ -26,7 +27,7 @@ class NotificationManager: NSObject {
         
         var payload: NotificationPayload?
         
-        if let payloadStr = data["payload"] as? String {
+        if let payloadStr = (data["payload"] as? Dictionary<String, Any>)?.jsonStringRepresentation {
             let data = Data(payloadStr.utf8)
             do {
                 let decoder = JSONDecoder()
@@ -39,7 +40,7 @@ class NotificationManager: NSObject {
         
         switch type {
         case Constant.NotificationType.joinGroup.rawValue:
-            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
 //                vc.groupId = payload?.groupId ?? ""
                 navigationController.pushViewController(vc, animated: true)
             }
@@ -50,8 +51,36 @@ class NotificationManager: NSObject {
                 vc.isFromSOSNotification = true
                 navigationController.pushViewController(vc, animated: false)
             }
+        case Constant.NotificationType.leaveGroup.rawValue:
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+                vc.handleLeaveRequest(userId: payload?.memberId ?? "", groupId: payload?.groupId ?? "")
+                navigationController.pushViewController(vc, animated: true)
+            }
+        case Constant.NotificationType.geofence.rawValue:
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
+                vc.groupId = payload?.groupId ?? ""
+                vc.memberId = payload?.memberId ?? ""
+                vc.isFromSOSNotification = true
+                navigationController.pushViewController(vc, animated: false)
+            }
+        case Constant.NotificationType.deleteGroup.rawValue:
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+//                vc.groupId = payload?.groupId ?? ""
+                navigationController.pushViewController(vc, animated: true)
+            }
         default:
             break
         }
+    }
+}
+
+extension Dictionary {
+    var jsonStringRepresentation: String? {
+        guard let theJSONData = try? JSONSerialization.data(withJSONObject: self,
+                                                            options: [.prettyPrinted]) else {
+            return nil
+        }
+
+        return String(data: theJSONData, encoding: .ascii)
     }
 }

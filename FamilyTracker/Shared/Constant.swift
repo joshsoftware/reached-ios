@@ -50,6 +50,9 @@ struct Constant {
     enum NotificationType: String {
         case joinGroup = "join_group"
         case sos = "sos"
+        case geofence = "geofence"
+        case leaveGroup = "leave_group"
+        case deleteGroup = "delete_group"
     }
 }
 

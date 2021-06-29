@@ -102,9 +102,9 @@ extension LoginViewController: GIDSignInDelegate {
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
                     UserDefaults.standard.setValue(user.displayName ?? "Mahesh Nagpure", forKey: "userName")
                     UserDefaults.standard.setValue(user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", forKey: "userProfileUrl")
+                    UserDefaults.standard.setValue(user.email ?? "", forKey: "userEmailId")
                     //TODO - Change
                     self.sendLoginStatusToWatch()
-                    self.sendUserIdToWatch()
                     DatabaseManager.shared.fetchGroupsFor(userWith: user.uid) { (groups) in
                         ProgressHUD.sharedInstance.hide()
                         if groups?.allKeys.count ?? 0 > 0 {
@@ -130,14 +130,8 @@ extension LoginViewController: GIDSignInDelegate {
     }
     
     private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
+        if let userId = UserDefaults.standard.string(forKey: "userId"), let userEmailId = UserDefaults.standard.string(forKey: "userEmailId") {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : userId as AnyObject, "userEmailId" : userEmailId as AnyObject], errorHandler:  { (error) in
                 print("Error sending message: \(error)")
             })
         }

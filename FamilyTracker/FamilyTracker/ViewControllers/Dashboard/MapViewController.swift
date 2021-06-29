@@ -56,12 +56,13 @@ class MapViewController: UIViewController {
             groupDetailsView.addTopShadow(shadowColor: UIColor.gray, shadowOpacity: 0.5, shadowRadius: 3, offset: CGSize(width: 0.0, height : -5.0))
             backButton.setTitle("Show List", for: .normal)
             groupsNameLbl.text = groupName
+            self.observeFirebaseRealtimeDBChanges()
         } else {
             memberDetailsView.addTopShadow(shadowColor: UIColor.gray, shadowOpacity: 0.5, shadowRadius: 3, offset: CGSize(width: 0.0, height : -5.0))
             backButton.setTitle("Back", for: .normal)
             if isFromSOSNotification {
                 ProgressHUD.sharedInstance.show()
-                DatabaseManager.shared.fetchGroupData(groups: [memberId:""]) { (groupData) in
+                DatabaseManager.shared.fetchGroupData(groups: [self.groupId:""]) { (groupData) in
                     ProgressHUD.sharedInstance.hide()
                     if let group = groupData {
                         let filterdMembers = (group.members?.filter { $0.id!.contains(self.memberId) } )! as [Members]
@@ -74,6 +75,7 @@ class MapViewController: UIViewController {
                         self.fetchCurrentAddress(member: self.memberList.first)
                         self.fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
                         self.showPinForMembersLocation()
+                        self.observeFirebaseRealtimeDBChanges()
                     }
                 }
             } else {
@@ -86,9 +88,9 @@ class MapViewController: UIViewController {
                 self.fetchCurrentAddress(member: self.memberList.first)
                 self.fetchAddress(memberId: self.memberList.first?.id ?? "", groupId: self.groupId)
                 self.showPinForMembersLocation()
+                self.observeFirebaseRealtimeDBChanges()
             }
         }
-        observeFirebaseRealtimeDBChanges()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.eventForEnterRegion(_:)), name: NSNotification.Name(rawValue: "eventForEnterRegion"), object: nil)
 

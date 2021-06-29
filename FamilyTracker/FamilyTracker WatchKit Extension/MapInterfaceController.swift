@@ -11,17 +11,16 @@ import MapKit
 import WatchConnectivity
 import Contacts
 import FirebaseDatabase
+import SDWebImage
 
 class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
     
     @IBOutlet weak var mapView: WKInterfaceMap!
-    @IBOutlet weak var namelabel: WKInterfaceLabel!
-    @IBOutlet weak var addressLabel: WKInterfaceLabel!
-    
-    private var connectivityHandler = WatchSessionManager.shared
+
     private var ref: DatabaseReference!
     private var selectedGroup: Group?
-    
+    var zoomRect = MKMapRect.null;
+
     var itemList: [Members] = [] {
         didSet {
             for index in 0..<itemList.count {
@@ -29,35 +28,28 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
                 
                 if let latitude = item.lat,  let longitude = item.long {
                     let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                    self.mapView.addAnnotation(coordinate, with: WKInterfaceMapPinColor.red)
-//                    if #available(watchOSApplicationExtension 6.1, *) {
-//                        self.mapView.setUserTrackingMode(.follow, animated: true)
-//                        self.mapView.setShowsUserHeading(true)
-//                        self.mapView.setShowsUserLocation(true)
-//                    } else {
-//                        // Fallback on earlier versions
-//                    }
- 
-                    if itemList.count == 1 {
-                        namelabel.setText(item.name)
-                        
-                        let location = CLLocation(latitude: latitude, longitude: longitude)
-                        location.fetchCityAndCountry { (name, city, error) in
-                            if error == nil {
-                                self.addressLabel.setText((name ?? "") + ", " + (city ?? ""))
+                    if let url = URL(string: item.profileUrl ?? "") {
+                        SDWebImageDownloader.shared.downloadImage(with: url) { (image, _, _, _) in
+                            
+                            if let img = image, let roundedImage = ImageTools.imageWithRoundedCornerSize(cornerRadius: 35, usingImage: img) {
+                                let bgImage = UIImage(named: "annotation_bg", in: Bundle(identifier: "com.joshsoftware.app.reached.watchkitapp"), with: nil)
+                                let annotationImg = bgImage?.overlayWith(image: roundedImage.scaleImage(toSize: CGSize(width: 10, height: 10)) ?? UIImage(), posX: 3, posY: 3)
+                                self.mapView.addAnnotation(coordinate, with: annotationImg, centerOffset: CGPoint(x: 0, y: -35))
                             }
+         
                         }
-                        
+                    } else {
+                        let bgImage = UIImage(named: "annotation_bg", in: Bundle(identifier: "com.joshsoftware.app.reached.watchkitapp"), with: nil)
+                        let annotation = UIImage(named: "userPlaceholder", in: Bundle(identifier: "com.joshsoftware.app.reached.watchkitapp"), with: nil)
+                        let annotationImg = bgImage?.overlayWith(image: annotation?.scaleImage(toSize: CGSize(width: 10, height: 10)) ?? UIImage(), posX: 3, posY: 3)
+                        self.mapView.addAnnotation(coordinate, with: annotationImg, centerOffset: CGPoint(x: 0, y: -35))
                     }
                     
-                    var region = MKCoordinateRegion()
-                    region.center = coordinate
-                    region.span.latitudeDelta = 0.04
-                    region.span.longitudeDelta = 0.04
-                    self.mapView.setRegion(region)
-                   
+                    let annotationPoint = MKMapPoint(coordinate)
+                    let pointRect       = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0.01, height: 0.01);
+                    zoomRect            = zoomRect.union(pointRect);
                 }
-                
+                self.mapView.setVisibleMapRect(zoomRect)
             }
         }
     }
@@ -72,19 +64,18 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         self.selectedGroup = selectedGroup
         self.setUp()
         self.itemList.removeAll()
-        self.itemList = membersList
-    }
-    
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
-    }
-    
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
+        if membersList.first?.lat != nil {
+            self.itemList = membersList
+        } else {
+            if let groupId = selectedGroup.id, let memberId = membersList.first?.id {
+                DatabaseManager.shared.fetchGroupData(groups: [groupId:""]) { (groupData) in
+                    if let group = groupData {
+                        let filterdMembers = (group.members?.filter { $0.id!.contains(memberId) } )! as [Members]
+                        self.itemList.append(filterdMembers.first ?? Members())
+                    }
+                }
+            }
+        }
     }
     
     private func setUp() {
@@ -122,28 +113,44 @@ class MapInterfaceController: WKInterfaceController, NibLoadableViewController {
         }
     }
     
-   
+    @IBAction func showListBtnAction() {
+        self.pop()
+    }
 }
 
-extension MapInterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
-    }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                if !loginStatus {
-                    //TODO
-                    self.popToRootController()
-                }
+extension UIImage {
+
+  func overlayWith(image: UIImage, posX: CGFloat, posY: CGFloat) -> UIImage {
+    let newWidth = size.width < posX + image.size.width ? posX + image.size.width : size.width
+    let newHeight = size.height < posY + image.size.height ? posY + image.size.height : size.height
+    let newSize = CGSize(width: newWidth, height: newHeight)
+
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+    draw(in: CGRect(origin: CGPoint.zero, size: size))
+    image.draw(in: CGRect(origin: CGPoint(x: posX, y: posY), size: image.size))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+
+    return newImage
+  }
+
+}
+
+extension UIImage {
+    func scaleImage(toSize newSize: CGSize) -> UIImage? {
+        var newImage: UIImage?
+        let newRect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height).integral
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        if let context = UIGraphicsGetCurrentContext(), let cgImage = self.cgImage {
+            context.interpolationQuality = .high
+            let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: newSize.height)
+            context.concatenate(flipVertical)
+            context.draw(cgImage, in: newRect)
+            if let img = context.makeImage() {
+                newImage = UIImage(cgImage: img)
             }
-            
+            UIGraphicsEndImageContext()
         }
+        return newImage
     }
-    
 }
-

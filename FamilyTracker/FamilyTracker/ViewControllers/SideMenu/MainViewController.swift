@@ -142,22 +142,38 @@ class MainViewController: UIViewController {
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
             self.sendLoginStatusToWatch()
-            self.sendUserIdToWatch()
             self.navigationController?.setViewControllers([loginVC], animated: true)
         }
     }
     
     private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject], errorHandler:  { (error) in
+        self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject, "userId" : "" as AnyObject, "userEmailId" : "" as AnyObject], errorHandler:  { (error) in
             print("Error sending message: \(error)")
         })
     }
     
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
-                print("Error sending message: \(error)")
-            })
+    func handleLeaveRequest(userId: String, groupId: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if let topVC = UIApplication.getTopViewController() {
+                topVC.presentConfirmationAlert(withTitle: "Leave Request", message: "Do you want to approve leave request?") { (flag) in
+                    if flag {
+                        DatabaseManager.shared.leaveGroup(userWith: userId, groupId: groupId) { (response, error) in
+                            if (error != nil) {
+                                print(error ?? "")
+                            } else {
+                                print("User leave group with id: \(userId)")
+                                for vc in topVC.children {
+                                    if let dashboardViewControllerVC = vc as? DashboardViewController {
+                                        dashboardViewControllerVC.fetchGroups()
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        
+                    }
+                }
+            }
         }
     }
 }
