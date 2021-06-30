@@ -10,7 +10,7 @@ import UIKit
 
 struct Constant {
    
-    static let baseUrl = "https://reached-stage.firebaseio.com/"
+    static let baseUrl = "https://reached-ce772-default-rtdb.firebaseio.com/"
 
     struct kAPINameConstants {
         static let kGroupMembers = "/groups/"
@@ -53,6 +53,7 @@ struct Constant {
         case geofence = "geofence"
         case leaveGroup = "leave_group"
         case deleteGroup = "delete_group"
+        case removedMember = "removed_member"
     }
 }
 

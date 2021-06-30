@@ -68,6 +68,11 @@ class NotificationManager: NSObject {
 //                vc.groupId = payload?.groupId ?? ""
                 navigationController.pushViewController(vc, animated: true)
             }
+        case Constant.NotificationType.removedMember.rawValue:
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
+//                vc.groupId = payload?.groupId ?? ""
+                navigationController.pushViewController(vc, animated: true)
+            }
         default:
             break
         }

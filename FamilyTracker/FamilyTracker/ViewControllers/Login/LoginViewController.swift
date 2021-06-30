@@ -100,8 +100,8 @@ extension LoginViewController: GIDSignInDelegate {
                 if let user = authResult?.user {
                     UserDefaults.standard.setValue(true, forKey: "loginStatus")
                     UserDefaults.standard.setValue(user.uid, forKey: "userId")
-                    UserDefaults.standard.setValue(user.displayName ?? "Mahesh Nagpure", forKey: "userName")
-                    UserDefaults.standard.setValue(user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", forKey: "userProfileUrl")
+                    UserDefaults.standard.setValue(user.displayName ?? "", forKey: "userName")
+                    UserDefaults.standard.setValue(user.photoURL?.description ?? "", forKey: "userProfileUrl")
                     UserDefaults.standard.setValue(user.email ?? "", forKey: "userEmailId")
                     //TODO - Change
                     self.sendLoginStatusToWatch()
@@ -109,13 +109,13 @@ extension LoginViewController: GIDSignInDelegate {
                         ProgressHUD.sharedInstance.hide()
                         if groups?.allKeys.count ?? 0 > 0 {
                             self.ref = Database.database().reference()
-                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", "groups": groups!])
+                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": groups!])
                             //TODO - Change
                             UserDefaults.standard.setValue(groups, forKey: "groups")
                             self.navigateToGroupListVC()
                         } else {
                             self.ref = Database.database().reference()
-                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "Mahesh Nagpure", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "https://homepages.cae.wisc.edu/~ece533/images/airplane.png", "groups": nil])
+                            self.ref.child("users").child(user.uid).setValue(["name": user.displayName ?? "", "email":user.email ?? "", "profileUrl": user.photoURL?.description ?? "", "groups": nil])
                             //TODO - Change
                             self.navigateToHomeVC()
                         }
