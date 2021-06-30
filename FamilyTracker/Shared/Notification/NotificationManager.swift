@@ -27,7 +27,7 @@ class NotificationManager: NSObject {
         
         var payload: NotificationPayload?
         
-        if let payloadStr = (data["payload"] as? Dictionary<String, Any>)?.jsonStringRepresentation {
+        if let payloadStr = (data["payload"] as? String) {
             let data = Data(payloadStr.utf8)
             do {
                 let decoder = JSONDecoder()
