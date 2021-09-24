@@ -56,8 +56,10 @@
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "FamilyTracker WatchKit Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Reached">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B4DDA15525EE46AE00B5F992"
@@ -65,7 +67,7 @@
             BlueprintName = "FamilyTracker WatchKit App"
             ReferencedContainer = "container:FamilyTracker.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,8 +77,10 @@
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "FamilyTracker WatchKit Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Reached">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B4DDA15525EE46AE00B5F992"
@@ -84,7 +88,16 @@
             BlueprintName = "FamilyTracker WatchKit App"
             ReferencedContainer = "container:FamilyTracker.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "B4DDA15525EE46AE00B5F992"
+            BuildableName = "Reached.app"
+            BlueprintName = "FamilyTracker WatchKit App"
+            ReferencedContainer = "container:FamilyTracker.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
