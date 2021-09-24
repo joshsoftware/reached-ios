@@ -76,8 +76,6 @@ class MemberListViewController: UIViewController {
                 let data = ["id":userId, "name": name, "show": !self.sosState] as [String : Any]
                 self.refSOS.child(self.groupId).setValue(data)
             }
-
-            self.updateCurrentUsersSOSOnServer(sosState: !self.sosState)
         }
         
         if let userId = UserDefaults.standard.string(forKey: "userId") {
@@ -152,15 +150,20 @@ class MemberListViewController: UIViewController {
         LoadingOverlay.shared.hideOverlayView()
         if let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
             self.sendLoginStatusToWatch()
-            self.sendUserIdToWatch()
             self.navigationController?.setViewControllers([loginVC], animated: true)
         }
     }
     
     private func sendLoginStatusToWatch() {
-        self.connectivityHandler.sendMessage(message: ["loginStatus" : false as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
+        if let userId = UserDefaults.standard.string(forKey: "userId") {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : userId as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
+        } else {
+            self.connectivityHandler.sendMessage(message: ["loginStatus" : true as AnyObject, "userId" : "" as AnyObject], errorHandler:  { (error) in
+                print("Error sending message: \(error)")
+            })
+        }
     }
         
     private func observeFirebaseRealtimeDBChanges() {
@@ -183,18 +186,6 @@ class MemberListViewController: UIViewController {
             if let value = snapshot.value as? NSMutableDictionary {
                 self.familyMemberRemoved(value: value)
             }
-        }
-    }
-    
-    private func updateCurrentUsersSOSOnServer(sosState: Bool) {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.updateSOSFor(userWith: userId, groups: groups, sosState: sosState)
-                }
-            }
-        } else {
-            print("User is not logged in")
         }
     }
     
@@ -297,14 +288,6 @@ class MemberListViewController: UIViewController {
         }
     }
     
-    private func sendUserIdToWatch() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            self.connectivityHandler.sendMessage(message: ["userId" : userId as AnyObject], errorHandler:  { (error) in
-                print("Error sending message: \(error)")
-            })
-        }
-    }
-    
     private func setUpTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -315,7 +298,6 @@ class MemberListViewController: UIViewController {
         if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ShowQRCodeViewController") as? ShowQRCodeViewController {
             vc.groupName = self.groupName
             vc.groupId = groupId
-            vc.iIsFromCreateGroupFlow = false
             self.navigationController?.pushViewController(vc, animated: false)
         }
     }

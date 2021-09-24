@@ -12,243 +12,54 @@ import WatchConnectivity
 import FirebaseDatabase
 import FirebaseCore
 
-class InterfaceController: WKInterfaceController, NibLoadableViewController {
-    
-    @IBOutlet weak var tableView: WKInterfaceTable!
-    @IBOutlet weak var headerLbl: WKInterfaceLabel!
-    @IBOutlet weak var refreshBtn: WKInterfaceButton!
-    
-    @IBOutlet weak var signInGroup: WKInterfaceGroup!
-    @IBOutlet weak var signInBtn: WKInterfaceButton!
-    
-    
-    var connectivityHandler = WatchSessionManager.shared
-    private var userRef: DatabaseReference!
-    private var userRefForDeviceToken: DatabaseReference!
+class InterfaceController: BaseInterfaceController, NibLoadableViewController {
+    @IBOutlet weak var welcomeToLabel: WKInterfaceLabel!
+    @IBOutlet weak var logoImg: WKInterfaceImage!
+    @IBOutlet weak var bottomGroup: WKInterfaceGroup!
+    @IBOutlet weak var loginInfoGroup: WKInterfaceGroup!
+    @IBOutlet weak var emailLabel: WKInterfaceLabel!
 
-    var groups : NSDictionary = NSDictionary()
-    var isAlertDismissed = false
+    var userRefForDeviceToken: DatabaseReference!
     var isDataLoaded = false
+    var groupCount: Int = 0
 
-    private var groupList = [Group]() {
-        didSet {
-            if groupList.count > 0 {
-                tableView.setNumberOfRows(groupList.count, withRowType: "GroupRowController")
-                for index in 0..<tableView.numberOfRows{
-                    guard let controller = tableView.rowController(at: index) as? GroupRowController else { continue }
-                    controller.item = groupList[index]
-                }
-            }
-        }
-    }
-    
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         super.awake(withContext: context)
         userRefForDeviceToken = Database.database().reference()
-
-        signInGroup.setHidden(true)
-        signInBtn.setBackgroundImageNamed("google")
-        
-        isDataLoaded = false
-        fetchGroups()
-        observeFirebaseRealtimeDBChanges()
-        
-    }
-    
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        setUp()
-        connectivityHandler.startSession()
-        connectivityHandler.watchOSDelegate = self
-    }
-        
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-    }
-    
-    private func setUp() {
-                
-        updateDeviceTokenOnFirebase()
-        
-        if isDataLoaded && UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count > 0 {
-         
-            if !isAlertDismissed {
-                isAlertDismissed = true
-                DispatchQueue.main.async {
-                    self.dismiss()
-                }
-            }
-            
-            self.tableView.setHidden(false)
-            self.headerLbl.setHidden(false)
-            self.refreshBtn.setHidden(true)
-            self.signInGroup.setHidden(true)
-
-            //TODO - make nav title to center
-            self.setTitle("      Reached")
-            
-        } else if isDataLoaded &&  UserDefaults.standard.bool(forKey: "loginStatus") == true && groupList.count <= 0 {
-            self.setTitle("")
-            self.isAlertDismissed = false
-            self.tableView.setHidden(true)
-            self.headerLbl.setHidden(true)
-            self.refreshBtn.setHidden(false)
-            self.signInGroup.setHidden(true)
-
-            let titleOfAlert = ""
-            let messageOfAlert = "Create or Join group from your connected phone"
-            self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
-                //something after clicking OK
-            }])
-        } else {
-            self.setTitle("")
-            self.tableView.setHidden(true)
-            self.headerLbl.setHidden(true)
-            self.refreshBtn.setHidden(true)
-            self.signInGroup.setHidden(false)
-        }
-        
-    }
-    
-    private func updateDeviceTokenOnFirebase() {
-        if let userId = UserDefaults.standard.string(forKey: "userId") {
-            if !userId.isEmpty && UserDefaults.standard.bool(forKey: "loginStatus") == true {
-                UserDefaults.standard.setValue(userId, forKey: "userIdBeforeLogout")
-                if let token = UserDefaults.standard.object(forKey: "watchDeviceToken") as? String {
-                    self.userRefForDeviceToken.child("users").child(userId).child("token").child("watch").setValue(token)
-                }
-            } else {
-                if let userId = UserDefaults.standard.object(forKey: "userIdBeforeLogout") as? String,!userId.isEmpty {
-                    self.userRefForDeviceToken.child("users").child(userId).child("token").child("watch").removeValue()
-                    UserDefaults.standard.setValue(nil, forKey: "userIdBeforeLogout")
-                }
-            }
-           
-        }
-    }
-    
-    private func showSignInRequiredAlert() {
-//        let titleOfAlert = "Sign In required"
-//        let messageOfAlert = "Sign In from your connected phone"
-        let titleOfAlert = "Sign In from phone"
-        let messageOfAlert = "Request Sign In from your connected phone"
-        DispatchQueue.main.async {
-            self.presentAlert(withTitle: titleOfAlert, message: messageOfAlert, preferredStyle: .alert, actions: [WKAlertAction(title: "OK", style: .default){
-                //something after clicking OK
-                self.refreshBtn.setHidden(false)
-                self.requestLoginFromPhone()
-            }])
-        }
-    }
-    
-    private func observeFirebaseRealtimeDBChanges() {
-        guard let userId = UserDefaults.standard.value(forKey: "userId") as? String, !userId.isEmpty else {
-            return
-        }
-        userRef = Database.database().reference(withPath: "users/\(userId)")
-
-        //Observe new value added for user
-        self.userRef.observe(.childAdded) { (snapshot) in
-            self.fetchGroups()
-        }
-
-        //Observe new value removed for user
-        self.userRef.observe(.childRemoved) { (snapshot) in
-            self.fetchGroups()
-        }
-        
-        //Observe new group added
-        self.userRef.child("/groups").observe(.childAdded) { (snapshot) in
-            self.fetchGroups()
-        }
-
-        //Observe group removed
-        self.userRef.child("/groups").observe(.childRemoved) { (snapshot) in
-            self.fetchGroups()
-        }
-    }
-
-    func fetchGroups() {
-        self.groupList.removeAll()
-        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            DatabaseManager.shared.fetchGroupsFor(userWith: userId) { (groups) in
-                if let groups = groups {
-                    DatabaseManager.shared.fetchGroupData(groups: groups) { (data) in
-                        if let data = data {
-                            self.isDataLoaded = true
-                            let filtered = self.groupList.filter { ($0.id ?? "").contains(data.id ?? "") }
-
-                            if filtered.count <= 0 {
-                                self.groupList.append(data)
-                                self.setUp()
-                            }
-                            
-                        }
+        if UserDefaults.standard.bool(forKey: "loginStatus") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.animation(completion: {
+                    self.fetchGroupsCount { (count) in
+                        let isLogin = UserDefaults.standard.bool(forKey: "loginStatus")
+                        self.handleNavigation(isLogin: isLogin, groupCount: count!)
                     }
-                }
+                })
             }
         }
     }
     
-    
-    @IBAction func signInBtnAction() {
-        showSignInRequiredAlert()
-    }
-    
-    @IBAction func refreshBtnAction() {
-        setUp()
-    }
-    
-    private func requestLoginFromPhone() {
-        self.connectivityHandler.sendMessage(message: ["requestlogin" : true as AnyObject], errorHandler:  { (error) in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-
-        let isIndexValid = self.groupList.indices.contains(rowIndex)
-        
-        if isIndexValid {
-            let group = self.groupList[rowIndex]
-            self.pushController(withName: MemberListInterfaceController.name, context: group)
+    func animation(completion: @escaping () -> Void) {
+        self.welcomeToLabel.setHidden(true)
+        self.logoImg.setHidden(true)
+        self.animate(withDuration: 0.5) {
+            self.bottomGroup.setRelativeHeight(0.8, withAdjustment: 0)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.loginInfoGroup.setHidden(false)
+            if let userEmailId = UserDefaults.standard.string(forKey: "userEmailId") {
+                self.emailLabel.setText(userEmailId)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                completion()
+            }
         }
     }
     
-}
-
-extension InterfaceController: WatchOSDelegate {
-    
-    func applicationContextReceived(tuple: ApplicationContextReceived) {
+    func reset() {
+        self.welcomeToLabel.setHidden(false)
+        self.logoImg.setHidden(false)
+        self.bottomGroup.setHeight(40.0)
+        self.loginInfoGroup.setHidden(true)
     }
-    
-    
-    func messageReceived(tuple: MessageReceived) {
-        DispatchQueue.main.async() {
-            WKInterfaceDevice.current().play(.notification)
-            
-            if let loginStatus = tuple.message["loginStatus"] as? Bool {
-                UserDefaults.standard.setValue(loginStatus, forKey: "loginStatus")
-                self.setUp()
-            }
-            
-            if let userId = tuple.message["userId"] as? String {
-                UserDefaults.standard.setValue(userId, forKey: "userId")
-                self.setUp()
-                if !userId.isEmpty {
-                    self.observeFirebaseRealtimeDBChanges()
-                }
-            }
-                        
-//            if let sosUserId = tuple.message["sosUserId"] as? String {
-//                DispatchQueue.main.async {
-//                    self.showSOSAlert(sosUserId: sosUserId)
-//                }
-//            }
-            
-            
-        }
-    }
-    
 }

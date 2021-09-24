@@ -15,7 +15,7 @@ class ScanQRCodeViewController: UIViewController {
     static var groupJoinedHandler: ((_ str: String) -> Void)?
 
     static func showPopup(parentVC: UIViewController){
-        if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "ScanQRCodeViewController") as? ScanQRCodeViewController {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScanQRCodeViewController") as? ScanQRCodeViewController {
             vc.modalPresentationStyle = .custom
             vc.modalTransitionStyle = .crossDissolve
             parentVC.present(vc, animated: true)

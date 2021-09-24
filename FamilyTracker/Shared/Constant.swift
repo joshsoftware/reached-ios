@@ -39,11 +39,21 @@ struct Constant {
 
         static let KDarkOrangeColor = UIColor(red: 175.0 / 255.0, green: 127.0 / 255.0, blue: 16.0 / 255.0, alpha: 1.0)
         
+        static let KAppOrangeShade1 = UIColor(red: 239.0 / 255.0, green: 189.0 / 255.0, blue: 65.0 / 255.0, alpha: 1.0)
+
+        static let KAppGray = UIColor(red: 112.0 / 255.0, green: 112.0 / 255.0, blue: 112.0 / 255.0, alpha: 1.0)
+
+        static let KAppGreen = UIColor(red: 21.0 / 255.0, green: 207.0 / 255.0, blue: 0.0 / 255.0, alpha: 1.0)
+
     }
     
     enum NotificationType: String {
         case joinGroup = "join_group"
         case sos = "sos"
+        case geofence = "geofence"
+        case leaveGroup = "leave_group"
+        case deleteGroup = "delete_group"
+        case removedMember = "removed_member"
     }
 }
 

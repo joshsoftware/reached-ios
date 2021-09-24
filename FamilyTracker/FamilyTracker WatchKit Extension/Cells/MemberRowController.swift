@@ -11,9 +11,10 @@ import SDWebImage
 class MemberRowController: NSObject {
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var userImgView: WKInterfaceImage!
-    @IBOutlet weak var lastUpdatedLocationLabel: WKInterfaceLabel!
-    @IBOutlet weak var containerGroup: WKInterfaceGroup!
-    
+    @IBOutlet var addressLabel: WKInterfaceLabel!
+    @IBOutlet var containerGroup: WKInterfaceGroup!
+    @IBOutlet var unsafeImgView: WKInterfaceImage!
+
     override init() {
     }
     
@@ -21,12 +22,12 @@ class MemberRowController: NSObject {
         didSet {
             guard let item = item else { return }
             nameLabel.setText(item.name)
-            lastUpdatedLocationLabel.setText(DateUtils.formatLastUpdated(dateString: item.lastUpdated ?? ""))
+//            lastUpdatedLocationLabel.setText(DateUtils.formatLastUpdated(dateString: item.lastUpdated ?? ""))
             
             if let sosState = item.sosState, sosState {
-                containerGroup.setBackgroundColor(.red)
+                unsafeImgView.setHidden(false)
             } else {
-                containerGroup.setBackgroundColor(.clear)
+                unsafeImgView.setHidden(true)
             }
             
             if let url = URL(string: item.profileUrl ?? "") {
@@ -36,6 +37,13 @@ class MemberRowController: NSObject {
                         self.userImgView.setImage(roundedImage)
                     }
  
+                }
+            }
+            
+            let location = CLLocation(latitude: item.lat ?? 0, longitude: item.long ?? 0)
+            location.fetchCityAndCountry { (name, city, error) in
+                if error == nil {
+                        self.addressLabel.setText((name ?? "") + ", " + (city ?? ""))
                 }
             }
         }

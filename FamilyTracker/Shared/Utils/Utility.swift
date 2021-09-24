@@ -15,6 +15,7 @@ class Utility {
         UserDefaults.standard.setValue("", forKey: "userName")
         UserDefaults.standard.setValue(nil, forKey: "groups")
         UserDefaults.standard.setValue("", forKey: "userProfileUrl")
+        UserDefaults.standard.setValue("", forKey: "userEmailId")
     }
     
 }

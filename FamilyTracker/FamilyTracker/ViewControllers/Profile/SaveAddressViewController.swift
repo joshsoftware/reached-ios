@@ -1,0 +1,135 @@
+//
+//  SaveAddressViewController.swift
+//  FamilyTracker
+//
+//  Created by Mahesh on 02/06/21.
+//
+
+import UIKit
+import CoreLocation
+import MapKit
+import SDWebImage
+
+class SaveAddressViewController: UIViewController {
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var mapViewbg: UIView!
+    @IBOutlet weak var homeButton: UIButton!
+    @IBOutlet weak var workButton: UIButton!
+    @IBOutlet weak var otherTextField: UITextField!
+
+    var selectedPlace = Place()
+    var groupId: String = ""
+    var userId: String = ""
+    var profileUrl: String = ""
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
+        mapView.mapType = .standard
+        mapViewbg.setShadowToAllSides()
+        
+        addressLabel.text = selectedPlace.address
+        
+        let pin = MKPointAnnotation()
+        pin.coordinate = CLLocationCoordinate2D(latitude: selectedPlace.lat!, longitude: selectedPlace.long!)
+        self.mapView.addAnnotation(pin)
+        
+        if let latitudinalMeters = CLLocationDistance(exactly: 500), let longitudinalMeters = CLLocationDistance(exactly: 500) {
+            let region = MKCoordinateRegion( center: CLLocationCoordinate2D(latitude: selectedPlace.lat!, longitude: selectedPlace.long!), latitudinalMeters: latitudinalMeters, longitudinalMeters: longitudinalMeters)
+            self.mapView.setRegion(self.mapView.regionThatFits(region), animated: true)
+        }
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func saveBtnAction(_ sender: Any) {
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200, "transition": "exit"] as [String : Any]
+        DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
+
+        self.navigationController?.popToViewController(ofClass: ProfileViewController.self)
+    }
+    
+    @IBAction func homeBtnAction(_ sender: Any) {
+        self.homeButton.isSelected = true
+        self.workButton.isSelected = false
+        self.selectedPlace.name = "Home"
+    }
+    
+    @IBAction func workBtnAction(_ sender: Any) {
+        self.homeButton.isSelected = false
+        self.workButton.isSelected = true
+        self.selectedPlace.name = "Work"
+    }
+    
+    @IBAction func otherBtnAction(_ sender: Any) {
+        self.homeButton.isSelected = false
+        self.workButton.isSelected = false
+        self.selectedPlace.name = self.otherTextField.text
+        
+        let value = ["name": self.selectedPlace.name ?? "", "lat": self.selectedPlace.lat ?? 0, "long": self.selectedPlace.long ?? 0, "address": self.selectedPlace.address ?? "", "radius": 200, "transition": "exit"] as [String : Any]
+        DatabaseManager.shared.addAddress(userId: self.userId, groupId: self.groupId, placeData: value)
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchAddressNotification"), object: nil)
+
+        self.navigationController?.popToViewController(ofClass: ProfileViewController.self)
+    }
+    
+    @IBAction func backBtnAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func sosBtnAction(_ sender: Any) {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            ProgressHUD.sharedInstance.show()
+            DatabaseManager.shared.updateSOSFor(userWith: userId, sosState: true, completion: { response, error in
+                ProgressHUD.sharedInstance.hide()
+                if let err = error {
+                    print(err)
+                } else {
+                    print("SOS updated....")
+                }
+            })
+        } else {
+            print("User is not logged in")
+        }
+    }
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+
+extension SaveAddressViewController : MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation is MKPointAnnotation else { return nil }
+
+        let identifier = "AnnotationIdentifier"
+
+        var view: CustomAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView
+        if view == nil {
+            view = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        }
+        
+        view?.profileImageView.sd_setImage(with: URL(string: self.profileUrl), placeholderImage: UIImage(named: "userPlaceholder"))
+
+        view?.centerOffset = CGPoint(x: 0, y: -35)
+        return view
+    }
+    
+}
+
+extension SaveAddressViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
+}

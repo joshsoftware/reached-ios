@@ -11,7 +11,7 @@ import SDWebImage
 class GroupRowController: NSObject {
     @IBOutlet var groupNameLabel: WKInterfaceLabel!
     @IBOutlet var groupImgView: WKInterfaceImage!
-    @IBOutlet weak var memberCountLbl: WKInterfaceLabel!
+    @IBOutlet var memberCountLbl: WKInterfaceLabel!
     
     override init() {
     }

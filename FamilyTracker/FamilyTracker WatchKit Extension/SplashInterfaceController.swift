@@ -23,7 +23,6 @@ class SplashInterfaceController: WKInterfaceController {
     }
     
     override func didAppear() {
-        self.presentController(withName: InterfaceController.name, context: nil)
 
     }
     

@@ -36,7 +36,7 @@ class JoinLinkManager: NSObject {
         linkBuilder?.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
         linkBuilder?.socialMetaTagParameters?.title = "Reached - kids & kins are safe"
         linkBuilder?.socialMetaTagParameters?.descriptionText = ""
-        linkBuilder?.socialMetaTagParameters?.imageURL = URL(string: "ImageURL")
+        linkBuilder?.socialMetaTagParameters?.imageURL = URL(string: "https://firebasestorage.googleapis.com/v0/b/reached-ce772.appspot.com/o/bannerTest.png?alt=media&token=61f2c287-5ec6-464f-ad68-c16ebe04d4df")
         
         guard let longDynamicLink = linkBuilder?.url else { return }
         print("The long URL is: \(longDynamicLink)")
@@ -78,47 +78,23 @@ class JoinLinkManager: NSObject {
             topVC.presentConfirmationAlert(withTitle: "Greetings!", message: "You have been invited to the group \"\(groupName)\". Please press ok to join.") { (flag) in
                 if let topVC = UIApplication.getTopViewController() {
                     if flag {
-                        if topVC.isKind(of: GroupListViewController.self) {
+                        if topVC.isKind(of: DashboardViewController.self) || topVC.isKind(of: MainViewController.self) {
                             self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? GroupListViewController {
+                                if let vc = topVC as? DashboardViewController {
                                     vc.fetchGroups()
+                                } else if topVC is MainViewController {
+                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fetchGroupsNotification"), object: nil)
                                 }
                             })
-                        } else if topVC.isKind(of: MemberListViewController.self) {
+                        } else if topVC.isKind(of: MapViewController.self) || topVC.isKind(of: ProfileViewController.self) || topVC.isKind(of: SearchAddressViewController.self) || topVC.isKind(of: SaveAddressViewController.self) || topVC.isKind(of: ScanQRCodeViewController.self) || topVC.isKind(of: ShowQRCodeViewController.self) || topVC.isKind(of: ManageGroupViewController.self) {
                             self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? MemberListViewController {
-                                    self.navigateToGroupListVC(topVC: vc)
-                                }
+                                self.navigateToDashboardVC(topVC: topVC)
                             })
-                        } else if topVC.isKind(of: MapViewController.self) {
-                            self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? MemberListViewController {
-                                    self.navigateToGroupListVC(topVC: vc)
-                                }
-                            })
-                        } else if topVC.isKind(of: ScanQRCodeViewController.self) {
-                            self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? ScanQRCodeViewController {
-                                    self.navigateToGroupListVC(topVC: vc)
-                                }
-                            })
-                        } else if topVC.isKind(of: ShowQRCodeViewController.self) {
-                            self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? ShowQRCodeViewController {
-                                    self.navigateToGroupListVC(topVC: vc)
-                                }
-                            })
-                        } else if topVC.isKind(of: LoginViewController.self) {
+                        } else if topVC.isKind(of: WelcomeViewController.self) || topVC.isKind(of: LoginViewController.self) {
                             UserDefaults.standard.setValue(groupId, forKey: "inviteGroupId")
                             topVC.presentAlert(withTitle: "Alert", message: "Please login first to join group!") {
                                 
                             }
-                        } else if topVC.isKind(of: HomeViewController.self) {
-                            self.joinGroupWith(groupId: groupId, completion: {
-                                if let vc = topVC as? HomeViewController {
-                                    self.navigateToGroupListVC(topVC: vc)
-                                }
-                            })
                         }
                     }
                 }else {
@@ -128,9 +104,9 @@ class JoinLinkManager: NSObject {
         }
     }
     
-    private func navigateToGroupListVC(topVC: UIViewController) {
+    private func navigateToDashboardVC(topVC: UIViewController) {
         DispatchQueue.main.async {
-            if let vc = UIStoryboard.sharedInstance.instantiateViewController(withIdentifier: "GroupListViewController") as? GroupListViewController {
+            if let vc = UIStoryboard.dashboardSharedInstance.instantiateViewController(withIdentifier: "DashboardViewController") as? DashboardViewController {
                 topVC.navigationController?.pushViewController(vc, animated: true)
             }
         }

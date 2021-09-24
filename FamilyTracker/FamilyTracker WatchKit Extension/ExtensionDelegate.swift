@@ -141,6 +141,14 @@ extension ExtensionDelegate: UNUserNotificationCenterDelegate {
         
     }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Notification response: \(response.notification.request.content.userInfo)")
+        if let data = response.notification.request.content.userInfo as? [String: Any] {
+            NotificationManager_Watch.shared.handleNotification(with: data)
+        }
+        completionHandler()
+    }
+    
     func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (WKBackgroundFetchResult) -> Void) {
                         
         if let data = userInfo as? [String: Any] {

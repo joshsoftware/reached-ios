@@ -12,12 +12,13 @@ import Firebase
 import FirebaseDatabase
 #endif
 import CoreLocation
+import Foundation
 
 class DatabaseManager: NSObject {
     static let shared = DatabaseManager()
     private var ref: DatabaseReference!
     let group = DispatchGroup()
-
+    
     func fetchGroupsFor(userWith id: String, completion: @escaping (_ result: NSDictionary?) -> Void) {
         self.ref = Database.database().reference().child("users").child(id).child("groups")
         self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -63,16 +64,16 @@ class DatabaseManager: NSObject {
                         
                         var memberList = [Members]()
                         if let members = data["members"] as? NSDictionary {
-                            for member in members.allValues {
+                            for (key, member) in members {
                                 if let data = member as? NSDictionary {
                                     var member = Members()
-                                    member.id = snapshot.key
+                                    member.id = key as? String
                                     member.lat = data["lat"] as? Double
                                     member.long = data["long"] as? Double
                                     member.name = data["name"] as? String
                                     member.lastUpdated = data["lastUpdated"] as? String
                                     member.sosState = data["sosState"] as? Bool
-
+                                    member.profileUrl = data["profileUrl"] as? String
                                     memberList.append(member)
                                 }
                             }
@@ -97,7 +98,7 @@ class DatabaseManager: NSObject {
             dtf.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let currentDate = dtf.string(from: Date())
             
-            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl] as [String : Any]
+            let data = ["lat": currentLocation.latitude, "long": currentLocation.longitude, "name": name, "lastUpdated": currentDate, "profileUrl": profileUrl, "sosState": false] as [String : Any]
             self.ref.child("groups").child(groupId).child("members").child(userId).setValue(data)
             
             if var dict = UserDefaults.standard.dictionary(forKey: "groups") {
@@ -109,17 +110,30 @@ class DatabaseManager: NSObject {
                 self.ref.child("users").child(userId).child("groups").setValue(dict)
                 UserDefaults.standard.setValue(dict, forKey: "groups")
             }
+            print("Joined Group with id: \(groupId)")
             completion()
         }
     }
     
-    func updateSOSFor(userWith id: String, groups: NSDictionary, sosState: Bool) {
-       
-        for groupId in groups.allKeys {
-            self.ref = Database.database().reference(withPath: "groups/\(groupId)")
-            self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
+    func updateSOSFor(userWith id: String, sosState: Bool, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
+        self.ref = Database.database().reference()
+        self.ref.child("users").child("\(id)/sosState").setValue(sosState) { (error, reference) in
+            if (error != nil) {
+                completion(nil, error.debugDescription)
+            } else {
+                self.fetchGroupsFor(userWith: id) { (groups) in
+                    if let data = groups {
+                        for groupId in data.allKeys {
+                            self.ref = Database.database().reference(withPath: "groups/\(groupId)")
+                            self.ref.child("/members").child("\(id)/sosState").setValue(sosState)
+                        }
+                        completion("SOS updated...", nil)
+                    } else {
+                        completion(nil, "Unable to update SOS...")
+                    }
+                }
+            }
         }
-        print("SOS updated...")
     }
     
     func leaveGroup(userWith id: String, groupId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
@@ -162,7 +176,7 @@ class DatabaseManager: NSObject {
                         if (error != nil) {
                             completion(nil, "Error while deleting group")
                         } else {
-                            completion("Leave group sucessfully", nil)
+                            completion("Delete group sucessfully", nil)
                         }
                     }
                 }
@@ -185,6 +199,67 @@ class DatabaseManager: NSObject {
                 }
             }
         }
+    }
+    
+    func setDeviceTokenOnServer(userId: String) {
+        ref = Database.database().reference()
+        if let token = UserDefaults.standard.object(forKey: "deviceToken") as? String {
+            self.ref.child("users").child(userId).child("token").child("phone").setValue(token)
+        }
+    }
+    
+    
+    func addAddress(userId: String, groupId: String, placeData: [String : Any]) {
+        ref = Database.database().reference()
+        self.ref.child("groups/\(groupId)").child("members").child(userId).child("address").childByAutoId().setValue(placeData)
+    }
+    
+    func fetchAddressFor(userWith id: String, groupId: String, completion: @escaping (_ result: NSDictionary?) -> Void) {
+        ref = Database.database().reference().child("groups/\(groupId)").child("members").child(id).child("address")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let data = snapshot.value as? NSDictionary {
+                    print("Address fetched...")
+                    completion(data)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                print("Address not created")
+                completion(nil)
+            }
+        })
+    }
+    
+    func removeAddresFor(userWith id: String, groupId: String, addressId: String, completion: @escaping (_ response: String?, _ error: String?) -> Void) {
+        ref = Database.database().reference().child("groups/\(groupId)").child("members").child(id).child("address").child(addressId)
+        self.ref.removeValue { (error, reference) in
+            if (error != nil) {
+                completion(nil, "Error while removing address")
+            } else {
+                completion("Address removed sucessfully", nil)
+            }
+        }
+    }
+    
+    func updateTransitionFor(userWith id: String, groupId: String, addressId: String, transition: String) {
+        ref = Database.database().reference()
+        ref.child("groups/\(groupId)").child("members").child(id).child("address").child(addressId).child("transition").setValue(transition)
+    }
+    
+    func getVersion(completion: @escaping (_ result: Bool?) -> Void) {
+        ref = Database.database().reference().child("paidService")
+        self.ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.exists()) {
+                if let data = snapshot.value as? Bool {
+                    completion(data)
+                } else {
+                    completion(false)
+                }
+            } else {
+                completion(false)
+            }
+        })
     }
 }
 

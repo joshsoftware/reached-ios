@@ -6,8 +6,9 @@
 //
 
 import CoreLocation
+import UserNotifications
 
-protocol LocationUpdateDelegate: class {
+protocol LocationUpdateDelegate: AnyObject {
     func locationDidUpdateToLocation(location : CLLocation)
 }
 
@@ -20,6 +21,8 @@ class UserLocationManager: NSObject, CLLocationManagerDelegate {
     static let shared = UserLocationManager()
     private var locationManager = CLLocationManager()
     var currentLocation : CLLocation?
+    var geofenceRegion = CLCircularRegion()    //FOR GEOFENCE
+    var notificationCenter: UNUserNotificationCenter?
 
     weak var delegate : LocationUpdateDelegate?
     
@@ -94,4 +97,80 @@ class UserLocationManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
+}
+
+//MARK: Geofencing methods
+
+extension UserLocationManager {
+    
+    func generateGeofenceRegion(geotificationDataList: [Place])
+    
+    {
+        for region in geotificationDataList
+        {
+            if let lat = region.lat, let long = region.long, let radius = region.radius, let id = region.id, let groupId = region.groupId {
+                
+                let geofenceRegionCenter = CLLocationCoordinate2DMake(lat, long);
+                let identifier = [id, groupId].compactMap{ $0 }.joined(separator: "+")
+                
+                geofenceRegion = CLCircularRegion(
+                    
+                    center: geofenceRegionCenter,
+                    
+                    radius: CLLocationDistance(radius),
+                    
+                    identifier: identifier
+                    
+                );
+                geofenceRegion.notifyOnExit = true;
+                geofenceRegion.notifyOnEntry = true;
+                #if os(iOS)
+                self.locationManager.startMonitoring(for: geofenceRegion)
+                #elseif os(watchOS)
+                //TODO: Check if available
+                #endif
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        self.handleEventForExitRegion(forRegion: region)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        self.handleEventForEnterRegion(forRegion: region)
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        print("didChangeAuthorization")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
+        print("update failure \(String(describing: error))")
+        
+    }
+    
+    func handleEventForEnterRegion(forRegion region: CLRegion!) {
+        print("Entered in region")
+        let regionArray = region.identifier.components(separatedBy: "+")
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !regionArray.isEmpty {
+            let addressId: String = regionArray[0]
+            let groupId: String? = regionArray.count > 1 ? regionArray[1] : nil
+            DatabaseManager.shared.updateTransitionFor(userWith: userId, groupId: groupId ?? "", addressId: addressId, transition: "enter")
+
+        }
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "eventForEnterRegion"), object: nil, userInfo: ["region": region.identifier])
+    }
+    
+    func handleEventForExitRegion(forRegion region: CLRegion!) {
+        print("Exited from region")
+        let regionArray = region.identifier.components(separatedBy: "+")
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !regionArray.isEmpty {
+            let addressId: String = regionArray[0]
+            let groupId: String? = regionArray.count > 1 ? regionArray[1] : nil
+            DatabaseManager.shared.updateTransitionFor(userWith: userId, groupId: groupId ?? "", addressId: addressId, transition: "exit")
+
+        }
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "eventForExitRegion"), object: nil, userInfo: ["region": region.identifier])
+    }
 }

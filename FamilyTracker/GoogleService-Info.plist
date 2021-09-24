@@ -21,18 +21,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>reached-ce772.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:272106169401:ios:960f855a520c15941fd9e8</string>
 	<key>DATABASE_URL</key>
-	<string>https://reached-ce772-default-rtdb.firebaseio.com</string>
+	<string>https://reached-ce772-default-rtdb.firebaseio.com/</string>
 </dict>
 </plist>
