@@ -36,7 +36,7 @@ class JoinLinkManager: NSObject {
         linkBuilder?.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
         linkBuilder?.socialMetaTagParameters?.title = "Reached - kids & kins are safe"
         linkBuilder?.socialMetaTagParameters?.descriptionText = ""
-        linkBuilder?.socialMetaTagParameters?.imageURL = URL(string: "ImageURL")
+        linkBuilder?.socialMetaTagParameters?.imageURL = URL(string: "https://firebasestorage.googleapis.com/v0/b/reached-ce772.appspot.com/o/bannerTest.png?alt=media&token=61f2c287-5ec6-464f-ad68-c16ebe04d4df")
         
         guard let longDynamicLink = linkBuilder?.url else { return }
         print("The long URL is: \(longDynamicLink)")

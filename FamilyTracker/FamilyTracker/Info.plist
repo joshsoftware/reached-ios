@@ -44,11 +44,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To scan QR code</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Do you allow this app to know your current location?</string>
+	<string>Do you allow this app to know your current location? </string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Will you allow this app to always know your location?</string>
+	<string>Will you allow this app to always know your location? (This app collects location data to share your location with your group members in the app, even if the app is closed or not in use. We do not use this data for any other purpose which is also specified in our Privacy policy.)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Do you allow this app to know your current location?</string>
+	<string>Do you allow this app to know your current location? (This app collects location data to share your location with your group members in the app, even if the app is closed or not in use. We do not use this data for any other purpose which is also specified in our Privacy policy.)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

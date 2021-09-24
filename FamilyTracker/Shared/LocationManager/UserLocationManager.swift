@@ -8,7 +8,7 @@
 import CoreLocation
 import UserNotifications
 
-protocol LocationUpdateDelegate: class {
+protocol LocationUpdateDelegate: AnyObject {
     func locationDidUpdateToLocation(location : CLLocation)
 }
 
