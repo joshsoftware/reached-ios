@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ST8-Zf-KN3">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="18122" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ST8-Zf-KN3">
     <device id="watch44"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="18022"/>
     </dependencies>
     <scenes>
         <!--MapInterfaceController-->
@@ -213,30 +213,17 @@
                             <items>
                                 <group width="1" height="1" alignment="left" layout="vertical" id="UkQ-vU-VUK">
                                     <items>
-                                        <label height="0.25" alignment="center" text="Welcome to" id="aIV-LV-yaB">
+                                        <label height="41" alignment="center" text="Welcome to" id="aIV-LV-yaB">
                                             <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
                                         </label>
                                         <imageView width="0.55000000000000004" height="0.45000000000000001" alignment="center" verticalAlignment="center" image="logo" id="Rzg-Vg-zQc"/>
                                         <group width="1" height="40" alignment="center" verticalAlignment="bottom" id="h2c-KC-lsb">
                                             <items>
-                                                <group width="1" height="1" alignment="center" verticalAlignment="center" layout="overlap" id="r6U-YZ-ZTZ">
-                                                    <items>
-                                                        <imageView width="1" height="1" alignment="center" verticalAlignment="bottom" image="bottom_button" id="x0S-Zc-XXq"/>
-                                                        <group width="1" alignment="center" verticalAlignment="center" hidden="YES" layout="vertical" id="AAn-ya-gPL">
-                                                            <items>
-                                                                <button width="75" height="75" alignment="center" backgroundImage="login with bg" id="Dqi-MB-DBI"/>
-                                                                <label alignment="center" text="You are signing in from:" textAlignment="center" id="gxB-ew-On3">
-                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <fontDescription key="font" type="boldSystem" pointSize="10"/>
-                                                                </label>
-                                                                <label width="0.90000000000000002" alignment="center" verticalAlignment="center" text="abc@.xyzcom" textAlignment="center" numberOfLines="2" id="hZ4-Bu-I57">
-                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <fontDescription key="font" type="boldSystem" pointSize="14"/>
-                                                                </label>
-                                                            </items>
-                                                        </group>
-                                                    </items>
-                                                </group>
+                                                <authorizationAppleIDButton width="1" alignment="left" id="Ng8-2u-P9I">
+                                                    <connections>
+                                                        <action selector="signInWithAppleClicked" destination="ST8-Zf-KN3" id="0Bp-Ch-f1D"/>
+                                                    </connections>
+                                                </authorizationAppleIDButton>
                                             </items>
                                         </group>
                                     </items>
@@ -247,9 +234,8 @@
                     <color key="backgroundColor" red="0.1843137255" green="0.1843137255" blue="0.08235294118" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="bottomGroup" destination="h2c-KC-lsb" id="YFW-Zd-WFd"/>
-                        <outlet property="emailLabel" destination="hZ4-Bu-I57" id="GXD-gT-FcZ"/>
-                        <outlet property="loginInfoGroup" destination="AAn-ya-gPL" id="B9z-nB-AqU"/>
                         <outlet property="logoImg" destination="Rzg-Vg-zQc" id="q3p-g8-Nnz"/>
+                        <outlet property="signInAppleButton" destination="Ng8-2u-P9I" id="lWJ-B3-YjE"/>
                         <outlet property="welcomeToLabel" destination="aIV-LV-yaB" id="4vf-e0-sQn"/>
                     </connections>
                 </controller>
@@ -437,7 +423,6 @@
         <image name="divider" width="315" height="4"/>
         <image name="groupPlaceholder" width="24" height="24"/>
         <image name="home_bg" width="272" height="341.5"/>
-        <image name="login with bg" width="160.5" height="160.5"/>
         <image name="logo" width="142" height="132.5"/>
         <image name="logout" width="40.5" height="40.5"/>
         <image name="logout_bg" width="102" height="102"/>

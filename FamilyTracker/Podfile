@@ -39,6 +39,7 @@ target 'FamilyTracker WatchKit Extension' do
   pod 'SDWebImage', '~> 5.0'
   pod 'FirebaseDatabase'
   pod 'Firebase/Messaging'
+  pod 'Firebase/Auth'
   # Pods for FamilyTracker WatchKit Extension
 
 end
